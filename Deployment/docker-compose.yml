@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  build-a-bear-app-db:
+    image: postgres:13.2-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: build-a-bear-admin
+      POSTGRES_DB: build-a-bear-app
+      POSTGRES_PASSWORD: build-a-bear-passwd
+    volumes:
+      - build-a-bear-vol:/var/lib/postgresql/data
+    networks:
+      - dbeaver-net
+
+  db_admin:
+    container_name: dbeaver
+    image: dbeaver/cloudbeaver:23.2.5
+    restart: always
+    ports:
+      - 8000:8978
+    networks:
+      - dbeaver-net
+  
+  # front-end:
+  #   build: ../BuildABear.Frontend
+  #   ports:
+  #     - 3000:3000
+  #   networks:
+  #     - frontend-net
+
+volumes:
+  build-a-bear-vol:
+
+networks:
+    dbeaver-net:
+    # frontend-net:
