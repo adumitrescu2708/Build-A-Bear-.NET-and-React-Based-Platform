@@ -28,7 +28,6 @@ public class TeddyItemConfiguration : IEntityTypeConfiguration<TeddyItem>
         builder.HasOne(e => e.Vendor)
         .WithMany(e => e.TeddyItems)
         .HasForeignKey(e => e.VendorId)
-        .HasPrincipalKey(e => e.Id)
-        .OnDelete(DeleteBehavior.Cascade);
+        .HasPrincipalKey(e => e.Id);
     }
 }

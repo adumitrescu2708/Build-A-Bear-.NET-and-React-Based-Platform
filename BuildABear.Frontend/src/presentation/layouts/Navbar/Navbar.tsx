@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import HomeIcon from '@mui/icons-material/Home';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Link } from 'react-router-dom';
 import { AppRoute } from 'routes';
 import { useIntl } from 'react-intl';
@@ -67,19 +68,19 @@ export const Navbar = () => {
               </Grid>
             </Grid>}
           </Grid>
-          <Grid container item direction="column" xs={8}>
+          <Grid container item direction="column" xs={1}>
             {isVendor && <Grid // If the user is logged in and it is an admin they can have new menu items shown.
               container
               item
               direction="row"
-              xs={12}
-              alignItems="center"
+              xs={1}
+              // alignItems="center"
               wrap="nowrap"
               columnSpacing={15}
             >
                 <Button color="inherit">
                   <Link style={{ color: 'white' }} to={AppRoute.TeddyItem}>
-                  <HomeIcon style={{ color: 'white' }} fontSize='large' />
+                  <AddCircleOutlineIcon  style={{ color: 'white' }} fontSize='large' />
                   </Link>
                 </Button>
             </Grid>}

@@ -23,10 +23,12 @@ public sealed class TeddySpec : BaseSpec<TeddySpec, Teddy, TeddyBuildDTO>
         }
     }
 
-    public TeddySpec(Guid cartId, bool isCartId) {
-        if(isCartId)
+    public TeddySpec(Guid cartId, int isCartId) {
+        if(isCartId == 1)
             Query.Where(e => e.CartId == cartId);
-        else
+        else if(isCartId == 2)
             Query.Where(e => e.Id == cartId);
+        else
+            Query.Where(e => e.OrderId == cartId);
     }
 }

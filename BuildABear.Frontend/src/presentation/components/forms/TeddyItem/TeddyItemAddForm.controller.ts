@@ -11,18 +11,19 @@ import { UserRoleEnum } from "@infrastructure/apis/client";
 import { SelectChangeEvent } from "@mui/material";
 import { TeddyItemCategoryEnum } from "@infrastructure/apis/client/models";
 import { useTeddyItemApi } from "@infrastructure/apis/api-management/teddyItem";
-
-const getDefaultValues = (initialData?: TeddyItemAddFormModel) =>
+import { toast } from "react-toastify";
+const getDefaultValues = (initialData?: {}) =>
 {
     const defaultValues = {
-        name: "",
-        filename: "",
-        price: 0,
-        description: "",
-        fabric: "",
-        color: "White",
-        quantity: 0,
-        category: "" as TeddyItemCategoryEnum
+        // name: "",
+        // Filename: "",
+        // price: 0,
+        // description: "",
+        // fabric: "",
+        // color: "White",
+        // quantity: 0,
+        category: "",
+        // file: new File([], "empty.txt")
     };
 
     if (!isUndefined(initialData)) {
@@ -45,8 +46,8 @@ export const useInitTeddyItemAddForm = () => {
                     fieldName: formatMessage({
                         id: "globals.name",
                     }),
-                }))
-            .default(defaultValues.name),
+                })),
+            // .default(defaultValues.name),
         fileName: yup.string()
             .required(formatMessage(
                 { id: "globals.validations.requiredField" },
@@ -54,8 +55,8 @@ export const useInitTeddyItemAddForm = () => {
                     fieldName: formatMessage({
                         id: "globals.fileName",
                     }),
-                }))
-            .default(defaultValues.name),
+                })),
+            // .default(defaultValues.name),
         price: yup.number()
             .required(formatMessage(
                 { id: "globals.validations.requiredField" },
@@ -63,17 +64,17 @@ export const useInitTeddyItemAddForm = () => {
                     fieldName: formatMessage({
                         id: "globals.price",
                     }),
-                }))
-            .default(defaultValues.price),
+                })),
+            // .default(defaultValues.price),
         description: yup.string()
-            // .required(formatMessage(
-            //     { id: "globals.validations.requiredField" },
-            //     {
-            //         fieldName: formatMessage({
-            //             id: "globals.description",
-            //         }),
-            //     }))
-            .default(defaultValues.description),
+            .required(formatMessage( //todo
+                { id: "globals.validations.requiredField" },
+                {
+                    fieldName: formatMessage({
+                        id: "globals.description",
+                    }),
+                })),
+            // .default(defaultValues.description),
         fabric: yup.string()
             .required(formatMessage(
                 { id: "globals.validations.requiredField" },
@@ -81,8 +82,8 @@ export const useInitTeddyItemAddForm = () => {
                     fieldName: formatMessage({
                         id: "globals.fabric",
                     }),
-                }))
-            .default(defaultValues.fabric),
+                })),
+            // .default(defaultValues.fabric),
         color: yup.string()
             .required(formatMessage(
                 { id: "globals.validations.requiredField" },
@@ -90,8 +91,8 @@ export const useInitTeddyItemAddForm = () => {
                     fieldName: formatMessage({
                         id: "globals.color",
                     }),
-                }))
-            .default(defaultValues.color),
+                })),
+            // .default(defaultValues.color),
         quantity: yup.number()
             .required(formatMessage(
                 { id: "globals.validations.requiredField" },
@@ -99,8 +100,8 @@ export const useInitTeddyItemAddForm = () => {
                     fieldName: formatMessage({
                         id: "globals.quantity",
                     }),
-                }))
-            .default(defaultValues.quantity),
+                })),
+            // .default(defaultValues.quantity),
         category: yup.string()
                     .oneOf([ // The select input should have one of these values.
                         TeddyItemCategoryEnum.Shoes,
@@ -135,21 +136,32 @@ export const useInitTeddyItemAddForm = () => {
 }
 
 export const useTeddyItemAddFormController = (onSubmit?: () => void) : TeddyItemAddFormController => {
+    const { formatMessage } = useIntl();
     const { defaultValues, resolver } = useInitTeddyItemAddForm();
-    const { addTeddyItem: { mutation, key: addTeddyItemQuery, } } = useTeddyItemApi();
-    const queryClient = useQueryClient();
+    const { addTeddyItem: { mutation: addTeddyItem, key: addTeddyItemQuery } } = useTeddyItemApi();
     const { mutateAsync: add, status } = useMutation({
         mutationKey: [addTeddyItemQuery], 
-        mutationFn: mutation
-    });
+        mutationFn: addTeddyItem
+    })
+
+
     const submit = useCallback((data: TeddyItemAddFormModel) => // Create a submit callback to send the form data to the backend.
-    // console.log("aici") 
-    add(data).then(() => {
-            // queryClient.invalidateQueries({ });
-            if (onSubmit) {
-                onSubmit();
-            }}
-        ), [add]);
+        add(data).then(() => {
+                // queryClient.invalidateQueries({ });
+                // if (onSubmit) {
+                // }}
+                console.log("aici", data);
+                toast(formatMessage({ id: "notifications.messages.itemAddedSuccess" }));
+        }), [add]);
+
+    // const submit = useCallback((body: TeddyItemAddFormModel) => // Create a submit callback to send the form data to the backend.
+    //     add(body).then(() => {
+    //         if (onSubmit) {
+    //             onSubmit();
+    //         }
+    //     }), [add]);
+
+
     const {
         register,
         handleSubmit,

@@ -37,5 +37,6 @@
     "globals.dress": "Dress",
     "globals.pants": "Pants",
     "globals.pyjamas": "Pyjamas",
-    "globals.hoodie": "Hoodie"
+    "globals.hoodie": "Hoodie",
+    "globals.addTeddyItem": "Add Teddy Item"
 }

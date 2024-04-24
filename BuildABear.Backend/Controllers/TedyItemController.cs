@@ -14,6 +14,7 @@ namespace BuildABear.Backend.Controllers;
 [Route("api/[controller]/[action]")]
 public class TeddyItemController : AuthorizedController
 {
+    private const long MaxFileSize = 128 * 1024 * 1024;
     private readonly ITeddyItemService _teddyItemService;
     public TeddyItemController(IUserService userService, ITeddyItemService teddyItemService) : base(userService)
     {
@@ -31,6 +32,8 @@ public class TeddyItemController : AuthorizedController
     /// <returns></returns>
     [Authorize]
     [HttpPost]
+    [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSize)] // Sets the maximum size limit for the form body to override the default value
+    [RequestSizeLimit(MaxFileSize)] // Sets the maximum size limit for the entire request to override the default value
     public async Task<ActionResult<RequestResponse<TeddyItemViewDTO>>> Add([FromForm] TeddyItemAddDTO form)
     {
         var currentUser = await GetCurrentUser();

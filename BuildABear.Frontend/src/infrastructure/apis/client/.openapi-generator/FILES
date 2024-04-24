@@ -49,6 +49,8 @@ models/TeddyTemplateViewDTOPagedResponseRequestResponse.ts
 models/TeddyUpdateDTO.ts
 models/UserAddDTO.ts
 models/UserDTO.ts
+models/UserDTOPagedResponse.ts
+models/UserDTOPagedResponseRequestResponse.ts
 models/UserDTORequestResponse.ts
 models/UserRoleEnum.ts
 models/UserUpdateDTO.ts

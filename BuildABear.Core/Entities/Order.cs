@@ -10,8 +10,9 @@ public class Order : BaseEntity
     public string Address { get; set; } = default!;
     public OrderStatus Status { get; set; } = default!;
 
-    public Guid CartId { get; set; } = default!;
-    public Cart Cart { get; set; } = default!;
+    public ICollection<Teddy>? Products { get; set; } = default!;
+    //public Guid CartId { get; set; } = default!;
+    //public Cart Cart { get; set; } = default!;
 
     /* one-to-many relationship user - order */
     public Guid UserId { get; set; } = default!;

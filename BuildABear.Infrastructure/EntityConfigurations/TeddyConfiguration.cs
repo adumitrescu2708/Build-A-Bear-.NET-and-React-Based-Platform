@@ -22,12 +22,18 @@ public class TeddyConfiguration : IEntityTypeConfiguration<Teddy>
 
         builder.Property(e => e.Name).IsRequired(); /* Required fields */
         builder.Property(e => e.Filling).IsRequired();
-        
+
         /* one-to-many relationship cart teddys */
         builder.HasOne(e => e.Cart)
             .WithMany(b => b.Products)
             .HasForeignKey(e => e.CartId)
             .HasPrincipalKey(e => e.Id)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.Restrict);
+
+        /* one-to-many relationship cart teddys */
+        builder.HasOne(e => e.Order)
+            .WithMany(b => b.Products)
+            .HasForeignKey(e => e.OrderId)
+            .HasPrincipalKey(e => e.Id).OnDelete(DeleteBehavior.Cascade);
     }
 }

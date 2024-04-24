@@ -47,8 +47,6 @@ export class AuthorizationApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Bearer authentication
         }
 
-        console.log(requestParameters.loginDTO);
-
         const response = await this.request({
             path: `/api/Authorization/Login`,
             method: 'POST',

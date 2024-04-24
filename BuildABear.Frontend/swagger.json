@@ -304,17 +304,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/GuidRequestResponse"
+                  "$ref": "#/components/schemas/RequestResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GuidRequestResponse"
+                  "$ref": "#/components/schemas/RequestResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GuidRequestResponse"
+                  "$ref": "#/components/schemas/RequestResponse"
                 }
               }
             }
@@ -1322,6 +1322,60 @@
         }
       }
     },
+    "/api/User/Get": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "Search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOPagedResponseRequestResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOPagedResponseRequestResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTOPagedResponseRequestResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/User/GetOrdersIdsById/{id}": {
       "get": {
         "tags": [
@@ -2072,7 +2126,8 @@
           "VendorNotFound",
           "CannotAddFile",
           "CannotDeleteItem",
-          "ItemUnavailable"
+          "ItemUnavailable",
+          "CannotViewUser"
         ],
         "type": "string"
       },
@@ -2716,6 +2771,43 @@
         },
         "additionalProperties": false
       },
+      "UserDTOPagedResponse": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserDTOPagedResponseRequestResponse": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/UserDTOPagedResponse"
+          },
+          "errorMessage": {
+            "$ref": "#/components/schemas/ErrorMessage"
+          }
+        },
+        "additionalProperties": false
+      },
       "UserDTORequestResponse": {
         "type": "object",
         "properties": {
@@ -3011,7 +3103,7 @@
   },
   "security": [
     {
-      "Bearer": []
+      "Bearer": [ ]
     }
   ]
 }

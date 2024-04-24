@@ -40,6 +40,8 @@ export * from './TeddyTemplateViewDTOPagedResponseRequestResponse';
 export * from './TeddyUpdateDTO';
 export * from './UserAddDTO';
 export * from './UserDTO';
+export * from './UserDTOPagedResponse';
+export * from './UserDTOPagedResponseRequestResponse';
 export * from './UserDTORequestResponse';
 export * from './UserRoleEnum';
 export * from './UserUpdateDTO';

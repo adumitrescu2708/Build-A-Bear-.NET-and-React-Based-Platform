@@ -11,15 +11,15 @@ import { SelectChangeEvent } from "@mui/material";
 import { TeddyItemCategoryEnum } from "@infrastructure/apis/client/models";
 
 export type TeddyItemAddFormModel = {
-    name: string;
-    price: number;
-    description?: string;
-    fabric: string;
-    color: string;
-    quantity: number;
-    category: TeddyItemCategoryEnum;
-    file: File;
-    Filename: string;
+    name: string;//
+    price: number;//
+    description?: string;//
+    fabric: string;//
+    color: string;//
+    quantity: number;//
+    category: TeddyItemCategoryEnum;//
+    file: File;//
+    fileName: string;//
 };
 
 export type TeddyItemAddFormState = {

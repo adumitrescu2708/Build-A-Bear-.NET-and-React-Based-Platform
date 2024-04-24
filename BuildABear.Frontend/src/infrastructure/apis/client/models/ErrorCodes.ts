@@ -60,7 +60,8 @@ export const ErrorCodes = {
     VendorNotFound: 'VendorNotFound',
     CannotAddFile: 'CannotAddFile',
     CannotDeleteItem: 'CannotDeleteItem',
-    ItemUnavailable: 'ItemUnavailable'
+    ItemUnavailable: 'ItemUnavailable',
+    CannotViewUser: 'CannotViewUser'
 } as const;
 export type ErrorCodes = typeof ErrorCodes[keyof typeof ErrorCodes];
 

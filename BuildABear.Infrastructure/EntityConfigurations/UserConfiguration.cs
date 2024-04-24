@@ -28,6 +28,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(e => e.City).IsRequired();
         builder.Property(e => e.Country).IsRequired();
         builder.Property(e => e.PhoneNumber).IsRequired();
+        //builder.Property(e => e.MainCartId).IsRequired();
 
         builder.HasOne(e => e.Vendor)
             .WithMany(e => e.Vendors)

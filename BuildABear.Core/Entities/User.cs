@@ -16,8 +16,12 @@ public class User : BaseEntity
     public string PhoneNumber { get; set; } = default!;
     public UserRoleEnum Role { get; set; } = default!;
 
-    /* one-to-one relationship between an user and a cart */
+    ///* one-to-one relationship between an user and a cart */
     public Cart Cart { get; set; } = default!;
+
+    //public Guid MainCartId { get; set; } = default!;
+    //public Cart MainCart { get; set; } = default!;
+    //public ICollection<Cart> Carts { get; set; } = default!;
 
     public Guid? VendorId { get; set; } = default;
     public Vendor? Vendor { get; set; } = default;

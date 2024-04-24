@@ -42,16 +42,11 @@ public class OrderService : IOrderService
             return ServiceResponse<OrderViewDTO>.FromError(new(HttpStatusCode.NotFound, "Order not found!", ErrorCodes.OrderNotFound));
         }
 
-        var cart = await _repository.GetAsync<Cart>(order.CartId, cancellationToken);
-        if (cart != null) 
+        if (!(requestingUser.Role == UserRoleEnum.Admin || order.UserId == requestingUser.Id))
         {
-            if (!(requestingUser.Role == UserRoleEnum.Admin || cart.UserId == requestingUser.Id))
-            {
-                return ServiceResponse<OrderViewDTO>.FromError(new(HttpStatusCode.Forbidden, "Only admins and order owner can view order!", ErrorCodes.CannotViewOrder));
-            }
+            return ServiceResponse<OrderViewDTO>.FromError(new(HttpStatusCode.Forbidden, "Only admins and order owner can view order!", ErrorCodes.CannotViewOrder));
         }
-
-
+ 
         var viewDTO = new OrderViewDTO
         {
             Price = order.Price,
@@ -60,7 +55,7 @@ public class OrderService : IOrderService
             Address = order.Address,
         };
 
-        List<TeddyBuildDTO> teddies = await _repository.ListAsync(new TeddySpec(order.CartId, true), cancellationToken);
+        List<TeddyBuildDTO> teddies = await _repository.ListAsync(new TeddySpec(order.Id, 3), cancellationToken);
         viewDTO.teddies = teddies;
         return ServiceResponse<OrderViewDTO>.ForSuccess(viewDTO);
 
@@ -104,18 +99,34 @@ public class OrderService : IOrderService
             }
         }
 
-        Guid previous_cart = user.Cart.Id;
-        await _repository.AddAsync(new Order
+        var order2 = new Order
         {
             Address = order.Address,
             Status = OrderStatus.Processing,
             PaymentMethod = order.PaymentMethod,
-            CartId = user.Cart.Id,
             UserId = user.Id,
             Price = sum
-        }, cancellationToken);
+        };
 
-        user.Cart = new Cart();
+
+        order2.Products = new List<Teddy>(teddies);
+        await _repository.AddAsync(order2, cancellationToken);
+
+        //await _repository.AddAsync(new Order
+        //{
+        //    Address = order.Address,
+        //    Status = OrderStatus.Processing,
+        //    PaymentMethod = order.PaymentMethod,
+        //    UserId = user.Id,
+        //    Price = sum
+        //}, cancellationToken);
+
+        foreach (var teddy in user.Cart.Products)
+        {
+            teddy.CartId = null;
+            teddy.Cart = null;
+        }
+        user.Cart.Products = new List<Teddy> { };
         await _repository.UpdateAsync(user, cancellationToken);
 
         //var addedOrder = await _repository.GetAsync(new OrderSpec(previous_cart, false), cancellationToken);

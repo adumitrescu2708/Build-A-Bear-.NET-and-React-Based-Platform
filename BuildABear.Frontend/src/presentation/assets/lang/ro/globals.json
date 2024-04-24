@@ -37,5 +37,6 @@
     "globals.dress": "Rochie",
     "globals.pants": "Pantaloni",
     "globals.pyjamas": "Pijamale",
-    "globals.hoodie": "Hanorac"
+    "globals.hoodie": "Hanorac",
+    "globals.addTeddyItem": "Adauga produs"
 }

@@ -181,6 +181,7 @@ public class UserService : IUserService
             return ServiceResponse<BriefUserDTO>.FromError(new(HttpStatusCode.Forbidden, "Enterprise vendors should have a vendor id!", ErrorCodes.CannotAdd));
         }
 
+        var mainCart = new Cart();
         await _repository.AddAsync(new User
         {
             Email = user.Email,
@@ -190,7 +191,7 @@ public class UserService : IUserService
             Country = user.Country,
             City = user.City,
             PhoneNumber = user.PhoneNumber,
-            Cart = new Cart()
+            Cart = mainCart
         }, cancellationToken);
 
         var added_user = await _repository.GetAsync(new UserSpec(user.Email));
@@ -241,6 +242,8 @@ public class UserService : IUserService
             return ServiceResponse<BriefUserDTO>.FromError(new(HttpStatusCode.Forbidden, "Vendor contract expired!", ErrorCodes.ContractExpired));
         }
 
+        var mainCart = new Cart();
+
         await _repository.AddAsync(new User
         {
             Email = user.Email,
@@ -251,7 +254,7 @@ public class UserService : IUserService
             City = user.City,
             PhoneNumber = user.PhoneNumber,
             VendorId = user.VendorId,
-            Cart = new Cart()
+            Cart = mainCart
         }, cancellationToken);
 
         var added_user = await _repository.GetAsync(new UserSpec(user.Email));

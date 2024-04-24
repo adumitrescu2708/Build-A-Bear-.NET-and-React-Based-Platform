@@ -13,6 +13,9 @@ public class Teddy : BaseEntity
     public ICollection<TeddyItem>? Items { get; set; }
 
     /* one-to-many relationship between teddies and cart */
-    public Guid CartId { get; set; } = default!;
-    public Cart Cart { get; set; } = default!;
+    public Guid? CartId { get; set; } = default!;
+    public Cart? Cart { get; set; } = default!;
+
+    public Guid? OrderId { get; set; } = default!;
+    public Order? Order { get; set; } = default!;
 }

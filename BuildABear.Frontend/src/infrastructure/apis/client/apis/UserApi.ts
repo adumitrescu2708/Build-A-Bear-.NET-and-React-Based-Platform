@@ -20,6 +20,7 @@ import type {
   GuidRequestResponse,
   RequestResponse,
   UserAddDTO,
+  UserDTOPagedResponseRequestResponse,
   UserDTORequestResponse,
   UserUpdateDTO,
   VendorUserAddDTO,
@@ -35,6 +36,8 @@ import {
     RequestResponseToJSON,
     UserAddDTOFromJSON,
     UserAddDTOToJSON,
+    UserDTOPagedResponseRequestResponseFromJSON,
+    UserDTOPagedResponseRequestResponseToJSON,
     UserDTORequestResponseFromJSON,
     UserDTORequestResponseToJSON,
     UserUpdateDTOFromJSON,
@@ -61,6 +64,12 @@ export interface ApiUserGetByIdIdGetRequest {
 
 export interface ApiUserGetCartByIdIdGetRequest {
     id: string;
+}
+
+export interface ApiUserGetGetRequest {
+    search?: string;
+    page?: number;
+    pageSize?: number;
 }
 
 export interface ApiUserGetOrdersIdsByIdIdGetRequest {
@@ -231,6 +240,46 @@ export class UserApi extends runtime.BaseAPI {
      */
     async apiUserGetCartByIdIdGet(requestParameters: ApiUserGetCartByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GuidRequestResponse> {
         const response = await this.apiUserGetCartByIdIdGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async apiUserGetGetRaw(requestParameters: ApiUserGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<UserDTOPagedResponseRequestResponse>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.search !== undefined) {
+            queryParameters['Search'] = requestParameters.search;
+        }
+
+        if (requestParameters.page !== undefined) {
+            queryParameters['Page'] = requestParameters.page;
+        }
+
+        if (requestParameters.pageSize !== undefined) {
+            queryParameters['PageSize'] = requestParameters.pageSize;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/api/User/Get`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => UserDTOPagedResponseRequestResponseFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async apiUserGetGet(requestParameters: ApiUserGetGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<UserDTOPagedResponseRequestResponse> {
+        const response = await this.apiUserGetGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

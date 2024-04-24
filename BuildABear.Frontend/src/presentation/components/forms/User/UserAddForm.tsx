@@ -21,7 +21,7 @@ import { UserRoleEnum } from "@infrastructure/apis/client";
  */
 export const UserAddForm = (props: { onSubmit?: () => void }) => {
     const { formatMessage } = useIntl();
-    const { state, actions, computed } = useUserAddFormController(props.onSubmit); // Use the controller.
+    const { actions, computed, state } = useUserAddFormController(props.onSubmit); // Use the controller.
 
     return <form onSubmit={actions.handleSubmit(actions.submit)}> {/* Wrap your form into a form tag and use the handle submit callback to validate the form and call the data submission. */}
         <Stack spacing={4} style={{ width: "100%" }}>

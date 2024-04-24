@@ -7,7 +7,7 @@ import { getAuthenticationConfiguration } from "@infrastructure/utils/userUtils"
  */
 const getTeddyItemsQuery = "getTeddyItemsQuery";
 const downloadTeddyItemsQuery = "downloadTeddyItemsQuery";
-const addTeddyItemQuery = "addTeddyItemQuery";
+const addTeddyItemMutationKey = "addTeddyItemMutation";
 
 export const useTeddyItemApi = () => {
     const { token } = useAppSelector(x => x.profileReducer); // You can use the data form the Redux storage. 
@@ -15,7 +15,7 @@ export const useTeddyItemApi = () => {
 
     const getTeddyItems = (page: ApiTeddyItemGetGetRequest) => new TeddyItemApi(config).apiTeddyItemGetGet(page); // Use the generated client code and adapt it.
     const updateTeddyItems = (form : ApiTeddyItemUpdatePutRequest) => new TeddyItemApi(config).apiTeddyItemUpdatePut(form);
-    const addTeddyItem = (form: ApiTeddyItemAddPostRequest) => new TeddyItemApi(config).apiTeddyItemAddPost(form);
+    const addTeddyItem = (req: ApiTeddyItemAddPostRequest) => new TeddyItemApi(config).apiTeddyItemAddPost(req);
     
     return {
         getTeddyItems: { // Return the query object.
@@ -27,7 +27,7 @@ export const useTeddyItemApi = () => {
             query: updateTeddyItems
         },
         addTeddyItem: {
-            key: addTeddyItemQuery,
+            key: addTeddyItemMutationKey,
             mutation: addTeddyItem
         }
     }

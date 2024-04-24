@@ -9,13 +9,13 @@ public class OrderSpec : BaseSpec<OrderSpec, Order>
 {
     public OrderSpec(Guid userId, bool is_userId)
     {
-        if (is_userId)
-        {
+        //if (is_userId)
+        //{
             Query.Where(e => e.UserId == userId);
-        }
-        else {
-            Query.Where(e => e.CartId == userId);
-        }
+        //}
+        //else {
+        //    Query.Where(e => e.CartId == userId);
+        //}
         
     }
 

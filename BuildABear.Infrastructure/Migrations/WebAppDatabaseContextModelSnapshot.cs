@@ -32,6 +32,9 @@ namespace BuildABear.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
@@ -39,6 +42,8 @@ namespace BuildABear.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -55,9 +60,6 @@ namespace BuildABear.Infrastructure.Migrations
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<Guid>("CartId")
-                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
@@ -81,9 +83,6 @@ namespace BuildABear.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CartId")
-                        .IsUnique();
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Order");
@@ -95,7 +94,7 @@ namespace BuildABear.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CartId")
+                    b.Property<Guid?>("CartId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -109,6 +108,9 @@ namespace BuildABear.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("TeddyTemplateId")
                         .HasColumnType("uuid");
 
@@ -118,6 +120,8 @@ namespace BuildABear.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("TeddyTemplateId");
 
@@ -378,29 +382,28 @@ namespace BuildABear.Infrastructure.Migrations
 
             modelBuilder.Entity("BuildABear.Core.Entities.Cart", b =>
                 {
+                    b.HasOne("BuildABear.Core.Entities.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId");
+
                     b.HasOne("BuildABear.Core.Entities.User", "User")
                         .WithOne("Cart")
                         .HasForeignKey("BuildABear.Core.Entities.Cart", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Order");
+
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("BuildABear.Core.Entities.Order", b =>
                 {
-                    b.HasOne("BuildABear.Core.Entities.Cart", "Cart")
-                        .WithOne("Order")
-                        .HasForeignKey("BuildABear.Core.Entities.Order", "CartId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("BuildABear.Core.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Cart");
 
                     b.Navigation("User");
                 });
@@ -410,8 +413,12 @@ namespace BuildABear.Infrastructure.Migrations
                     b.HasOne("BuildABear.Core.Entities.Cart", "Cart")
                         .WithMany("Products")
                         .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("BuildABear.Core.Entities.Order", "Order")
+                        .WithMany("Products")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("BuildABear.Core.Entities.TeddyTemplate", "TeddyTemplate")
                         .WithMany("UserTeddys")
@@ -420,6 +427,8 @@ namespace BuildABear.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Cart");
+
+                    b.Navigation("Order");
 
                     b.Navigation("TeddyTemplate");
                 });
@@ -473,8 +482,11 @@ namespace BuildABear.Infrastructure.Migrations
 
             modelBuilder.Entity("BuildABear.Core.Entities.Cart", b =>
                 {
-                    b.Navigation("Order");
+                    b.Navigation("Products");
+                });
 
+            modelBuilder.Entity("BuildABear.Core.Entities.Order", b =>
+                {
                     b.Navigation("Products");
                 });
 

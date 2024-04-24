@@ -33,7 +33,7 @@ public class CartService : ICartService
                 return ServiceResponse<PagedResponse<TeddyBuildDTO>>.FromError(new(HttpStatusCode.Forbidden, "Only admins and self users can view cart!", ErrorCodes.CannotViewCart));
             }
 
-            var result = await _repository.PageAsync(pagination, new TeddySpec(id, true), cancellationToken);
+            var result = await _repository.PageAsync(pagination, new TeddySpec(id, 1), cancellationToken);
             return ServiceResponse<PagedResponse<TeddyBuildDTO>>.ForSuccess(result);
         }
         else 
@@ -44,7 +44,7 @@ public class CartService : ICartService
                 return ServiceResponse<PagedResponse<TeddyBuildDTO>>.FromError(new(HttpStatusCode.NotFound, "User not existing!", ErrorCodes.UserNotFound));
             }
             var cart = await _repository.GetAsync(new CartSpec(id), cancellationToken);
-            if(cart == null)
+            if (cart == null)
             {
                 return ServiceResponse<PagedResponse<TeddyBuildDTO>>.FromError(new(HttpStatusCode.NotFound, "Cart not existing!", ErrorCodes.CartNotExisting));
             }
@@ -52,7 +52,7 @@ public class CartService : ICartService
             {
                 return ServiceResponse<PagedResponse<TeddyBuildDTO>>.FromError(new(HttpStatusCode.Forbidden, "Only admins and self users can view cart!", ErrorCodes.CannotViewCart));
             }
-            var result = await _repository.PageAsync(pagination, new TeddySpec(cart.Id, true), cancellationToken);
+            var result = await _repository.PageAsync(pagination, new TeddySpec(cart.Id, 1), cancellationToken);
             return ServiceResponse<PagedResponse<TeddyBuildDTO>>.ForSuccess(result);
         }
     }
@@ -108,6 +108,7 @@ public class CartService : ICartService
                 }
 
                 var cart = await _repository.GetAsync(new CartSpec((Guid)id), cancellationToken);
+                //var cart = user.MainCart;
                 if (cart == null)
                 {
                     return ServiceResponse<int>.FromError(new(HttpStatusCode.NotFound, "Cart not existing!", ErrorCodes.CartNotExisting));

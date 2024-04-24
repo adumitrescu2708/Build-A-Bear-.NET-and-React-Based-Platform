@@ -162,6 +162,7 @@ export class TeddyItemApi extends runtime.BaseAPI {
             formParams.append('FileName', requestParameters.fileName as any);
         }
 
+        console.log("aici2");
         const response = await this.request({
             path: `/api/TeddyItem/Add`,
             method: 'POST',
@@ -176,6 +177,7 @@ export class TeddyItemApi extends runtime.BaseAPI {
     /**
      */
     async apiTeddyItemAddPost(requestParameters: ApiTeddyItemAddPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TeddyItemViewDTORequestResponse> {
+        console.log("aici");
         const response = await this.apiTeddyItemAddPostRaw(requestParameters, initOverrides);
         return await response.value();
     }

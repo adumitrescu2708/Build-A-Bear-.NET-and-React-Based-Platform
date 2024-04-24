@@ -113,11 +113,24 @@ public class TeddyService : ITeddyService
             return ServiceResponse<TeddyBuildDTO>.FromError(new(HttpStatusCode.NotFound, "Cart not existing!", ErrorCodes.CartNotFound));
         }
 
-        /* Then check permissions */
-        if (!(requestingUser.Role == Core.Enums.UserRoleEnum.Admin || teddy.CartId == cart.Id))
+        if (teddy.OrderId != null)
         {
-            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only admin users and parent user can delete teddy!", ErrorCodes.CannotDeleteTeddy));
+            var order = await _repository.GetAsync<Order>((Guid)teddy.OrderId, cancellationToken);
+            /* Then check permissions */
+            if (!(requestingUser.Role == Core.Enums.UserRoleEnum.Admin || order.UserId == requestingUser.Id))
+            {
+                return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only admin users and parent user can delete teddy!", ErrorCodes.CannotDeleteTeddy));
+            }
         }
+        else {
+            /* Then check permissions */
+            if (!(requestingUser.Role == Core.Enums.UserRoleEnum.Admin || (teddy.CartId == cart.Id)))
+            {
+                return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only admin users and parent user can delete teddy!", ErrorCodes.CannotDeleteTeddy));
+            }
+        }
+            
+
 
         await _repository.DeleteAsync<Teddy>(id, cancellationToken);
         return ServiceResponse.ForSuccess();
@@ -152,7 +165,7 @@ public class TeddyService : ITeddyService
             return ServiceResponse<TeddyBuildDTO>.FromError(new(HttpStatusCode.Forbidden, "Only admin users and parent user can view teddy!", ErrorCodes.CannotViewTeddy));
         }
 
-        var result = await _repository.GetAsync(new TeddySpec(id, false), cancellationToken);
+        var result = await _repository.GetAsync(new TeddySpec(id, 2), cancellationToken);
         
         return ServiceResponse<TeddyBuildDTO>.ForSuccess(result);
     }

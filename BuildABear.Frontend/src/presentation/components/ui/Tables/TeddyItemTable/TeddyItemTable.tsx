@@ -121,9 +121,9 @@ export const TeddyItemTable = () => {
                                 (isAdmin || isVendor)  && 
                                 <TableCell>
                                 {
-                                    // <IconButton color="primary" onClick={() => redirectToAddTeddyItem()}>
-                                    //     <EditAttributesOutlined color="primary" fontSize='small' />
-                                    // </IconButton>
+                                    <IconButton color="primary" onClick={() => redirectToAddTeddyItem()}>
+                                        <EditAttributesOutlined color="primary" fontSize='small' />
+                                    </IconButton>
                                 }
                                 </TableCell>
                             }
