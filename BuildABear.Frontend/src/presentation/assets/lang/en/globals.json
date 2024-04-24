@@ -19,6 +19,7 @@
     "globals.addBy": "Added by", 
     "globals.createdAt": "Created at",
     "globals.file": "File",
+    "globals.fileName": "FileName",
     "globals.placeholders.textInput": "Please enter {fieldName}",
     "globals.placeholders.selectInput": "Please select the {fieldName}",
     "globals.validations.requiredField": "{fieldName} is a required field!",
@@ -35,5 +36,6 @@
     "globals.costume": "Costume",
     "globals.dress": "Dress",
     "globals.pants": "Pants",
-    "globals.pyjamas": "Pyjamas"
+    "globals.pyjamas": "Pyjamas",
+    "globals.hoodie": "Hoodie"
 }

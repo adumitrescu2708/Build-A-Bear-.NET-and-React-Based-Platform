@@ -8,5 +8,6 @@
     "labels.addUser": "Adauga utilizator",
     "labels.addUserFile": "Adauga fisier",
     "labels.download": "Descarca",
-    "labels.edit": "Editeaza"
+    "labels.edit": "Editeaza",
+    "labels.addItem": "Adauga articol"
 }

@@ -68,23 +68,25 @@ public class OrderService : IOrderService
 
     public async Task<ServiceResponse> PlaceOrder(OrderAddDTO order, UserDTO requestingUser, CancellationToken cancellationToken = default)
     {
+        /* First check if the requesting user exists */
         var user = await _repository.GetAsync<User>(requestingUser.Id, cancellationToken);
-        if(user == null)
+        if (user == null)
         {
-            return ServiceResponse.ForSuccess();
+            return ServiceResponse.FromError(new(HttpStatusCode.NotFound, "User doesn't exist!", ErrorCodes.UserNotFound));
         }
 
-        var cart = await _repository.GetAsync(new CartSpec(user.Id), cancellationToken);
+        /* Then check if the requesting user has a cart */
+        var cart = await _repository.GetAsync(new CartSpec(requestingUser.Id), cancellationToken);
         if (cart == null)
         {
-            return ServiceResponse.ForSuccess();
+            return ServiceResponse.FromError(new(HttpStatusCode.NotFound, "Cart not existing!", ErrorCodes.CartNotFound));
         }
 
-
+        /* Cannot order empty cart */
         List<Teddy> teddies = await _repository.ListAsync(new TeddySpec2(cart.Id, true), cancellationToken);
         if (teddies.IsNullOrEmpty())
         {
-            return ServiceResponse<OrderViewDTO>.FromError(new(HttpStatusCode.Forbidden, "Cannot order empty cart!", ErrorCodes.CannotOrderEmptyCart));
+            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Cannot order empty cart!", ErrorCodes.CannotOrderEmptyCart));
         }
         int sum = 0;
         foreach (var teddy in teddies)
@@ -102,6 +104,7 @@ public class OrderService : IOrderService
             }
         }
 
+        Guid previous_cart = user.Cart.Id;
         await _repository.AddAsync(new Order
         {
             Address = order.Address,
@@ -114,6 +117,8 @@ public class OrderService : IOrderService
 
         user.Cart = new Cart();
         await _repository.UpdateAsync(user, cancellationToken);
+
+        //var addedOrder = await _repository.GetAsync(new OrderSpec(previous_cart, false), cancellationToken);
         return ServiceResponse.ForSuccess();
     }
 }

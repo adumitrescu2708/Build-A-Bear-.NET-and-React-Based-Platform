@@ -15,14 +15,17 @@
 
 import * as runtime from '../runtime';
 import type {
-  GuidPagedResponseRequestResponse,
+  GuidRequestResponse,
   RequestResponse,
+  TeddyTemplateViewDTOPagedResponseRequestResponse,
 } from '../models';
 import {
-    GuidPagedResponseRequestResponseFromJSON,
-    GuidPagedResponseRequestResponseToJSON,
+    GuidRequestResponseFromJSON,
+    GuidRequestResponseToJSON,
     RequestResponseFromJSON,
     RequestResponseToJSON,
+    TeddyTemplateViewDTOPagedResponseRequestResponseFromJSON,
+    TeddyTemplateViewDTOPagedResponseRequestResponseToJSON,
 } from '../models';
 
 export interface ApiTeddyTemplateAddPostRequest {
@@ -35,13 +38,14 @@ export interface ApiTeddyTemplateDeleteByIdIdDeleteRequest {
     id: string;
 }
 
-export interface ApiTeddyTemplateGetAllGetRequest {
-    page?: number;
-    pageSize?: number;
-}
-
 export interface ApiTeddyTemplateGetByIdIdGetRequest {
     id: string;
+}
+
+export interface ApiTeddyTemplateGetGetRequest {
+    search?: string;
+    page?: number;
+    pageSize?: number;
 }
 
 /**
@@ -51,7 +55,7 @@ export class TeddyTemplateApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiTeddyTemplateAddPostRaw(requestParameters: ApiTeddyTemplateAddPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RequestResponse>> {
+    async apiTeddyTemplateAddPostRaw(requestParameters: ApiTeddyTemplateAddPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GuidRequestResponse>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -96,12 +100,12 @@ export class TeddyTemplateApi extends runtime.BaseAPI {
             body: formParams,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => RequestResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => GuidRequestResponseFromJSON(jsonValue));
     }
 
     /**
      */
-    async apiTeddyTemplateAddPost(requestParameters: ApiTeddyTemplateAddPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RequestResponse> {
+    async apiTeddyTemplateAddPost(requestParameters: ApiTeddyTemplateAddPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GuidRequestResponse> {
         const response = await this.apiTeddyTemplateAddPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -140,42 +144,6 @@ export class TeddyTemplateApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiTeddyTemplateGetAllGetRaw(requestParameters: ApiTeddyTemplateGetAllGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GuidPagedResponseRequestResponse>> {
-        const queryParameters: any = {};
-
-        if (requestParameters.page !== undefined) {
-            queryParameters['Page'] = requestParameters.page;
-        }
-
-        if (requestParameters.pageSize !== undefined) {
-            queryParameters['PageSize'] = requestParameters.pageSize;
-        }
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Bearer authentication
-        }
-
-        const response = await this.request({
-            path: `/api/TeddyTemplate/GetAll`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => GuidPagedResponseRequestResponseFromJSON(jsonValue));
-    }
-
-    /**
-     */
-    async apiTeddyTemplateGetAllGet(requestParameters: ApiTeddyTemplateGetAllGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GuidPagedResponseRequestResponse> {
-        const response = await this.apiTeddyTemplateGetAllGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
     async apiTeddyTemplateGetByIdIdGetRaw(requestParameters: ApiTeddyTemplateGetByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Blob>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiTeddyTemplateGetByIdIdGet.');
@@ -203,6 +171,46 @@ export class TeddyTemplateApi extends runtime.BaseAPI {
      */
     async apiTeddyTemplateGetByIdIdGet(requestParameters: ApiTeddyTemplateGetByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Blob> {
         const response = await this.apiTeddyTemplateGetByIdIdGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async apiTeddyTemplateGetGetRaw(requestParameters: ApiTeddyTemplateGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TeddyTemplateViewDTOPagedResponseRequestResponse>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.search !== undefined) {
+            queryParameters['Search'] = requestParameters.search;
+        }
+
+        if (requestParameters.page !== undefined) {
+            queryParameters['Page'] = requestParameters.page;
+        }
+
+        if (requestParameters.pageSize !== undefined) {
+            queryParameters['PageSize'] = requestParameters.pageSize;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/api/TeddyTemplate/Get`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => TeddyTemplateViewDTOPagedResponseRequestResponseFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async apiTeddyTemplateGetGet(requestParameters: ApiTeddyTemplateGetGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TeddyTemplateViewDTOPagedResponseRequestResponse> {
+        const response = await this.apiTeddyTemplateGetGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

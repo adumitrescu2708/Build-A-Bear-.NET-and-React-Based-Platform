@@ -19,58 +19,58 @@ import {
     ErrorMessageFromJSONTyped,
     ErrorMessageToJSON,
 } from './ErrorMessage';
-import type { GuidPagedResponse } from './GuidPagedResponse';
+import type { TeddyItemViewDTO } from './TeddyItemViewDTO';
 import {
-    GuidPagedResponseFromJSON,
-    GuidPagedResponseFromJSONTyped,
-    GuidPagedResponseToJSON,
-} from './GuidPagedResponse';
+    TeddyItemViewDTOFromJSON,
+    TeddyItemViewDTOFromJSONTyped,
+    TeddyItemViewDTOToJSON,
+} from './TeddyItemViewDTO';
 
 /**
  * 
  * @export
- * @interface GuidPagedResponseRequestResponse
+ * @interface TeddyItemViewDTORequestResponse
  */
-export interface GuidPagedResponseRequestResponse {
+export interface TeddyItemViewDTORequestResponse {
     /**
      * 
-     * @type {GuidPagedResponse}
-     * @memberof GuidPagedResponseRequestResponse
+     * @type {TeddyItemViewDTO}
+     * @memberof TeddyItemViewDTORequestResponse
      */
-    response?: GuidPagedResponse;
+    response?: TeddyItemViewDTO;
     /**
      * 
      * @type {ErrorMessage}
-     * @memberof GuidPagedResponseRequestResponse
+     * @memberof TeddyItemViewDTORequestResponse
      */
     errorMessage?: ErrorMessage;
 }
 
 /**
- * Check if a given object implements the GuidPagedResponseRequestResponse interface.
+ * Check if a given object implements the TeddyItemViewDTORequestResponse interface.
  */
-export function instanceOfGuidPagedResponseRequestResponse(value: object): boolean {
+export function instanceOfTeddyItemViewDTORequestResponse(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function GuidPagedResponseRequestResponseFromJSON(json: any): GuidPagedResponseRequestResponse {
-    return GuidPagedResponseRequestResponseFromJSONTyped(json, false);
+export function TeddyItemViewDTORequestResponseFromJSON(json: any): TeddyItemViewDTORequestResponse {
+    return TeddyItemViewDTORequestResponseFromJSONTyped(json, false);
 }
 
-export function GuidPagedResponseRequestResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): GuidPagedResponseRequestResponse {
+export function TeddyItemViewDTORequestResponseFromJSONTyped(json: any, ignoreDiscriminator: boolean): TeddyItemViewDTORequestResponse {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'response': !exists(json, 'response') ? undefined : GuidPagedResponseFromJSON(json['response']),
+        'response': !exists(json, 'response') ? undefined : TeddyItemViewDTOFromJSON(json['response']),
         'errorMessage': !exists(json, 'errorMessage') ? undefined : ErrorMessageFromJSON(json['errorMessage']),
     };
 }
 
-export function GuidPagedResponseRequestResponseToJSON(value?: GuidPagedResponseRequestResponse | null): any {
+export function TeddyItemViewDTORequestResponseToJSON(value?: TeddyItemViewDTORequestResponse | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -79,7 +79,7 @@ export function GuidPagedResponseRequestResponseToJSON(value?: GuidPagedResponse
     }
     return {
         
-        'response': GuidPagedResponseToJSON(value.response),
+        'response': TeddyItemViewDTOToJSON(value.response),
         'errorMessage': ErrorMessageToJSON(value.errorMessage),
     };
 }

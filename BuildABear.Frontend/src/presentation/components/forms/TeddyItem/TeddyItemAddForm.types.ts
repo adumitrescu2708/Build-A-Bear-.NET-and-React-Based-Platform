@@ -19,6 +19,7 @@ export type TeddyItemAddFormModel = {
     quantity: number;
     category: TeddyItemCategoryEnum;
     file: File;
+    Filename: string;
 };
 
 export type TeddyItemAddFormState = {
@@ -31,11 +32,11 @@ export type TeddyItemAddFormActions = {
     handleSubmit: UseFormHandleSubmit<TeddyItemAddFormModel>;
     submit: (body: TeddyItemAddFormModel) => void;
     selectCategory: (value: SelectChangeEvent<TeddyItemCategoryEnum>) => void;
-    setFile: (file: File) => void;
+    selectFile: (file: File) => void;
 };
 export type TeddyItemAddFormComputed = {
     defaultValues: TeddyItemAddFormModel,
     isSubmitting: boolean
 };
 
-export type TeddyItemAddFormController = FormController<TeddyItemAddFormModel, TeddyItemAddFormActions, TeddyItemAddFormComputed>;
+export type TeddyItemAddFormController = FormController<TeddyItemAddFormState, TeddyItemAddFormActions, TeddyItemAddFormComputed>;

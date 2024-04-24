@@ -1,3 +1,4 @@
+.openapi-generator-ignore
 apis/AuthorizationApi.ts
 apis/CartApi.ts
 apis/OrderApi.ts
@@ -17,8 +18,6 @@ models/BriefUserDTORequestResponse.ts
 models/ErrorCodes.ts
 models/ErrorMessage.ts
 models/GuidICollectionRequestResponse.ts
-models/GuidPagedResponse.ts
-models/GuidPagedResponseRequestResponse.ts
 models/GuidRequestResponse.ts
 models/HttpStatusCode.ts
 models/Int32RequestResponse.ts
@@ -41,6 +40,12 @@ models/TeddyItemDTO.ts
 models/TeddyItemDTORequestResponse.ts
 models/TeddyItemUpdateDTO.ts
 models/TeddyItemValability.ts
+models/TeddyItemViewDTO.ts
+models/TeddyItemViewDTORequestResponse.ts
+models/TeddySkuDTO.ts
+models/TeddyTemplateViewDTO.ts
+models/TeddyTemplateViewDTOPagedResponse.ts
+models/TeddyTemplateViewDTOPagedResponseRequestResponse.ts
 models/TeddyUpdateDTO.ts
 models/UserAddDTO.ts
 models/UserDTO.ts
@@ -48,12 +53,16 @@ models/UserDTORequestResponse.ts
 models/UserRoleEnum.ts
 models/UserUpdateDTO.ts
 models/VendorAddDTO.ts
+models/VendorBriefView.ts
+models/VendorBriefViewPagedResponse.ts
+models/VendorBriefViewPagedResponseRequestResponse.ts
+models/VendorBriefViewRequestResponse.ts
 models/VendorContractDTO.ts
 models/VendorContractDTORequestResponse.ts
 models/VendorContractRenewalTerms.ts
+models/VendorEmail.ts
 models/VendorUserAddDTO.ts
 models/VendorViewDTO.ts
-models/VendorViewDTOPagedResponse.ts
-models/VendorViewDTOPagedResponseRequestResponse.ts
 models/VendorViewDTORequestResponse.ts
 models/index.ts
+runtime.ts

@@ -38,11 +38,18 @@ public class UserService : IUserService
 
         return result != null ?
             ServiceResponse<UserDTO>.ForSuccess(result) :
-            ServiceResponse<UserDTO>.FromError(CommonErrors.UserNotFound); // Pack the result or error into a ServiceResponse.
+            ServiceResponse<UserDTO>.FromError((new(HttpStatusCode.NotFound, "Specified user not found!", ErrorCodes.UserNotFound))); // Pack the result or error into a ServiceResponse.
     }
 
-    public async Task<ServiceResponse<PagedResponse<UserDTO>>> GetUsers(PaginationSearchQueryParams pagination, CancellationToken cancellationToken = default)
+    public async Task<ServiceResponse<PagedResponse<UserDTO>>> GetUsers(UserDTO? requestingUser,PaginationSearchQueryParams pagination, CancellationToken cancellationToken = default)
     {
+        if(requestingUser == null) {
+            return ServiceResponse<PagedResponse<UserDTO>>.FromError(new(HttpStatusCode.NotFound, "Requesting user not found!", ErrorCodes.UserNotFound));
+        }
+        if(requestingUser.Role != UserRoleEnum.Admin)
+        {
+            return ServiceResponse<PagedResponse<UserDTO>>.FromError(new(HttpStatusCode.Forbidden, "Only admin users can view details on multiple users!", ErrorCodes.CannotViewUser));
+        }
         var result = await _repository.PageAsync(pagination, new UserProjectionSpec(pagination.Search), cancellationToken); // Use the specification and pagination API to get only some entities from the database.
 
         return ServiceResponse<PagedResponse<UserDTO>>.ForSuccess(result);
@@ -55,18 +62,22 @@ public class UserService : IUserService
      */
     public async Task<ServiceResponse<ICollection<Guid>>> GetOrdersIds(UserDTO? requestingUser, Guid? userId = default, CancellationToken cancellationToken = default)
     {
-        if((requestingUser != null && !(requestingUser.Role == UserRoleEnum.Admin || requestingUser.Id == userId)) || requestingUser == null)
+        if(requestingUser == null)
+        {
+            return ServiceResponse<ICollection<Guid>>.FromError(new(HttpStatusCode.NotFound, "Requesting user doesn't exist!", ErrorCodes.UserNotFound));
+        }
+        if((requestingUser != null && !(requestingUser.Role == UserRoleEnum.Admin || requestingUser.Id == userId)))
         {
             return ServiceResponse<ICollection<Guid>>.FromError(new(HttpStatusCode.Forbidden, "Only the admin and orders owner can view order!", ErrorCodes.CannotViewOrder));
         }
 
-        var user = _repository.GetAsync<User>((Guid)userId);
+        var user = await _repository.GetAsync<User>((Guid)userId);
         if(user == null)
         {
             return ServiceResponse<ICollection<Guid>>.FromError(new(HttpStatusCode.NotFound, "User not found!", ErrorCodes.UserNotFound));
         }
 
-        List<Order> orders = await _repository.ListAsync(new OrderSpec(requestingUser.Id), cancellationToken);
+        List<Order> orders = await _repository.ListAsync(new OrderSpec(requestingUser.Id, true), cancellationToken);
         List<Guid> ordersIds = orders.Select(x => x.Id).ToList();
         return ServiceResponse<ICollection<Guid>>.ForSuccess(ordersIds);
         
@@ -282,6 +293,11 @@ public class UserService : IUserService
         if (requestingUser != null && requestingUser.Role != UserRoleEnum.Admin && requestingUser.Id != id) // Verify who can add the user, you can change this however you se fit.
         {
             return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only the admin or the own user can delete the user!", ErrorCodes.CannotDelete));
+        }
+        var result = await _repository.GetAsync(new UserProjectionSpec(id), cancellationToken);
+        if (result == null) {
+
+            return ServiceResponse.FromError(new(HttpStatusCode.NotFound, "Specified user not found!!", ErrorCodes.UserNotFound));
         }
 
         await _repository.DeleteAsync<User>(id, cancellationToken); // Delete the entity.

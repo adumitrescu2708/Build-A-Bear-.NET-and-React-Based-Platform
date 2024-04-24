@@ -19,6 +19,7 @@
     "globals.addBy": "Adaugat de", 
     "globals.createdAt": "Creat la",
     "globals.file": "Fisier",
+    "globals.fileName": "Nume Fisier",
     "globals.placeholders.textInput": "Va rugam sa introduceti {fieldName}",
     "globals.placeholders.selectInput": "Va rugam sa selectati {fieldName}",
     "globals.validations.requiredField": "{fieldName} este camp obligatoriu!",
@@ -35,5 +36,6 @@
     "globals.costume": "Costum",
     "globals.dress": "Rochie",
     "globals.pants": "Pantaloni",
-    "globals.pyjamas": "Pijamale"
+    "globals.pyjamas": "Pijamale",
+    "globals.hoodie": "Hanorac"
 }

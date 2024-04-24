@@ -13,7 +13,7 @@ import { useAppRouter } from "@infrastructure/hooks/useAppRouter";
 import { useAppDispatch } from '@application/store';
 import { useOwnUserHasRole } from '@infrastructure/hooks/useOwnUser';
 import { UserRoleEnum } from '@infrastructure/apis/client';
-import { EdgesensorHighSharp, EditAttributesOutlined, EditAttributesRounded } from "@mui/icons-material";
+import { EdgesensorHighSharp, EditAttributesOutlined, EditAttributesRounded, AddCircleOutline } from "@mui/icons-material";
 /**
  * This hook returns a header for the table with translated columns.
  */
@@ -69,6 +69,7 @@ export const TeddyItemTable = () => {
     const { handleChangePage, handleChangePageSize, pagedData, isError, isLoading, tryReload, labelDisplay } = useTeddyItemApiController(); // Use the controller hook.
     const rowValues = getRowValues(pagedData?.data, orderMap); // Get the row values.
     const isAdmin = useOwnUserHasRole(UserRoleEnum.Admin);
+    const isVendor = useOwnUserHasRole(UserRoleEnum.Vendor);
     
     console.log("sf ", getRowValues(pagedData?.data, orderMap))
     return <DataLoadingContainer isError={isError} isLoading={isLoading} tryReload={tryReload}> {/* Wrap the table into the loading container because data will be fetched from the backend and is not immediately available.*/}
@@ -94,8 +95,12 @@ export const TeddyItemTable = () => {
                         }
                         <TableCell>{formatMessage({ id: "labels.download" })}</TableCell>
                         {
-                            isAdmin && 
+                            (isAdmin || isVendor) && 
                             <TableCell>{formatMessage({ id: "labels.edit" })}</TableCell>
+                        }
+                        {
+                            (isVendor) && 
+                            <TableCell>{formatMessage({ id: "labels.addItem" })}</TableCell>
                         }
                     </TableRow>
                 </TableHead>
@@ -113,11 +118,21 @@ export const TeddyItemTable = () => {
                                </TableCell> 
                             } 
                             {
-                                isAdmin && 
+                                (isAdmin || isVendor)  && 
+                                <TableCell>
+                                {
+                                    // <IconButton color="primary" onClick={() => redirectToAddTeddyItem()}>
+                                    //     <EditAttributesOutlined color="primary" fontSize='small' />
+                                    // </IconButton>
+                                }
+                                </TableCell>
+                            }
+                            {
+                                (isVendor)  && 
                                 <TableCell>
                                 {
                                     <IconButton color="primary" onClick={() => redirectToAddTeddyItem()}>
-                                        <EditAttributesOutlined color="primary" fontSize='small' />
+                                        <AddCircleOutline  color="primary" fontSize='small' />
                                     </IconButton>
                                 }
                                 </TableCell>

@@ -20,6 +20,7 @@ public class CartConfiguration : IEntityTypeConfiguration<Cart>
             .HasForeignKey<Order>(e => e.CartId)
             .IsRequired(false)
             .OnDelete(DeleteBehavior.Cascade);
-
+        //builder.HasOne(c => c.User)
+        //    .WithMany()
     }
 }

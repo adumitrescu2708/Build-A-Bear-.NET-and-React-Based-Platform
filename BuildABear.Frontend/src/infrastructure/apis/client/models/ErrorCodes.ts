@@ -36,12 +36,12 @@ export const ErrorCodes = {
     CannotDeleteVendorUnderContract: 'CannotDeleteVendorUnderContract',
     CannotViewContract: 'CannotViewContract',
     CannotAddVendorUserWithoutVendor: 'CannotAddVendorUserWithoutVendor',
-    NonexistingVendor: 'NonexistingVendor',
     ContractExpired: 'ContractExpired',
     UnpermittedVendorSpecification: 'UnpermittedVendorSpecification',
     ItemAlreadyExists: 'ItemAlreadyExists',
     ItemNotFound: 'ItemNotFound',
     CannotAddTeddyTemplate: 'CannotAddTeddyTemplate',
+    TeddyTemplateNameAlreadyExists: 'TeddyTemplateNameAlreadyExists',
     CannotRemoveTeddyTemplate: 'CannotRemoveTeddyTemplate',
     TeddyTemplateNotFound: 'TeddyTemplateNotFound',
     NonexistingTemplate: 'NonexistingTemplate',
@@ -56,7 +56,11 @@ export const ErrorCodes = {
     CannotViewOrder: 'CannotViewOrder',
     OrderNotFound: 'OrderNotFound',
     CannotUpdateOrder: 'CannotUpdateOrder',
-    CannotOrderEmptyCart: 'CannotOrderEmptyCart'
+    CannotOrderEmptyCart: 'CannotOrderEmptyCart',
+    VendorNotFound: 'VendorNotFound',
+    CannotAddFile: 'CannotAddFile',
+    CannotDeleteItem: 'CannotDeleteItem',
+    ItemUnavailable: 'ItemUnavailable'
 } as const;
 export type ErrorCodes = typeof ErrorCodes[keyof typeof ErrorCodes];
 

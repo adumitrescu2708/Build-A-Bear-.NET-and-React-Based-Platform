@@ -30,6 +30,10 @@ public class TeddyItemService : ITeddyItemService {
             return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only admin members can delete items!", ErrorCodes.CannotDeleteItem));
         }
 
+        var searchItem = await _repository.GetAsync<TeddyItem>(id, cancellationToken);
+        if (searchItem == null) {
+            return ServiceResponse.FromError(new(HttpStatusCode.NotFound, "Requested Teddy item not found!", ErrorCodes.ItemNotFound));
+        }
         var item = await _repository.DeleteAsync<TeddyItem>(id, cancellationToken);
 
         return ServiceResponse.ForSuccess();
@@ -190,7 +194,7 @@ public class TeddyItemService : ITeddyItemService {
         
         if(requestingUser == null || (requestingUser.Role != UserRoleEnum.Admin && requestingUser.Role != UserRoleEnum.Vendor) || !(teddy.VendorId == user.VendorId))
         {
-            return ServiceResponse.FromError(new(HttpStatusCode.NotFound, "Only admins and owner vendors can update item!", ErrorCodes.CannotUpdateItem));
+            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only admins and owner vendors can update item!", ErrorCodes.CannotUpdateItem));
         }
         var vendor = await _repository.GetAsync<Vendor>(teddy.VendorId, cancellationToken);
         if(vendor == null)

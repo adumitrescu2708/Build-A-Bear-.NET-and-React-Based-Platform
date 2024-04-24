@@ -29,61 +29,67 @@ import {
 /**
  * 
  * @export
- * @interface BriefTeddyItemDTO
+ * @interface TeddyItemViewDTO
  */
-export interface BriefTeddyItemDTO {
+export interface TeddyItemViewDTO {
     /**
      * 
      * @type {string}
-     * @memberof BriefTeddyItemDTO
+     * @memberof TeddyItemViewDTO
      */
     sku?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof BriefTeddyItemDTO
+     * @memberof TeddyItemViewDTO
      */
     name?: string | null;
     /**
      * 
      * @type {number}
-     * @memberof BriefTeddyItemDTO
+     * @memberof TeddyItemViewDTO
      */
     price?: number;
     /**
      * 
      * @type {string}
-     * @memberof BriefTeddyItemDTO
+     * @memberof TeddyItemViewDTO
      */
     description?: string | null;
     /**
      * 
      * @type {TeddyItemCategoryEnum}
-     * @memberof BriefTeddyItemDTO
+     * @memberof TeddyItemViewDTO
      */
     category?: TeddyItemCategoryEnum;
     /**
      * 
      * @type {TeddyItemValability}
-     * @memberof BriefTeddyItemDTO
+     * @memberof TeddyItemViewDTO
      */
     valability?: TeddyItemValability;
+    /**
+     * 
+     * @type {string}
+     * @memberof TeddyItemViewDTO
+     */
+    id?: string;
 }
 
 /**
- * Check if a given object implements the BriefTeddyItemDTO interface.
+ * Check if a given object implements the TeddyItemViewDTO interface.
  */
-export function instanceOfBriefTeddyItemDTO(value: object): boolean {
+export function instanceOfTeddyItemViewDTO(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function BriefTeddyItemDTOFromJSON(json: any): BriefTeddyItemDTO {
-    return BriefTeddyItemDTOFromJSONTyped(json, false);
+export function TeddyItemViewDTOFromJSON(json: any): TeddyItemViewDTO {
+    return TeddyItemViewDTOFromJSONTyped(json, false);
 }
 
-export function BriefTeddyItemDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): BriefTeddyItemDTO {
+export function TeddyItemViewDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): TeddyItemViewDTO {
     if ((json === undefined) || (json === null)) {
         return json;
     }
@@ -95,10 +101,11 @@ export function BriefTeddyItemDTOFromJSONTyped(json: any, ignoreDiscriminator: b
         'description': !exists(json, 'description') ? undefined : json['description'],
         'category': !exists(json, 'category') ? undefined : TeddyItemCategoryEnumFromJSON(json['category']),
         'valability': !exists(json, 'valability') ? undefined : TeddyItemValabilityFromJSON(json['valability']),
+        'id': !exists(json, 'id') ? undefined : json['id'],
     };
 }
 
-export function BriefTeddyItemDTOToJSON(value?: BriefTeddyItemDTO | null): any {
+export function TeddyItemViewDTOToJSON(value?: TeddyItemViewDTO | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -113,6 +120,7 @@ export function BriefTeddyItemDTOToJSON(value?: BriefTeddyItemDTO | null): any {
         'description': value.description,
         'category': TeddyItemCategoryEnumToJSON(value.category),
         'valability': TeddyItemValabilityToJSON(value.valability),
+        'id': value.id,
     };
 }
 

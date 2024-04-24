@@ -31,6 +31,7 @@ public enum ErrorCodes
     ItemAlreadyExists,
     ItemNotFound,
     CannotAddTeddyTemplate,
+    TeddyTemplateNameAlreadyExists,
     CannotRemoveTeddyTemplate,
     TeddyTemplateNotFound,
     NonexistingTemplate,
@@ -48,5 +49,7 @@ public enum ErrorCodes
     CannotOrderEmptyCart,
     VendorNotFound,
     CannotAddFile,
-    CannotDeleteItem
+    CannotDeleteItem,
+    ItemUnavailable,
+    CannotViewUser
 }

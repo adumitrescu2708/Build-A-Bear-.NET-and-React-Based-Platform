@@ -30,7 +30,7 @@ public class CartService : ICartService
             }
             if (!(requestingUser.Role == Core.Enums.UserRoleEnum.Admin || cart.UserId == requestingUser.Id))
             {
-                return ServiceResponse<PagedResponse<TeddyBuildDTO>>.FromError(new(HttpStatusCode.NotFound, "Only admins and self users can view cart!", ErrorCodes.CannotViewCart));
+                return ServiceResponse<PagedResponse<TeddyBuildDTO>>.FromError(new(HttpStatusCode.Forbidden, "Only admins and self users can view cart!", ErrorCodes.CannotViewCart));
             }
 
             var result = await _repository.PageAsync(pagination, new TeddySpec(id, true), cancellationToken);
@@ -47,6 +47,10 @@ public class CartService : ICartService
             if(cart == null)
             {
                 return ServiceResponse<PagedResponse<TeddyBuildDTO>>.FromError(new(HttpStatusCode.NotFound, "Cart not existing!", ErrorCodes.CartNotExisting));
+            }
+            if (!(requestingUser.Role == Core.Enums.UserRoleEnum.Admin || cart.UserId == requestingUser.Id))
+            {
+                return ServiceResponse<PagedResponse<TeddyBuildDTO>>.FromError(new(HttpStatusCode.Forbidden, "Only admins and self users can view cart!", ErrorCodes.CannotViewCart));
             }
             var result = await _repository.PageAsync(pagination, new TeddySpec(cart.Id, true), cancellationToken);
             return ServiceResponse<PagedResponse<TeddyBuildDTO>>.ForSuccess(result);
@@ -70,7 +74,7 @@ public class CartService : ICartService
                 {
                     return ServiceResponse<int>.FromError(new(HttpStatusCode.NotFound, "Cart not existing!", ErrorCodes.CartNotExisting));
                 }
-                if(!(requestingUser.Role == Core.Enums.UserRoleEnum.Admin || cart.UserId != requestingUser.Id))
+                if(!(requestingUser.Role == Core.Enums.UserRoleEnum.Admin || cart.UserId == requestingUser.Id))
                 {
                     return ServiceResponse<int>.FromError(new(HttpStatusCode.Forbidden, "Only admins and cart owner can view cart!", ErrorCodes.CannotViewCart));
                 }

@@ -37,6 +37,17 @@ public class UserController : AuthorizedController // Here we use the Authorized
             this.ErrorMessageResult<UserDTO>(currentUser.Error);
     }
 
+    [Authorize] // You need to use this attribute to protect the route access, it will return a Forbidden status code if the JWT is not present or invalid, and also it will decode the JWT token.
+    [HttpGet] // This attribute will make the controller respond to a HTTP GET request on the route /api/User/GetById/<some_guid>.
+    public async Task<ActionResult<RequestResponse<PagedResponse<UserDTO>>>> Get([FromQuery] PaginationSearchQueryParams pagination) // The FromRoute attribute will bind the id from the route to this parameter.
+    {
+        var currentUser = await GetCurrentUser();
+
+        return currentUser.Result != null ?
+            this.FromServiceResponse(await UserService.GetUsers(currentUser.Result, pagination)) :
+            this.ErrorMessageResult<PagedResponse<UserDTO>>(currentUser.Error);
+    }
+
     //[Authorize] // You need to use this attribute to protect the route access, it will return a Forbidden status code if the JWT is not present or invalid, and also it will decode the JWT token.
     //[HttpGet] // This attribute will make the controller respond to a HTTP GET request on the route /api/User/GetById/<some_guid>.
     //public async Task<ActionResult<RequestResponse<Guid>>> GetCartById() // The FromRoute attribute will bind the id from the route to this parameter.
@@ -69,17 +80,6 @@ public class UserController : AuthorizedController // Here we use the Authorized
             this.FromServiceResponse(await UserService.GetCartId(currentUser.Result, id)) :
             this.ErrorMessageResult<Guid>(currentUser.Error);
     }
-
-    //[Authorize]
-    //[HttpDelete("{id:guid}")] // This attribute will make the controller respond to a HTTP DELETE request on the route /api/User/Delete/<some_guid>.
-    //public async Task<ActionResult<>> GetOrders([FromRoute] Guid id) // The FromRoute attribute will bind the id from the route to this parameter.
-    //{
-    //    var currentUser = await GetCurrentUser();
-
-    //    return currentUser.Result != null ?
-    //        this.FromServiceResponse(await UserService.DeleteUser(id)) :
-    //        this.ErrorMessageResult(currentUser.Error);
-    //}
 
 
     /// <summary>

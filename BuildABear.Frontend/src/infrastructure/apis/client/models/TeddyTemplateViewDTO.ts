@@ -16,55 +16,48 @@ import { exists, mapValues } from '../runtime';
 /**
  * 
  * @export
- * @interface TeddyTemplateAddDTO
+ * @interface TeddyTemplateViewDTO
  */
-export interface TeddyTemplateAddDTO {
-    /**
-     * 
-     * @type {Blob}
-     * @memberof TeddyTemplateAddDTO
-     */
-    file?: Blob | null;
+export interface TeddyTemplateViewDTO {
     /**
      * 
      * @type {string}
-     * @memberof TeddyTemplateAddDTO
+     * @memberof TeddyTemplateViewDTO
+     */
+    id?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof TeddyTemplateViewDTO
      */
     teddyName?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof TeddyTemplateAddDTO
-     */
-    filename?: string | null;
 }
 
 /**
- * Check if a given object implements the TeddyTemplateAddDTO interface.
+ * Check if a given object implements the TeddyTemplateViewDTO interface.
  */
-export function instanceOfTeddyTemplateAddDTO(value: object): boolean {
+export function instanceOfTeddyTemplateViewDTO(value: object): boolean {
     let isInstance = true;
 
     return isInstance;
 }
 
-export function TeddyTemplateAddDTOFromJSON(json: any): TeddyTemplateAddDTO {
-    return TeddyTemplateAddDTOFromJSONTyped(json, false);
+export function TeddyTemplateViewDTOFromJSON(json: any): TeddyTemplateViewDTO {
+    return TeddyTemplateViewDTOFromJSONTyped(json, false);
 }
 
-export function TeddyTemplateAddDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): TeddyTemplateAddDTO {
+export function TeddyTemplateViewDTOFromJSONTyped(json: any, ignoreDiscriminator: boolean): TeddyTemplateViewDTO {
     if ((json === undefined) || (json === null)) {
         return json;
     }
     return {
         
-        'file': !exists(json, 'file') ? undefined : json['file'],
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'teddyName': !exists(json, 'teddyName') ? undefined : json['teddyName'],
-        'filename': !exists(json, 'filename') ? undefined : json['filename'],
     };
 }
 
-export function TeddyTemplateAddDTOToJSON(value?: TeddyTemplateAddDTO | null): any {
+export function TeddyTemplateViewDTOToJSON(value?: TeddyTemplateViewDTO | null): any {
     if (value === undefined) {
         return undefined;
     }
@@ -73,9 +66,8 @@ export function TeddyTemplateAddDTOToJSON(value?: TeddyTemplateAddDTO | null): a
     }
     return {
         
-        'file': value.file,
+        'id': value.id,
         'teddyName': value.teddyName,
-        'filename': value.filename,
     };
 }
 

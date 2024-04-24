@@ -18,7 +18,7 @@ import { UploadButton } from "@presentation/components/ui/UploadButton";
 
 export const TeddyItemAddForm = (props: { onSubmit?: () => void }) => {
     const { formatMessage } = useIntl();
-    const { state, actions, computed } = useTeddyItemAddFormController(props.onSubmit);
+    const {  actions, computed, state } = useTeddyItemAddFormController(props.onSubmit);
     
     return <form onSubmit={actions.handleSubmit(actions.submit)}> {/* Wrap your form into a form tag and use the handle submit callback to validate the form and call the data submission. */}
     <Stack spacing={4} style={{ width: "100%" }}>
@@ -54,6 +54,33 @@ export const TeddyItemAddForm = (props: { onSubmit?: () => void }) => {
                 <Grid container item direction="column" xs={6} md={6}>
                     <FormControl
                         fullWidth
+                        error={!isUndefined(state.errors.filename)}
+                    > {/* Wrap the input into a form control and use the errors to show the input invalid if needed. */}
+                        <FormLabel required>
+                            <FormattedMessage id="globals.fileName" />
+                        </FormLabel> {/* Add a form label to indicate what the input means. */}
+                        <OutlinedInput
+                            {...actions.register("Filename")} // Bind the form variable to the UI input.
+                            placeholder={formatMessage(
+                                { id: "globals.placeholders.textInput" },
+                                {
+                                    fieldName: formatMessage({
+                                        id: "globals.fileName",
+                                    }),
+                                })}
+                            autoComplete="none"
+                        /> {/* Add a input like a textbox shown here. */}
+                        <FormHelperText
+                            hidden={isUndefined(state.errors.filename)}
+                        >
+                            {state.errors.filename?.message}
+                        </FormHelperText> {/* Add a helper text that is shown then the input has a invalid value. */}
+                    </FormControl>
+                </Grid>
+
+                <Grid container item direction="column" xs={6} md={6}>
+                    <FormControl
+                        fullWidth
                         error={!isUndefined(state.errors.number)}
                     >
                         <FormLabel required>
@@ -82,7 +109,7 @@ export const TeddyItemAddForm = (props: { onSubmit?: () => void }) => {
                 <Grid container item direction="column" xs={6} md={6}>
                     <FormControl
                         fullWidth
-                        error={!isUndefined(state.errors.description)}
+                        // error={!isUndefined(state.errors.description)}
                     >
                         <FormLabel>
                             <FormattedMessage id="globals.description" />
@@ -100,7 +127,7 @@ export const TeddyItemAddForm = (props: { onSubmit?: () => void }) => {
                             autoComplete="none"
                         />
                         <FormHelperText
-                            hidden={isUndefined(state.errors.description)}
+                            // hidden={isUndefined(state.errors.description)}
                         >
                             {state.errors.description?.message}
                         </FormHelperText>
@@ -110,7 +137,7 @@ export const TeddyItemAddForm = (props: { onSubmit?: () => void }) => {
                 <Grid container item direction="column" xs={6} md={6}>
                     <FormControl
                         fullWidth
-                        error={!isUndefined(state.errors.description)}
+                        error={!isUndefined(state.errors.fabric)}
                     >
                         <FormLabel required>
                             <FormattedMessage id="globals.fabric" />
@@ -141,11 +168,17 @@ export const TeddyItemAddForm = (props: { onSubmit?: () => void }) => {
                         fullWidth
                         error={!isUndefined(state.errors.color)}
                     >
+                        {/* <Select
+                            {...actions.register("color")}
+                            value={actions.watch("color")}
+                            onChange={actions.selectColor} // Selects may need a listener to for the variable change.
+                            displayEmpty
+                        ></Select> */}
                         <FormLabel required>
                             <FormattedMessage id="globals.color" />
                         </FormLabel>
                         <OutlinedInput
-                            type="color"
+                            // type="color"
                             {...actions.register("color")}
                             placeholder={formatMessage(
                                 { id: "globals.placeholders.textInput" },
@@ -156,6 +189,20 @@ export const TeddyItemAddForm = (props: { onSubmit?: () => void }) => {
                                 })}
                             autoComplete="none"
                         />
+                        {/* <OutlinedInput
+                            {...actions.register("color")}
+                            value={actions.watch("color")}
+                            onChange={actions.selectColor}
+                            // type="color"
+                            placeholder={formatMessage(
+                                { id: "globals.placeholders.textInput" },
+                                {
+                                    fieldName: formatMessage({
+                                        id: "globals.color",
+                                    }),
+                                })}
+                            autoComplete="none"
+                        /> */}
                         <FormHelperText
                             hidden={isUndefined(state.errors.color)}
                         >
@@ -255,7 +302,7 @@ export const TeddyItemAddForm = (props: { onSubmit?: () => void }) => {
                                 <FormattedMessage id="globals.file" />
                             </FormLabel>
                             <UploadButton // You can add inputs via buttons and wrap them into other components to show errors.
-                                onUpload={actions.setFile}
+                                onUpload={actions.selectFile}
                                 isLoading={computed.isSubmitting}
                                 disabled={computed.isSubmitting}
                                 text={formatMessage({ id: "labels.addUserFile" })}

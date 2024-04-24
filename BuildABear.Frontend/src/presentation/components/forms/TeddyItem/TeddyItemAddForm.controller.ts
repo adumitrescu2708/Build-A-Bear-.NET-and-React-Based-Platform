@@ -16,10 +16,11 @@ const getDefaultValues = (initialData?: TeddyItemAddFormModel) =>
 {
     const defaultValues = {
         name: "",
+        filename: "",
         price: 0,
         description: "",
         fabric: "",
-        color: "",
+        color: "White",
         quantity: 0,
         category: "" as TeddyItemCategoryEnum
     };
@@ -46,6 +47,15 @@ export const useInitTeddyItemAddForm = () => {
                     }),
                 }))
             .default(defaultValues.name),
+        fileName: yup.string()
+            .required(formatMessage(
+                { id: "globals.validations.requiredField" },
+                {
+                    fieldName: formatMessage({
+                        id: "globals.fileName",
+                    }),
+                }))
+            .default(defaultValues.name),
         price: yup.number()
             .required(formatMessage(
                 { id: "globals.validations.requiredField" },
@@ -56,13 +66,13 @@ export const useInitTeddyItemAddForm = () => {
                 }))
             .default(defaultValues.price),
         description: yup.string()
-            .required(formatMessage(
-                { id: "globals.validations.requiredField" },
-                {
-                    fieldName: formatMessage({
-                        id: "globals.description",
-                    }),
-                }))
+            // .required(formatMessage(
+            //     { id: "globals.validations.requiredField" },
+            //     {
+            //         fieldName: formatMessage({
+            //             id: "globals.description",
+            //         }),
+            //     }))
             .default(defaultValues.description),
         fabric: yup.string()
             .required(formatMessage(
@@ -126,14 +136,16 @@ export const useInitTeddyItemAddForm = () => {
 
 export const useTeddyItemAddFormController = (onSubmit?: () => void) : TeddyItemAddFormController => {
     const { defaultValues, resolver } = useInitTeddyItemAddForm();
-    const { addTeddyItem: { key: addTeddyItemQuery, mutation: addTeddyItem} } = useTeddyItemApi();
+    const { addTeddyItem: { mutation, key: addTeddyItemQuery, } } = useTeddyItemApi();
     const queryClient = useQueryClient();
     const { mutateAsync: add, status } = useMutation({
-        mutationKey: [addTeddyItem], 
-        mutationFn: addTeddyItemQuery
+        mutationKey: [addTeddyItemQuery], 
+        mutationFn: mutation
     });
     const submit = useCallback((data: TeddyItemAddFormModel) => // Create a submit callback to send the form data to the backend.
-        add(data).then(() => {
+    // console.log("aici") 
+    add(data).then(() => {
+            // queryClient.invalidateQueries({ });
             if (onSubmit) {
                 onSubmit();
             }}
@@ -142,18 +154,25 @@ export const useTeddyItemAddFormController = (onSubmit?: () => void) : TeddyItem
         register,
         handleSubmit,
         watch,
-        selectCategory,
+        setValue,
         formState: { errors }
     } = useForm<TeddyItemAddFormModel>({ // Use the useForm hook to get callbacks and variables to work with the form.
         defaultValues, // Initialize the form with the default values.
         resolver // Add the validation resolver.
     });
 
-    const selectRole = useCallback((event: SelectChangeEvent<TeddyItemCategoryEnum>) => { // Select inputs are tricky and may need their on callbacks to set the values.
-        selectCategory("category", event.target.value as TeddyItemCategoryEnum, {
+    const selectCategory = useCallback((event: SelectChangeEvent<TeddyItemCategoryEnum>) => { // Select inputs are tricky and may need their on callbacks to set the values.
+        setValue("category", event.target.value as TeddyItemCategoryEnum, {
             shouldValidate: true,
         });
-    }, [selectCategory]);
+    }, [setValue]);
+
+
+    const selectFile = useCallback((file: File) => { // Select inputs are tricky and may need their on callbacks to set the values.
+        setValue("file", file,  {
+            shouldValidate: true
+        });
+    }, [setValue]);
 
     return {
         actions: { // Return any callbacks needed to interact with the form.
@@ -162,6 +181,7 @@ export const useTeddyItemAddFormController = (onSubmit?: () => void) : TeddyItem
             register, // Add the variable register to bind the form fields in the UI with the form variables.
             watch, // Add a watch on the variables, this function can be used to watch changes on variables if it is needed in some locations.
             selectCategory,
+            selectFile,
         },
         computed: {
             defaultValues,

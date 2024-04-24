@@ -59,22 +59,28 @@ public class TeddyTemplateService : ITeddyTemplateService
         return ServiceResponse<FileDTO>.ForSuccess(res);
     }
 
-    public async Task<ServiceResponse> AddTeddyTemplate(TeddyTemplateAddDTO template, UserDTO? requestingUser = default, CancellationToken? cancellationToken = default)
+    public async Task<ServiceResponse<Guid>> AddTeddyTemplate(TeddyTemplateAddDTO template, UserDTO? requestingUser = default, CancellationToken cancellationToken = default)
     {
         if (requestingUser == null) {
-            return ServiceResponse<FileDTO>.FromError(new(HttpStatusCode.NotFound, "Requesting user not found!", ErrorCodes.UserNotFound));
+            return ServiceResponse<Guid>.FromError(new(HttpStatusCode.NotFound, "Requesting user not found!", ErrorCodes.UserNotFound));
         }
 
         if(requestingUser != null && requestingUser.Role != Core.Enums.UserRoleEnum.Admin)
         {
-            return ServiceResponse<FileDTO>.FromError(new(HttpStatusCode.Forbidden, "Only admin users can add teddy templates!", ErrorCodes.CannotAddTeddyTemplate));
+            return ServiceResponse<Guid>.FromError(new(HttpStatusCode.Forbidden, "Only admin users can add teddy templates!", ErrorCodes.CannotAddTeddyTemplate));
+        }
+
+        var teddy = await _repository.GetAsync(new TeddyTemplateSpec(template.TeddyName), cancellationToken);
+
+        if (teddy != null) {
+            return ServiceResponse<Guid>.FromError(new(HttpStatusCode.Forbidden, "Teddy template with given name already exists!", ErrorCodes.TeddyTemplateNameAlreadyExists));
         }
 
         var fileName = _fileRepository.SaveFile(template.File, Path.Join("templates", IUserFileService.UserFilesDirectory));
 
         if (fileName.Result == null)
         {
-            return fileName.ToResponse();
+            return ServiceResponse<Guid>.FromError(new(HttpStatusCode.InternalServerError, "Error when adding file!", ErrorCodes.CannotAddTeddyTemplate));
         }
 
         await _repository.AddAsync(new TeddyTemplate
@@ -84,16 +90,25 @@ public class TeddyTemplateService : ITeddyTemplateService
             TeddyName = template.TeddyName,
         });
 
-        return ServiceResponse.ForSuccess();
+        var addedTeddyTemplate = await _repository.GetAsync(new TeddyTemplateSpec(template.TeddyName));
+
+        if (addedTeddyTemplate != null)
+        {
+            return ServiceResponse<Guid>.ForSuccess(addedTeddyTemplate.Id);
+        }
+        else {
+            return ServiceResponse<Guid>.FromError(new(HttpStatusCode.InternalServerError, "Error when adding teddy template!", ErrorCodes.CannotAddTeddyTemplate));
+        }
+        
     }
 
-    public async Task<ServiceResponse> RemoveTeddyTemplate(Guid id, UserDTO? requestingUser = default, CancellationToken? cancellationToken = default) {
+    public async Task<ServiceResponse> RemoveTeddyTemplate(Guid id, UserDTO? requestingUser = default, CancellationToken cancellationToken = default) {
         if (requestingUser != null && requestingUser.Role != Core.Enums.UserRoleEnum.Admin)
         {
             return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only admin users can remove teddy templates!", ErrorCodes.CannotRemoveTeddyTemplate));
         }
 
-        var teddyTemplate = _repository.GetAsync<TeddyTemplate>(id);
+        var teddyTemplate = await _repository.GetAsync<TeddyTemplate>(id, cancellationToken);
 
         if (teddyTemplate == null) {
             return ServiceResponse.FromError(new(HttpStatusCode.NotFound, "Teddy template not found!", ErrorCodes.TeddyTemplateNotFound));
@@ -103,10 +118,10 @@ public class TeddyTemplateService : ITeddyTemplateService
         return ServiceResponse.ForSuccess();
     }
 
-    public async Task<ServiceResponse<PagedResponse<Guid>>> GetAll(PaginationQueryParams pagination, CancellationToken cancellationToken = default)
+    public async Task<ServiceResponse<PagedResponse<TeddyTemplateViewDTO>>> GetAll(PaginationSearchQueryParams pagination, CancellationToken cancellationToken = default)
     {
 
-        var result = await _repository.PageAsync(pagination, new TeddyTemplateProjectionSpec(), cancellationToken);
-        return ServiceResponse<PagedResponse<Guid>>.ForSuccess(result);
+        var result = await _repository.PageAsync(pagination, new TeddyTemplateProjectionSpec(pagination.Search), cancellationToken);
+        return ServiceResponse<PagedResponse<TeddyTemplateViewDTO>>.ForSuccess(result);
     }
 }

@@ -21,6 +21,8 @@ import type {
   TeddyItemCategoryEnum,
   TeddyItemDTORequestResponse,
   TeddyItemUpdateDTO,
+  TeddyItemViewDTORequestResponse,
+  TeddySkuDTO,
 } from '../models';
 import {
     BriefTeddyItemDTOPagedResponseRequestResponseFromJSON,
@@ -35,6 +37,10 @@ import {
     TeddyItemDTORequestResponseToJSON,
     TeddyItemUpdateDTOFromJSON,
     TeddyItemUpdateDTOToJSON,
+    TeddyItemViewDTORequestResponseFromJSON,
+    TeddyItemViewDTORequestResponseToJSON,
+    TeddySkuDTOFromJSON,
+    TeddySkuDTOToJSON,
 } from '../models';
 
 export interface ApiTeddyItemAddPostRequest {
@@ -60,12 +66,8 @@ export interface ApiTeddyItemGetByCategoryGetRequest {
     pageSize?: number;
 }
 
-export interface ApiTeddyItemGetByIdIdGetRequest {
-    id: string;
-}
-
 export interface ApiTeddyItemGetBySKUGetRequest {
-    sku?: string;
+    teddySkuDTO?: TeddySkuDTO;
 }
 
 export interface ApiTeddyItemGetByVendorGetRequest {
@@ -74,7 +76,7 @@ export interface ApiTeddyItemGetByVendorGetRequest {
     pageSize?: number;
 }
 
-export interface ApiTeddyItemGetDescByIdIdGetRequest {
+export interface ApiTeddyItemGetFileByIdIdGetRequest {
     id: string;
 }
 
@@ -82,6 +84,10 @@ export interface ApiTeddyItemGetGetRequest {
     search?: string;
     page?: number;
     pageSize?: number;
+}
+
+export interface ApiTeddyItemGetInfoByIdIdGetRequest {
+    id: string;
 }
 
 export interface ApiTeddyItemUpdatePutRequest {
@@ -95,7 +101,7 @@ export class TeddyItemApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiTeddyItemAddPostRaw(requestParameters: ApiTeddyItemAddPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RequestResponse>> {
+    async apiTeddyItemAddPostRaw(requestParameters: ApiTeddyItemAddPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TeddyItemViewDTORequestResponse>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -164,12 +170,12 @@ export class TeddyItemApi extends runtime.BaseAPI {
             body: formParams,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => RequestResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => TeddyItemViewDTORequestResponseFromJSON(jsonValue));
     }
 
     /**
      */
-    async apiTeddyItemAddPost(requestParameters: ApiTeddyItemAddPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RequestResponse> {
+    async apiTeddyItemAddPost(requestParameters: ApiTeddyItemAddPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TeddyItemViewDTORequestResponse> {
         const response = await this.apiTeddyItemAddPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -252,46 +258,12 @@ export class TeddyItemApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiTeddyItemGetByIdIdGetRaw(requestParameters: ApiTeddyItemGetByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Blob>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiTeddyItemGetByIdIdGet.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Bearer authentication
-        }
-
-        const response = await this.request({
-            path: `/api/TeddyItem/GetById/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.BlobApiResponse(response);
-    }
-
-    /**
-     */
-    async apiTeddyItemGetByIdIdGet(requestParameters: ApiTeddyItemGetByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Blob> {
-        const response = await this.apiTeddyItemGetByIdIdGetRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
     async apiTeddyItemGetBySKUGetRaw(requestParameters: ApiTeddyItemGetBySKUGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TeddyItemDTORequestResponse>> {
         const queryParameters: any = {};
 
-        if (requestParameters.sku !== undefined) {
-            queryParameters['sku'] = requestParameters.sku;
-        }
-
         const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
 
         if (this.configuration && this.configuration.apiKey) {
             headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Bearer authentication
@@ -302,6 +274,7 @@ export class TeddyItemApi extends runtime.BaseAPI {
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
+            body: TeddySkuDTOToJSON(requestParameters.teddySkuDTO),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => TeddyItemDTORequestResponseFromJSON(jsonValue));
@@ -356,9 +329,9 @@ export class TeddyItemApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiTeddyItemGetDescByIdIdGetRaw(requestParameters: ApiTeddyItemGetDescByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BriefTeddyItemDTORequestResponse>> {
+    async apiTeddyItemGetFileByIdIdGetRaw(requestParameters: ApiTeddyItemGetFileByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Blob>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiTeddyItemGetDescByIdIdGet.');
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiTeddyItemGetFileByIdIdGet.');
         }
 
         const queryParameters: any = {};
@@ -370,19 +343,19 @@ export class TeddyItemApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/api/TeddyItem/GetDescById/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            path: `/api/TeddyItem/GetFileById/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => BriefTeddyItemDTORequestResponseFromJSON(jsonValue));
+        return new runtime.BlobApiResponse(response);
     }
 
     /**
      */
-    async apiTeddyItemGetDescByIdIdGet(requestParameters: ApiTeddyItemGetDescByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BriefTeddyItemDTORequestResponse> {
-        const response = await this.apiTeddyItemGetDescByIdIdGetRaw(requestParameters, initOverrides);
+    async apiTeddyItemGetFileByIdIdGet(requestParameters: ApiTeddyItemGetFileByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Blob> {
+        const response = await this.apiTeddyItemGetFileByIdIdGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -423,6 +396,38 @@ export class TeddyItemApi extends runtime.BaseAPI {
      */
     async apiTeddyItemGetGet(requestParameters: ApiTeddyItemGetGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BriefTeddyItemDTOPagedResponseRequestResponse> {
         const response = await this.apiTeddyItemGetGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async apiTeddyItemGetInfoByIdIdGetRaw(requestParameters: ApiTeddyItemGetInfoByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BriefTeddyItemDTORequestResponse>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiTeddyItemGetInfoByIdIdGet.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/api/TeddyItem/GetInfoById/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BriefTeddyItemDTORequestResponseFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async apiTeddyItemGetInfoByIdIdGet(requestParameters: ApiTeddyItemGetInfoByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BriefTeddyItemDTORequestResponse> {
+        const response = await this.apiTeddyItemGetInfoByIdIdGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

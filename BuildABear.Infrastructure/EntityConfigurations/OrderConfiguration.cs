@@ -12,7 +12,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.HasOne(e => e.User)
             .WithMany(e => e.Orders)
             .HasForeignKey(e => e.UserId)
-            .HasPrincipalKey(e => e.Id)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasPrincipalKey(e => e.Id);
     }
 }

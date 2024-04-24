@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using BuildABear.Core.Entities;
 using BuildABear.Core.Requests;
 using BuildABear.Core.Responses;
+using BuildABear.Core.Specifications;
 
 namespace BuildABear.Infrastructure.Repositories.Interfaces;
 

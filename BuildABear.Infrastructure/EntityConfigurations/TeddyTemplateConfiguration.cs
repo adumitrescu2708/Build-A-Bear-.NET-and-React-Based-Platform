@@ -12,6 +12,8 @@ public class TeddyTemplateConfiguration : IEntityTypeConfiguration<TeddyTemplate
         builder.HasKey(e => e.Id);
 
         builder.Property(e => e.TeddyName).IsRequired();
+        builder.HasAlternateKey(e => e.TeddyName);
+
         builder.Property(e => e.Path).IsRequired();
         builder.Property(e => e.Filename).IsRequired();
         builder.Property(e => e.CreatedAt).IsRequired();

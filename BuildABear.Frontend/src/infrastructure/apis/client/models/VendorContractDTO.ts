@@ -37,13 +37,13 @@ export interface VendorContractDTO {
      * @type {Date}
      * @memberof VendorContractDTO
      */
-    contractStartDate?: Date;
+    contractStartDate?: Date | null;
     /**
      * 
      * @type {Date}
      * @memberof VendorContractDTO
      */
-    contractEndDate?: Date;
+    contractEndDate?: Date | null;
     /**
      * 
      * @type {PaymentMethod}
@@ -77,8 +77,8 @@ export function VendorContractDTOFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'contractStartDate': !exists(json, 'contractStartDate') ? undefined : (new Date(json['contractStartDate'])),
-        'contractEndDate': !exists(json, 'contractEndDate') ? undefined : (new Date(json['contractEndDate'])),
+        'contractStartDate': !exists(json, 'contractStartDate') ? undefined : (json['contractStartDate'] === null ? null : new Date(json['contractStartDate'])),
+        'contractEndDate': !exists(json, 'contractEndDate') ? undefined : (json['contractEndDate'] === null ? null : new Date(json['contractEndDate'])),
         'paymentMethod': !exists(json, 'paymentMethod') ? undefined : PaymentMethodFromJSON(json['paymentMethod']),
         'contractRenewalTerms': !exists(json, 'contractRenewalTerms') ? undefined : VendorContractRenewalTermsFromJSON(json['contractRenewalTerms']),
     };
@@ -93,8 +93,8 @@ export function VendorContractDTOToJSON(value?: VendorContractDTO | null): any {
     }
     return {
         
-        'contractStartDate': value.contractStartDate === undefined ? undefined : (value.contractStartDate.toISOString()),
-        'contractEndDate': value.contractEndDate === undefined ? undefined : (value.contractEndDate.toISOString()),
+        'contractStartDate': value.contractStartDate === undefined ? undefined : (value.contractStartDate === null ? null : value.contractStartDate.toISOString()),
+        'contractEndDate': value.contractEndDate === undefined ? undefined : (value.contractEndDate === null ? null : value.contractEndDate.toISOString()),
         'paymentMethod': PaymentMethodToJSON(value.paymentMethod),
         'contractRenewalTerms': VendorContractRenewalTermsToJSON(value.contractRenewalTerms),
     };

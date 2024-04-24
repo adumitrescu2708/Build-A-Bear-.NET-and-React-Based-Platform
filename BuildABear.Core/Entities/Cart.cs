@@ -12,5 +12,4 @@ public class Cart : BaseEntity
 
     public Order? Order { get; set; } = default!;
 
-
 }

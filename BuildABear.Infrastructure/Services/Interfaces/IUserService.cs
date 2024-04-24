@@ -19,7 +19,7 @@ public interface IUserService
     /// <summary>
     /// GetUsers returns page with user information from the database.
     /// </summary>
-    public Task<ServiceResponse<PagedResponse<UserDTO>>> GetUsers(PaginationSearchQueryParams pagination, CancellationToken cancellationToken = default);
+    public Task<ServiceResponse<PagedResponse<UserDTO>>> GetUsers(UserDTO? requestingUser, PaginationSearchQueryParams pagination, CancellationToken cancellationToken = default);
     /// <summary>
     /// Login as suggested responds to a user login request with the JWT token and user information.
     /// </summary>

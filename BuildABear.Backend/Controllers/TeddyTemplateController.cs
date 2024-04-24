@@ -6,8 +6,6 @@ using BuildABear.Core.Responses;
 using BuildABear.Core.DataTransferObjects.TeddyTemplate;
 using BuildABear.Infrastructure.Extensions;
 using System.Net.Mime;
-using BuildABear.Infrastructure.Services.Implementations;
-using BuildABear.Core.DataTransferObjects;
 using BuildABear.Core.Requests;
 
 namespace BuildABear.Backend.Controllers;
@@ -24,14 +22,15 @@ public class TeddyTemplateController : AuthorizedController
 
     /// <summary>
     /// Route for adding teddy template. Only admin users can add templates. Default, there are 8 templates available.
+    /// There cannot exist 2 teddy templates with the same name. Returns an id
     [Authorize]
     [HttpPost]
-    public async Task<ActionResult<RequestResponse>> Add([FromForm] TeddyTemplateAddDTO template) {
+    public async Task<ActionResult<RequestResponse<Guid>>> Add([FromForm] TeddyTemplateAddDTO template) {
         var currentUser = await GetCurrentUser();
 
         return currentUser.Result != null ?
             this.FromServiceResponse(await _teddyTemplateService.AddTeddyTemplate(template, currentUser.Result)) :
-            this.ErrorMessageResult(currentUser.Error);
+            this.ErrorMessageResult<Guid>(currentUser.Error);
     }
 
     [Authorize]
@@ -65,11 +64,12 @@ public class TeddyTemplateController : AuthorizedController
 
     [Authorize]
     [HttpGet]
-    public async Task<ActionResult<RequestResponse<PagedResponse<Guid>>>> GetAll ([FromQuery] PaginationQueryParams pagination) {
+    public async Task<ActionResult<RequestResponse<PagedResponse<TeddyTemplateViewDTO>>>> Get ([FromQuery] PaginationSearchQueryParams pagination) {
         var currentUser = await GetCurrentUser();
 
         return currentUser.Result != null ?
             this.FromServiceResponse(await _teddyTemplateService.GetAll(pagination)) :
-            this.ErrorMessageResult<PagedResponse<Guid>>(currentUser.Error);
+            this.ErrorMessageResult<PagedResponse<TeddyTemplateViewDTO>>(currentUser.Error);
     }
+
 }

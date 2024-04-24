@@ -51,6 +51,8 @@ export const UserFileAddForm = (props: { onSubmit?: () => void }) => {
                             </FormHelperText> {/* Add a helper text that is shown then the input has a invalid value. */}
                         </FormControl>
                     </Grid>
+
+                    
                     <Grid container item direction="column" xs={6} md={6}>
                         <FormControl
                             fullWidth

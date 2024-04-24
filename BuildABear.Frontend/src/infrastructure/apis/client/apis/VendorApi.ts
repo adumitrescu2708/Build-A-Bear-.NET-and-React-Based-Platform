@@ -17,9 +17,11 @@ import * as runtime from '../runtime';
 import type {
   RequestResponse,
   VendorAddDTO,
+  VendorBriefViewPagedResponseRequestResponse,
+  VendorBriefViewRequestResponse,
   VendorContractDTO,
   VendorContractDTORequestResponse,
-  VendorViewDTOPagedResponseRequestResponse,
+  VendorEmail,
   VendorViewDTORequestResponse,
 } from '../models';
 import {
@@ -27,12 +29,16 @@ import {
     RequestResponseToJSON,
     VendorAddDTOFromJSON,
     VendorAddDTOToJSON,
+    VendorBriefViewPagedResponseRequestResponseFromJSON,
+    VendorBriefViewPagedResponseRequestResponseToJSON,
+    VendorBriefViewRequestResponseFromJSON,
+    VendorBriefViewRequestResponseToJSON,
     VendorContractDTOFromJSON,
     VendorContractDTOToJSON,
     VendorContractDTORequestResponseFromJSON,
     VendorContractDTORequestResponseToJSON,
-    VendorViewDTOPagedResponseRequestResponseFromJSON,
-    VendorViewDTOPagedResponseRequestResponseToJSON,
+    VendorEmailFromJSON,
+    VendorEmailToJSON,
     VendorViewDTORequestResponseFromJSON,
     VendorViewDTORequestResponseToJSON,
 } from '../models';
@@ -43,6 +49,10 @@ export interface ApiVendorAddPostRequest {
 
 export interface ApiVendorDeleteIdDeleteRequest {
     id: string;
+}
+
+export interface ApiVendorGetByEmailGetRequest {
+    vendorEmail?: VendorEmail;
 }
 
 export interface ApiVendorGetByIdIdGetRequest {
@@ -134,7 +144,38 @@ export class VendorApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiVendorGetByIdIdGetRaw(requestParameters: ApiVendorGetByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<VendorViewDTORequestResponse>> {
+    async apiVendorGetByEmailGetRaw(requestParameters: ApiVendorGetByEmailGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<VendorBriefViewRequestResponse>> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/api/Vendor/GetByEmail`,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+            body: VendorEmailToJSON(requestParameters.vendorEmail),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => VendorBriefViewRequestResponseFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async apiVendorGetByEmailGet(requestParameters: ApiVendorGetByEmailGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<VendorBriefViewRequestResponse> {
+        const response = await this.apiVendorGetByEmailGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async apiVendorGetByIdIdGetRaw(requestParameters: ApiVendorGetByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<VendorBriefViewRequestResponse>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiVendorGetByIdIdGet.');
         }
@@ -154,12 +195,12 @@ export class VendorApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => VendorViewDTORequestResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => VendorBriefViewRequestResponseFromJSON(jsonValue));
     }
 
     /**
      */
-    async apiVendorGetByIdIdGet(requestParameters: ApiVendorGetByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<VendorViewDTORequestResponse> {
+    async apiVendorGetByIdIdGet(requestParameters: ApiVendorGetByIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<VendorBriefViewRequestResponse> {
         const response = await this.apiVendorGetByIdIdGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -198,7 +239,7 @@ export class VendorApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiVendorGetGetRaw(requestParameters: ApiVendorGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<VendorViewDTOPagedResponseRequestResponse>> {
+    async apiVendorGetGetRaw(requestParameters: ApiVendorGetGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<VendorBriefViewPagedResponseRequestResponse>> {
         const queryParameters: any = {};
 
         if (requestParameters.search !== undefined) {
@@ -226,12 +267,12 @@ export class VendorApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => VendorViewDTOPagedResponseRequestResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => VendorBriefViewPagedResponseRequestResponseFromJSON(jsonValue));
     }
 
     /**
      */
-    async apiVendorGetGet(requestParameters: ApiVendorGetGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<VendorViewDTOPagedResponseRequestResponse> {
+    async apiVendorGetGet(requestParameters: ApiVendorGetGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<VendorBriefViewPagedResponseRequestResponse> {
         const response = await this.apiVendorGetGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
