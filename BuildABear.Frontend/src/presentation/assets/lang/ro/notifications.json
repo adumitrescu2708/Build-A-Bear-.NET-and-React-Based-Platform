@@ -13,5 +13,9 @@
     "notifications.errors.technicalError": "A apărut o eroare tehnică, vă rugăm să contactați asistența!",
     "notifications.errors.userAlreadyExists": "Utilizatorul există deja!",
     "notifications.errors.wrongPassword": "Ați introdus o parolă greșită!",
-    "notifications.messages.itemAddedSuccess": "Produs adaugat cu succes!"
+    "notifications.messages.itemAddedSuccess": "Produs adaugat cu succes!",
+    "notifications.messages.itemUpdatedSuccess": "Produs modificat cu succes!",
+    "notifications.messages.itemUpdatedError": "A aparut o eroare in timpul modificarii!",
+    "notifications.messages.registerSuccess": "Te-ai inregistrat cu succes!",
+    "notifications.messages.registerError": "A aparut o eroare la inregistrare!"
 }

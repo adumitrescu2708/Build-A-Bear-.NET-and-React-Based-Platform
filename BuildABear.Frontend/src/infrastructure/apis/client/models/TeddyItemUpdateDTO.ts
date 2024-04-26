@@ -21,12 +21,6 @@ import { exists, mapValues } from '../runtime';
 export interface TeddyItemUpdateDTO {
     /**
      * 
-     * @type {string}
-     * @memberof TeddyItemUpdateDTO
-     */
-    sku?: string | null;
-    /**
-     * 
      * @type {number}
      * @memberof TeddyItemUpdateDTO
      */
@@ -76,7 +70,6 @@ export function TeddyItemUpdateDTOFromJSONTyped(json: any, ignoreDiscriminator: 
     }
     return {
         
-        'sku': !exists(json, 'sku') ? undefined : json['sku'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'description': !exists(json, 'description') ? undefined : json['description'],
         'fabric': !exists(json, 'fabric') ? undefined : json['fabric'],
@@ -94,7 +87,6 @@ export function TeddyItemUpdateDTOToJSON(value?: TeddyItemUpdateDTO | null): any
     }
     return {
         
-        'sku': value.sku,
         'price': value.price,
         'description': value.description,
         'fabric': value.fabric,

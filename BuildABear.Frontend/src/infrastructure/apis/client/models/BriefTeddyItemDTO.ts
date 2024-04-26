@@ -37,6 +37,12 @@ export interface BriefTeddyItemDTO {
      * @type {string}
      * @memberof BriefTeddyItemDTO
      */
+    id?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof BriefTeddyItemDTO
+     */
     sku?: string | null;
     /**
      * 
@@ -56,6 +62,12 @@ export interface BriefTeddyItemDTO {
      * @memberof BriefTeddyItemDTO
      */
     description?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof BriefTeddyItemDTO
+     */
+    filename?: string | null;
     /**
      * 
      * @type {TeddyItemCategoryEnum}
@@ -89,10 +101,12 @@ export function BriefTeddyItemDTOFromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'sku': !exists(json, 'sku') ? undefined : json['sku'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'price': !exists(json, 'price') ? undefined : json['price'],
         'description': !exists(json, 'description') ? undefined : json['description'],
+        'filename': !exists(json, 'filename') ? undefined : json['filename'],
         'category': !exists(json, 'category') ? undefined : TeddyItemCategoryEnumFromJSON(json['category']),
         'valability': !exists(json, 'valability') ? undefined : TeddyItemValabilityFromJSON(json['valability']),
     };
@@ -107,10 +121,12 @@ export function BriefTeddyItemDTOToJSON(value?: BriefTeddyItemDTO | null): any {
     }
     return {
         
+        'id': value.id,
         'sku': value.sku,
         'name': value.name,
         'price': value.price,
         'description': value.description,
+        'filename': value.filename,
         'category': TeddyItemCategoryEnumToJSON(value.category),
         'valability': TeddyItemValabilityToJSON(value.valability),
     };

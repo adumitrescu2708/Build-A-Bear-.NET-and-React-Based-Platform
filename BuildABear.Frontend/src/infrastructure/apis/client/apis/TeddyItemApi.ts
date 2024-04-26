@@ -21,7 +21,7 @@ import type {
   TeddyItemCategoryEnum,
   TeddyItemDTORequestResponse,
   TeddyItemUpdateDTO,
-  TeddyItemViewDTORequestResponse,
+  TeddyItemUpdateIdDTO,
   TeddySkuDTO,
 } from '../models';
 import {
@@ -37,8 +37,8 @@ import {
     TeddyItemDTORequestResponseToJSON,
     TeddyItemUpdateDTOFromJSON,
     TeddyItemUpdateDTOToJSON,
-    TeddyItemViewDTORequestResponseFromJSON,
-    TeddyItemViewDTORequestResponseToJSON,
+    TeddyItemUpdateIdDTOFromJSON,
+    TeddyItemUpdateIdDTOToJSON,
     TeddySkuDTOFromJSON,
     TeddySkuDTOToJSON,
 } from '../models';
@@ -53,6 +53,10 @@ export interface ApiTeddyItemAddPostRequest {
     category?: TeddyItemCategoryEnum;
     file?: Blob;
     fileName?: string;
+}
+
+export interface ApiTeddyItemDeleteBySKUDeleteRequest {
+    sKU?: string;
 }
 
 export interface ApiTeddyItemDeleteIdDeleteRequest {
@@ -90,8 +94,13 @@ export interface ApiTeddyItemGetInfoByIdIdGetRequest {
     id: string;
 }
 
-export interface ApiTeddyItemUpdatePutRequest {
+export interface ApiTeddyItemUpdateIdPutRequest {
+    id: string;
     teddyItemUpdateDTO?: TeddyItemUpdateDTO;
+}
+
+export interface ApiTeddyItemUpdatePutRequest {
+    teddyItemUpdateIdDTO?: TeddyItemUpdateIdDTO;
 }
 
 /**
@@ -101,7 +110,7 @@ export class TeddyItemApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiTeddyItemAddPostRaw(requestParameters: ApiTeddyItemAddPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TeddyItemViewDTORequestResponse>> {
+    async apiTeddyItemAddPostRaw(requestParameters: ApiTeddyItemAddPostRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BriefTeddyItemDTORequestResponse>> {
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -162,7 +171,6 @@ export class TeddyItemApi extends runtime.BaseAPI {
             formParams.append('FileName', requestParameters.fileName as any);
         }
 
-        console.log("aici2");
         const response = await this.request({
             path: `/api/TeddyItem/Add`,
             method: 'POST',
@@ -171,14 +179,45 @@ export class TeddyItemApi extends runtime.BaseAPI {
             body: formParams,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TeddyItemViewDTORequestResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => BriefTeddyItemDTORequestResponseFromJSON(jsonValue));
     }
 
     /**
      */
-    async apiTeddyItemAddPost(requestParameters: ApiTeddyItemAddPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TeddyItemViewDTORequestResponse> {
-        console.log("aici");
+    async apiTeddyItemAddPost(requestParameters: ApiTeddyItemAddPostRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BriefTeddyItemDTORequestResponse> {
         const response = await this.apiTeddyItemAddPostRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
+    async apiTeddyItemDeleteBySKUDeleteRaw(requestParameters: ApiTeddyItemDeleteBySKUDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RequestResponse>> {
+        const queryParameters: any = {};
+
+        if (requestParameters.sKU !== undefined) {
+            queryParameters['SKU'] = requestParameters.sKU;
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/api/TeddyItem/DeleteBySKU`,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RequestResponseFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async apiTeddyItemDeleteBySKUDelete(requestParameters: ApiTeddyItemDeleteBySKUDeleteRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RequestResponse> {
+        const response = await this.apiTeddyItemDeleteBySKUDeleteRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
@@ -435,6 +474,41 @@ export class TeddyItemApi extends runtime.BaseAPI {
 
     /**
      */
+    async apiTeddyItemUpdateIdPutRaw(requestParameters: ApiTeddyItemUpdateIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RequestResponse>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiTeddyItemUpdateIdPut.');
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Bearer authentication
+        }
+
+        const response = await this.request({
+            path: `/api/TeddyItem/Update/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
+            headers: headerParameters,
+            query: queryParameters,
+            body: TeddyItemUpdateDTOToJSON(requestParameters.teddyItemUpdateDTO),
+        }, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => RequestResponseFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async apiTeddyItemUpdateIdPut(requestParameters: ApiTeddyItemUpdateIdPutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RequestResponse> {
+        const response = await this.apiTeddyItemUpdateIdPutRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     */
     async apiTeddyItemUpdatePutRaw(requestParameters: ApiTeddyItemUpdatePutRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<RequestResponse>> {
         const queryParameters: any = {};
 
@@ -451,7 +525,7 @@ export class TeddyItemApi extends runtime.BaseAPI {
             method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
-            body: TeddyItemUpdateDTOToJSON(requestParameters.teddyItemUpdateDTO),
+            body: TeddyItemUpdateIdDTOToJSON(requestParameters.teddyItemUpdateIdDTO),
         }, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => RequestResponseFromJSON(jsonValue));

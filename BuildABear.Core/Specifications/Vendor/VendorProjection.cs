@@ -10,6 +10,7 @@ public sealed class VendorProjection : BaseSpec<VendorProjection, Vendor, Vendor
 {
     protected override Expression<Func<Vendor, VendorBriefView>> Spec => e => new()
     {
+        id = e.Id,
         Email = e.Email,
         Address = e.Address,
         Name = e.Name

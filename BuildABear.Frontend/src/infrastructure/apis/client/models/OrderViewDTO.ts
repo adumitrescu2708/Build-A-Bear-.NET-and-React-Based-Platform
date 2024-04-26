@@ -40,6 +40,12 @@ import {
 export interface OrderViewDTO {
     /**
      * 
+     * @type {string}
+     * @memberof OrderViewDTO
+     */
+    id?: string;
+    /**
+     * 
      * @type {Array<TeddyBuildDTO>}
      * @memberof OrderViewDTO
      */
@@ -89,6 +95,7 @@ export function OrderViewDTOFromJSONTyped(json: any, ignoreDiscriminator: boolea
     }
     return {
         
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'teddies': !exists(json, 'teddies') ? undefined : (json['teddies'] === null ? null : (json['teddies'] as Array<any>).map(TeddyBuildDTOFromJSON)),
         'price': !exists(json, 'price') ? undefined : json['price'],
         'status': !exists(json, 'status') ? undefined : OrderStatusFromJSON(json['status']),
@@ -106,6 +113,7 @@ export function OrderViewDTOToJSON(value?: OrderViewDTO | null): any {
     }
     return {
         
+        'id': value.id,
         'teddies': value.teddies === undefined ? undefined : (value.teddies === null ? null : (value.teddies as Array<any>).map(TeddyBuildDTOToJSON)),
         'price': value.price,
         'status': OrderStatusToJSON(value.status),

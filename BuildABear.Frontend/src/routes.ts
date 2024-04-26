@@ -6,5 +6,9 @@ export enum AppRoute {
     Login = "/login",
     Users = "/users",
     Feed = "/feed",
-    TeddyItem = "/teddyItem"
+    TeddyItem = "/teddyItem",
+    UpdateTeddyItem = "/teddyItem/edit",
+    Register = "/register",
+    Vendor = "/vendor",
+    VendorContract = "/vendor/contract"
 }

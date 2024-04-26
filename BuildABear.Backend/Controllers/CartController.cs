@@ -21,23 +21,23 @@ public class CartController : AuthorizedController
 
     [Authorize]
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<RequestResponse<PagedResponse<TeddyBuildDTO>>>> GetByCartId([FromQuery] PaginationQueryParams pagination, [FromRoute] Guid id)
+    public async Task<ActionResult<RequestResponse<PagedResponse<TeddyViewDTO>>>> GetByCartId([FromQuery] PaginationQueryParams pagination, [FromRoute] Guid id)
     {
         var currentUser = await GetCurrentUser();
 
         return currentUser.Result != null ?
            this.FromServiceResponse(await _cartService.Get(pagination, id, false, currentUser.Result)) :
-           this.ErrorMessageResult<PagedResponse<TeddyBuildDTO>>(currentUser.Error);
+           this.ErrorMessageResult<PagedResponse<TeddyViewDTO>>(currentUser.Error);
     }
     [Authorize]
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<RequestResponse<PagedResponse<TeddyBuildDTO>>>> GetByUserId([FromQuery] PaginationQueryParams pagination, [FromRoute] Guid id)
+    public async Task<ActionResult<RequestResponse<PagedResponse<TeddyViewDTO>>>> GetByUserId([FromQuery] PaginationQueryParams pagination, [FromRoute] Guid id)
     {
         var currentUser = await GetCurrentUser();
 
         return currentUser.Result != null ?
            this.FromServiceResponse(await _cartService.Get(pagination, id, true, currentUser.Result)) :
-           this.ErrorMessageResult<PagedResponse<TeddyBuildDTO>>(currentUser.Error);
+           this.ErrorMessageResult<PagedResponse<TeddyViewDTO>>(currentUser.Error);
     }
 
     [Authorize]

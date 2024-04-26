@@ -26,6 +26,11 @@
     "globals.validations.nonRequiredField": "{fieldName} nu este camp obligatoriu!",
     "globals.price": "Pret",
     "globals.category": "Categorie",
+    "globals.country": "Tara",
+    "globals.city": "Oras",
+    "globals.phoneNumber": "Numar de telefon",
+    "globals.operator": "Operator",
+    "globals.vendor": "Vanzator",
     "globals.valability": "Disponibilitate",
     "globals.download": "Descarca",
     "globals.fabric": "Material",
@@ -38,5 +43,9 @@
     "globals.pants": "Pantaloni",
     "globals.pyjamas": "Pijamale",
     "globals.hoodie": "Hanorac",
-    "globals.addTeddyItem": "Adauga produs"
+    "globals.addTeddyItem": "Adauga produs",
+    "globals.editTeddyItem": "Modifica produs",
+    "globals.register": "Inregistreaza-te",
+    "globals.address": "Adresa",
+    "globals.teddyitems": "Articole Ursuleti"
 }

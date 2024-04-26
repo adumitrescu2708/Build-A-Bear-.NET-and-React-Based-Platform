@@ -34,12 +34,12 @@ public class TeddyItemController : AuthorizedController
     [HttpPost]
     [RequestFormLimits(MultipartBodyLengthLimit = MaxFileSize)] // Sets the maximum size limit for the form body to override the default value
     [RequestSizeLimit(MaxFileSize)] // Sets the maximum size limit for the entire request to override the default value
-    public async Task<ActionResult<RequestResponse<TeddyItemViewDTO>>> Add([FromForm] TeddyItemAddDTO form)
+    public async Task<ActionResult<RequestResponse<BriefTeddyItemDTO>>> Add([FromForm] TeddyItemAddDTO form)
     {
         var currentUser = await GetCurrentUser();
         return currentUser.Result != null ?
             this.FromServiceResponse(await _teddyItemService.AddItem(form, currentUser.Result)) :
-            this.ErrorMessageResult<TeddyItemViewDTO>(currentUser.Error);
+            this.ErrorMessageResult<BriefTeddyItemDTO>(currentUser.Error);
     }
 
     [Authorize]
@@ -106,13 +106,24 @@ public class TeddyItemController : AuthorizedController
     ///         - In case of an enterprise user with a corresponding vendor with an expired contract
     /// </summary>
     [Authorize]
-    [HttpPut]
-    public async Task<ActionResult<RequestResponse>> Update([FromBody] TeddyItemUpdateDTO template)
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<RequestResponse>> Update([FromBody] TeddyItemUpdateDTO template, [FromRoute] Guid id)
     {
         var currentUser = await GetCurrentUser();
 
         return currentUser.Result != null ?
-            this.FromServiceResponse(await _teddyItemService.Update(template, currentUser.Result)) :
+            this.FromServiceResponse(await _teddyItemService.Update(template, id, currentUser.Result)) :
+            this.ErrorMessageResult(currentUser.Error);
+    }
+
+    [Authorize]
+    [HttpPut]
+    public async Task<ActionResult<RequestResponse>> Update([FromBody] TeddyItemUpdateIdDTO template)
+    {
+        var currentUser = await GetCurrentUser();
+
+        return currentUser.Result != null ?
+            this.FromServiceResponse(await _teddyItemService.UpdateWithId(template, currentUser.Result)) :
             this.ErrorMessageResult(currentUser.Error);
     }
 
@@ -146,6 +157,17 @@ public class TeddyItemController : AuthorizedController
 
         return currentUser.Result != null ?
             this.FromServiceResponse(await _teddyItemService.Delete(id, currentUser.Result)) :
+            this.ErrorMessageResult(currentUser.Error);
+    }
+
+    [Authorize]
+    [HttpDelete]
+    public async Task<ActionResult<RequestResponse>> DeleteBySKU([FromQuery] TeddySkuDTO SKU)
+    {
+        var currentUser = await GetCurrentUser();
+
+        return currentUser.Result != null ?
+            this.FromServiceResponse(await _teddyItemService.DeleteBySKU(SKU, currentUser.Result)) :
             this.ErrorMessageResult(currentUser.Error);
     }
 }

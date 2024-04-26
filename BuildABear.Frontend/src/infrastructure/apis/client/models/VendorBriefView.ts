@@ -24,6 +24,12 @@ export interface VendorBriefView {
      * @type {string}
      * @memberof VendorBriefView
      */
+    id?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof VendorBriefView
+     */
     name?: string | null;
     /**
      * 
@@ -58,6 +64,7 @@ export function VendorBriefViewFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
+        'id': !exists(json, 'id') ? undefined : json['id'],
         'name': !exists(json, 'name') ? undefined : json['name'],
         'email': !exists(json, 'email') ? undefined : json['email'],
         'address': !exists(json, 'address') ? undefined : json['address'],
@@ -73,6 +80,7 @@ export function VendorBriefViewToJSON(value?: VendorBriefView | null): any {
     }
     return {
         
+        'id': value.id,
         'name': value.name,
         'email': value.email,
         'address': value.address,

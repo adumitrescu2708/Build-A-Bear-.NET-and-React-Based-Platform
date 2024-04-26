@@ -19,6 +19,9 @@ public class TeddyTemplateConfiguration : IEntityTypeConfiguration<TeddyTemplate
         builder.Property(e => e.CreatedAt).IsRequired();
         builder.Property(e => e.UpdatedAt).IsRequired();
 
-        builder.HasMany(a => a.UserTeddys).WithOne(b => b.TeddyTemplate).HasForeignKey(b => b.TeddyTemplateId);
+        /* one-to-many relationship teddies and teddy template */
+        builder.HasMany(a => a.UserTeddys)
+            .WithOne(b => b.TeddyTemplate)
+            .HasForeignKey(b => b.TeddyTemplateId);
     }
 }

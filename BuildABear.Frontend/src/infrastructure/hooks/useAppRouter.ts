@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { AppRoute } from "routes";
-
+import { useParams } from 'react-router-dom';
 /**
  * The object returned can be used to navigate within the application on various routes, use the callbacks for automatic redirects.
  */
@@ -43,6 +43,15 @@ export const useAppRouter = () => {
     [navigate]
   );
 
+  const redirectToEditTeddyItem = useCallback(
+    (id) => navigate(`${AppRoute.UpdateTeddyItem}/${id}`),
+    [navigate]
+  );
+
+  const redirectToVendorContractView = useCallback(
+    (id) => navigate(`${AppRoute.VendorContract}/${id}`),
+    [navigate]
+  );
 
   return {
     redirectToHome,
@@ -50,6 +59,7 @@ export const useAppRouter = () => {
     redirectToUsersFiles,
     redirectToFeed,
     redirectToAddTeddyItem,
+    redirectToEditTeddyItem,
     navigate
   };
 };

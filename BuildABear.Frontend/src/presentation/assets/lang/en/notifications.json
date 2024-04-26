@@ -13,5 +13,9 @@
     "notifications.errors.technicalError": "A technical error occurred, please contact the support!",
     "notifications.errors.userAlreadyExists": "The user already exists!",
     "notifications.errors.wrongPassword": "You entered the wrong password!",
-    "notifications.messages.itemAddedSuccess": "Item added successfully!"
+    "notifications.messages.itemAddedSuccess": "Item added successfully!",
+    "notifications.messages.itemUpdatedSuccess": "Item updated successfully!",
+    "notifications.messages.itemUpdatedError": "Error while updating item!",
+    "notifications.messages.registerSuccess": "Register success!",
+    "notifications.messages.registerError": "Register fail!"
 }

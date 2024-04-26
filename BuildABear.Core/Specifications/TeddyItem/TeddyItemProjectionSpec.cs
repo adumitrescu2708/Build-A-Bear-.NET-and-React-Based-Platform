@@ -11,12 +11,14 @@ public sealed class TeddyItemProjectionSpec : BaseSpec<TeddyItemProjectionSpec, 
 {
     protected override Expression<Func<TeddyItem, BriefTeddyItemDTO>> Spec => e => new()
     {
+        Id = e.Id,
         Name = e.Name,
         Price = e.Price,
         Description = e.Description,
         Category = e.ItemCategory,
         Valability = e.Valability,
-        SKU = e.SKU
+        SKU = e.SKU,
+        Filename = e.FileName
     };
 
     public TeddyItemProjectionSpec(string? search)

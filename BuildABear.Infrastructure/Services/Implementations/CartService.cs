@@ -19,41 +19,41 @@ public class CartService : ICartService
     {
         _repository = repository;
     }
-    public async Task<ServiceResponse<PagedResponse<TeddyBuildDTO>>> Get(PaginationQueryParams pagination, Guid id, bool isUserId, UserDTO requestingUser, CancellationToken cancellationToken = default)
+    public async Task<ServiceResponse<PagedResponse<TeddyViewDTO>>> Get(PaginationQueryParams pagination, Guid id, bool isUserId, UserDTO requestingUser, CancellationToken cancellationToken = default)
     {
         if (!isUserId)
         {
             var cart = await _repository.GetAsync<Cart>(id, cancellationToken);
             if (cart == null)
             {
-                return ServiceResponse<PagedResponse<TeddyBuildDTO>>.FromError(new(HttpStatusCode.NotFound, "Cart not existing!", ErrorCodes.CartNotExisting));
+                return ServiceResponse<PagedResponse<TeddyViewDTO>>.FromError(new(HttpStatusCode.NotFound, "Cart not existing!", ErrorCodes.CartNotExisting));
             }
             if (!(requestingUser.Role == Core.Enums.UserRoleEnum.Admin || cart.UserId == requestingUser.Id))
             {
-                return ServiceResponse<PagedResponse<TeddyBuildDTO>>.FromError(new(HttpStatusCode.Forbidden, "Only admins and self users can view cart!", ErrorCodes.CannotViewCart));
+                return ServiceResponse<PagedResponse<TeddyViewDTO>>.FromError(new(HttpStatusCode.Forbidden, "Only admins and self users can view cart!", ErrorCodes.CannotViewCart));
             }
 
-            var result = await _repository.PageAsync(pagination, new TeddySpec(id, 1), cancellationToken);
-            return ServiceResponse<PagedResponse<TeddyBuildDTO>>.ForSuccess(result);
+            var result = await _repository.PageAsync(pagination, new TeddyViewSpec(id, 1), cancellationToken);
+            return ServiceResponse<PagedResponse<TeddyViewDTO>>.ForSuccess(result);
         }
         else 
         {
             var user = await _repository.GetAsync<User>(id, cancellationToken);
             if (user == null) 
             {
-                return ServiceResponse<PagedResponse<TeddyBuildDTO>>.FromError(new(HttpStatusCode.NotFound, "User not existing!", ErrorCodes.UserNotFound));
+                return ServiceResponse<PagedResponse<TeddyViewDTO>>.FromError(new(HttpStatusCode.NotFound, "User not existing!", ErrorCodes.UserNotFound));
             }
             var cart = await _repository.GetAsync(new CartSpec(id), cancellationToken);
             if (cart == null)
             {
-                return ServiceResponse<PagedResponse<TeddyBuildDTO>>.FromError(new(HttpStatusCode.NotFound, "Cart not existing!", ErrorCodes.CartNotExisting));
+                return ServiceResponse<PagedResponse<TeddyViewDTO>>.FromError(new(HttpStatusCode.NotFound, "Cart not existing!", ErrorCodes.CartNotExisting));
             }
             if (!(requestingUser.Role == Core.Enums.UserRoleEnum.Admin || cart.UserId == requestingUser.Id))
             {
-                return ServiceResponse<PagedResponse<TeddyBuildDTO>>.FromError(new(HttpStatusCode.Forbidden, "Only admins and self users can view cart!", ErrorCodes.CannotViewCart));
+                return ServiceResponse<PagedResponse<TeddyViewDTO>>.FromError(new(HttpStatusCode.Forbidden, "Only admins and self users can view cart!", ErrorCodes.CannotViewCart));
             }
-            var result = await _repository.PageAsync(pagination, new TeddySpec(cart.Id, 1), cancellationToken);
-            return ServiceResponse<PagedResponse<TeddyBuildDTO>>.ForSuccess(result);
+            var result = await _repository.PageAsync(pagination, new TeddyViewSpec(cart.Id, 1), cancellationToken);
+            return ServiceResponse<PagedResponse<TeddyViewDTO>>.ForSuccess(result);
         }
     }
 
@@ -102,7 +102,7 @@ public class CartService : ICartService
                     return ServiceResponse<int>.FromError(new(HttpStatusCode.NotFound, "User not existing!", ErrorCodes.UserNotFound));
                 }
 
-                if (!(requestingUser.Role == Core.Enums.UserRoleEnum.Admin || user.Id != requestingUser.Id))
+                if (!(requestingUser.Role == Core.Enums.UserRoleEnum.Admin || user.Id == requestingUser.Id))
                 {
                     return ServiceResponse<int>.FromError(new(HttpStatusCode.Forbidden, "Only admins and cart owner can view cart!", ErrorCodes.CannotViewCart));
                 }

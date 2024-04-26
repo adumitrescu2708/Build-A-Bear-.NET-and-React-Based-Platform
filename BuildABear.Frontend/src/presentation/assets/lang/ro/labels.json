@@ -9,5 +9,7 @@
     "labels.addUserFile": "Adauga fisier",
     "labels.download": "Descarca",
     "labels.edit": "Editeaza",
-    "labels.addItem": "Adauga articol"
+    "labels.addItem": "Adauga articol",
+    "labels.delete": "Sterge",
+    "labels.view": "Vizualizati"
 }

@@ -53,6 +53,54 @@
         }
       }
     },
+    "/api/Authorization/Register": {
+      "post": {
+        "tags": [
+          "Authorization"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserAddDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserAddDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserAddDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Cart/GetByCartId/{id}": {
       "get": {
         "tags": [
@@ -91,17 +139,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeddyBuildDTOPagedResponseRequestResponse"
+                  "$ref": "#/components/schemas/TeddyViewDTOPagedResponseRequestResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeddyBuildDTOPagedResponseRequestResponse"
+                  "$ref": "#/components/schemas/TeddyViewDTOPagedResponseRequestResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeddyBuildDTOPagedResponseRequestResponse"
+                  "$ref": "#/components/schemas/TeddyViewDTOPagedResponseRequestResponse"
                 }
               }
             }
@@ -147,17 +195,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeddyBuildDTOPagedResponseRequestResponse"
+                  "$ref": "#/components/schemas/TeddyViewDTOPagedResponseRequestResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeddyBuildDTOPagedResponseRequestResponse"
+                  "$ref": "#/components/schemas/TeddyViewDTOPagedResponseRequestResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeddyBuildDTOPagedResponseRequestResponse"
+                  "$ref": "#/components/schemas/TeddyViewDTOPagedResponseRequestResponse"
                 }
               }
             }
@@ -689,17 +737,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeddyItemViewDTORequestResponse"
+                  "$ref": "#/components/schemas/BriefTeddyItemDTORequestResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeddyItemViewDTORequestResponse"
+                  "$ref": "#/components/schemas/BriefTeddyItemDTORequestResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TeddyItemViewDTORequestResponse"
+                  "$ref": "#/components/schemas/BriefTeddyItemDTORequestResponse"
                 }
               }
             }
@@ -886,10 +934,21 @@
         }
       }
     },
-    "/api/TeddyItem/Update": {
+    "/api/TeddyItem/Update/{id}": {
       "put": {
         "tags": [
           "TeddyItem"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
         ],
         "requestBody": {
           "content": {
@@ -906,6 +965,54 @@
             "application/*+json": {
               "schema": {
                 "$ref": "#/components/schemas/TeddyItemUpdateDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/TeddyItem/Update": {
+      "put": {
+        "tags": [
+          "TeddyItem"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeddyItemUpdateIdDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeddyItemUpdateIdDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/TeddyItemUpdateIdDTO"
               }
             }
           }
@@ -1063,6 +1170,44 @@
             "schema": {
               "type": "string",
               "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/TeddyItem/DeleteBySKU": {
+      "delete": {
+        "tags": [
+          "TeddyItem"
+        ],
+        "parameters": [
+          {
+            "name": "SKU",
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -1975,6 +2120,10 @@
       "BriefTeddyItemDTO": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "sku": {
             "type": "string",
             "nullable": true
@@ -1988,6 +2137,10 @@
             "format": "int32"
           },
           "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "filename": {
             "type": "string",
             "nullable": true
           },
@@ -2325,6 +2478,10 @@
       "OrderViewDTO": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "teddies": {
             "type": "array",
             "items": {
@@ -2406,43 +2563,6 @@
               "format": "uuid"
             },
             "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "TeddyBuildDTOPagedResponse": {
-        "type": "object",
-        "properties": {
-          "page": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalCount": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TeddyBuildDTO"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "TeddyBuildDTOPagedResponseRequestResponse": {
-        "type": "object",
-        "properties": {
-          "response": {
-            "$ref": "#/components/schemas/TeddyBuildDTOPagedResponse"
-          },
-          "errorMessage": {
-            "$ref": "#/components/schemas/ErrorMessage"
           }
         },
         "additionalProperties": false
@@ -2541,9 +2661,37 @@
       "TeddyItemUpdateDTO": {
         "type": "object",
         "properties": {
-          "sku": {
+          "price": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "description": {
             "type": "string",
             "nullable": true
+          },
+          "fabric": {
+            "type": "string",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "nullable": true
+          },
+          "quantity": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TeddyItemUpdateIdDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
           },
           "price": {
             "type": "integer",
@@ -2577,50 +2725,6 @@
           "LowStock"
         ],
         "type": "string"
-      },
-      "TeddyItemViewDTO": {
-        "type": "object",
-        "properties": {
-          "sku": {
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "price": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "category": {
-            "$ref": "#/components/schemas/TeddyItemCategoryEnum"
-          },
-          "valability": {
-            "$ref": "#/components/schemas/TeddyItemValability"
-          },
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          }
-        },
-        "additionalProperties": false
-      },
-      "TeddyItemViewDTORequestResponse": {
-        "type": "object",
-        "properties": {
-          "response": {
-            "$ref": "#/components/schemas/TeddyItemViewDTO"
-          },
-          "errorMessage": {
-            "$ref": "#/components/schemas/ErrorMessage"
-          }
-        },
-        "additionalProperties": false
       },
       "TeddySkuDTO": {
         "type": "object",
@@ -2705,6 +2809,72 @@
               "format": "uuid"
             },
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TeddyViewDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "filling": {
+            "$ref": "#/components/schemas/TeddyFillingEnum"
+          },
+          "teddyTemplateId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "itemsIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TeddyViewDTOPagedResponse": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TeddyViewDTO"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TeddyViewDTOPagedResponseRequestResponse": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "$ref": "#/components/schemas/TeddyViewDTOPagedResponse"
+          },
+          "errorMessage": {
+            "$ref": "#/components/schemas/ErrorMessage"
           }
         },
         "additionalProperties": false
@@ -2901,6 +3071,10 @@
       "VendorBriefView": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "name": {
             "type": "string",
             "nullable": true

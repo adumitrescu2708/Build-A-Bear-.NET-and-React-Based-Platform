@@ -71,22 +71,6 @@ public class VendorController : AuthorizedController
             this.ErrorMessageResult<VendorBriefView>(currentUser.Error);
     }
 
-    /// <summary>
-    ///      Authorized route for getting restricted info on vendor by vendor email. Any user can view vendor info. The results is either
-    ///     info on vendor or error in the following case:
-    ///         - Specified vendor is not found in the database
-    /// </summary>
-    [Authorize]
-    [HttpGet]
-    public async Task<ActionResult<RequestResponse<VendorBriefView>>> GetByEmail([FromBody] VendorEmail email)
-    {
-        var currentUser = await GetCurrentUser();
-
-        return currentUser.Result != null ?
-            this.FromServiceResponse(await VendorService.GetVendorByEmail(email.email)) :
-            this.ErrorMessageResult<VendorBriefView>(currentUser.Error);
-    }
-
     [Authorize]
     [HttpGet]
     public async Task<ActionResult<RequestResponse<PagedResponse<VendorBriefView>>>> Get([FromQuery] PaginationSearchQueryParams pagination)

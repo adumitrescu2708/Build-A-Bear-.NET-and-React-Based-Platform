@@ -4,6 +4,8 @@ using BuildABear.Core.Responses;
 using BuildABear.Infrastructure.Authorization;
 using BuildABear.Infrastructure.Extensions;
 using BuildABear.Infrastructure.Services.Interfaces;
+using BuildABear.Core.Entities;
+using Serilog;
 
 namespace BuildABear.Backend.Controllers;
 
@@ -28,5 +30,13 @@ public class AuthorizationController : ControllerBase // The controller must inh
     public async Task<ActionResult<RequestResponse<LoginResponseDTO>>> Login([FromBody] LoginDTO login) // The FromBody attribute indicates that the parameter is deserialized from the JSON body.
     {
         return this.FromServiceResponse(await _userService.Login(login with { Password = PasswordUtils.HashPassword(login.Password) })); // The "with" keyword works only with records and it creates another object instance with the updated properties. 
+    }
+
+    [HttpPost] // This attribute will make the controller respond to a HTTP POST request on the route /api/Authorization/Login having a JSON body deserialized as a LoginDTO.
+    public async Task<ActionResult<RequestResponse>> Register([FromBody] UserAddDTO form) // The FromBody attribute indicates that the parameter is deserialized from the JSON body.
+    {
+        form.Password = PasswordUtils.HashPassword(form.Password);
+        return this.FromServiceResponse(await _userService.Register(form));
+        //return this.FromServiceResponse(await _userService.Login(login with { Password = PasswordUtils.HashPassword(login.Password) })); // The "with" keyword works only with records and it creates another object instance with the updated properties. 
     }
 }

@@ -25,6 +25,7 @@ public class TeddyItemConfiguration : IEntityTypeConfiguration<TeddyItem>
         builder.Property(e => e.ItemCategory).IsRequired();
         builder.Property(e => e.FileName).IsRequired();
 
+        /* one-to-many relationship between vendors and teddies */
         builder.HasOne(e => e.Vendor)
         .WithMany(e => e.TeddyItems)
         .HasForeignKey(e => e.VendorId)

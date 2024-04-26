@@ -16,13 +16,13 @@
 import * as runtime from '../runtime';
 import type {
   Int32RequestResponse,
-  TeddyBuildDTOPagedResponseRequestResponse,
+  TeddyViewDTOPagedResponseRequestResponse,
 } from '../models';
 import {
     Int32RequestResponseFromJSON,
     Int32RequestResponseToJSON,
-    TeddyBuildDTOPagedResponseRequestResponseFromJSON,
-    TeddyBuildDTOPagedResponseRequestResponseToJSON,
+    TeddyViewDTOPagedResponseRequestResponseFromJSON,
+    TeddyViewDTOPagedResponseRequestResponseToJSON,
 } from '../models';
 
 export interface ApiCartGetByCartIdIdGetRequest {
@@ -52,7 +52,7 @@ export class CartApi extends runtime.BaseAPI {
 
     /**
      */
-    async apiCartGetByCartIdIdGetRaw(requestParameters: ApiCartGetByCartIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TeddyBuildDTOPagedResponseRequestResponse>> {
+    async apiCartGetByCartIdIdGetRaw(requestParameters: ApiCartGetByCartIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TeddyViewDTOPagedResponseRequestResponse>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiCartGetByCartIdIdGet.');
         }
@@ -80,19 +80,19 @@ export class CartApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TeddyBuildDTOPagedResponseRequestResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => TeddyViewDTOPagedResponseRequestResponseFromJSON(jsonValue));
     }
 
     /**
      */
-    async apiCartGetByCartIdIdGet(requestParameters: ApiCartGetByCartIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TeddyBuildDTOPagedResponseRequestResponse> {
+    async apiCartGetByCartIdIdGet(requestParameters: ApiCartGetByCartIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TeddyViewDTOPagedResponseRequestResponse> {
         const response = await this.apiCartGetByCartIdIdGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 
     /**
      */
-    async apiCartGetByUserIdIdGetRaw(requestParameters: ApiCartGetByUserIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TeddyBuildDTOPagedResponseRequestResponse>> {
+    async apiCartGetByUserIdIdGetRaw(requestParameters: ApiCartGetByUserIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<TeddyViewDTOPagedResponseRequestResponse>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling apiCartGetByUserIdIdGet.');
         }
@@ -120,12 +120,12 @@ export class CartApi extends runtime.BaseAPI {
             query: queryParameters,
         }, initOverrides);
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => TeddyBuildDTOPagedResponseRequestResponseFromJSON(jsonValue));
+        return new runtime.JSONApiResponse(response, (jsonValue) => TeddyViewDTOPagedResponseRequestResponseFromJSON(jsonValue));
     }
 
     /**
      */
-    async apiCartGetByUserIdIdGet(requestParameters: ApiCartGetByUserIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TeddyBuildDTOPagedResponseRequestResponse> {
+    async apiCartGetByUserIdIdGet(requestParameters: ApiCartGetByUserIdIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<TeddyViewDTOPagedResponseRequestResponse> {
         const response = await this.apiCartGetByUserIdIdGetRaw(requestParameters, initOverrides);
         return await response.value();
     }

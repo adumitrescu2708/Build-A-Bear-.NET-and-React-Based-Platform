@@ -61,12 +61,12 @@ const format = (value : any) =>
  * Creates the user table.
  */
 export const TeddyItemTable = () => {
-    const { redirectToAddTeddyItem } = useAppRouter();
+    const { redirectToEditTeddyItem } = useAppRouter();
     const { userId: ownUserId } = useAppSelector(x => x.profileReducer);
     const { formatMessage } = useIntl();
     const header = useHeader();
     const orderMap = header.reduce((acc, e, i) => { return { ...acc, [e.key]: i } }, {}) as { [key: string]: number };
-    const { handleChangePage, handleChangePageSize, pagedData, isError, isLoading, tryReload, labelDisplay } = useTeddyItemApiController(); // Use the controller hook.
+    const { handleChangePage, handleChangePageSize, pagedData, isError, isLoading, tryReload, labelDisplay, remove, download } = useTeddyItemApiController(); // Use the controller hook.
     const rowValues = getRowValues(pagedData?.data, orderMap); // Get the row values.
     const isAdmin = useOwnUserHasRole(UserRoleEnum.Admin);
     const isVendor = useOwnUserHasRole(UserRoleEnum.Vendor);
@@ -99,9 +99,10 @@ export const TeddyItemTable = () => {
                             <TableCell>{formatMessage({ id: "labels.edit" })}</TableCell>
                         }
                         {
-                            (isVendor) && 
-                            <TableCell>{formatMessage({ id: "labels.addItem" })}</TableCell>
+                            (isAdmin) &&
+                            <TableCell>{formatMessage({ id: "labels.delete" })}</TableCell>
                         }
+                        
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -110,29 +111,31 @@ export const TeddyItemTable = () => {
                         rowValues?.map(({ data, entry }, rowIndex) => 
                         <TableRow key={`row_${rowIndex + 1}`}>
                             {data.map((keyValue, index) => <TableCell key={`cell_${rowIndex + 1}_${index + 1}`}>{format(keyValue)}</TableCell>)} 
+                            
                             {
                                <TableCell>
-                                    <IconButton color="primary" onClick={() => redirectToAddTeddyItem()}>
+                                    <IconButton color="primary" onClick={() => download(entry.id || '', entry.filename || '')}>
                                         <CloudDownloadIcon color="primary" fontSize='small' />
                                     </IconButton>
                                </TableCell> 
                             } 
+                            
                             {
                                 (isAdmin || isVendor)  && 
                                 <TableCell>
                                 {
-                                    <IconButton color="primary" onClick={() => redirectToAddTeddyItem()}>
+                                    <IconButton color="primary" onClick={() => redirectToEditTeddyItem(entry.id)}>
                                         <EditAttributesOutlined color="primary" fontSize='small' />
                                     </IconButton>
                                 }
                                 </TableCell>
                             }
                             {
-                                (isVendor)  && 
+                                (isAdmin)  && 
                                 <TableCell>
                                 {
-                                    <IconButton color="primary" onClick={() => redirectToAddTeddyItem()}>
-                                        <AddCircleOutline  color="primary" fontSize='small' />
+                                    <IconButton color="error" onClick={() => remove(entry.id || '')}>
+                                        <DeleteIcon color="error" fontSize='small' />
                                     </IconButton>
                                 }
                                 </TableCell>

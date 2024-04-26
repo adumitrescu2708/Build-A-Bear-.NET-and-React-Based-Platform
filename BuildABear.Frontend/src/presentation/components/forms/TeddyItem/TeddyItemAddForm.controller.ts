@@ -66,14 +66,7 @@ export const useInitTeddyItemAddForm = () => {
                     }),
                 })),
             // .default(defaultValues.price),
-        description: yup.string()
-            .required(formatMessage( //todo
-                { id: "globals.validations.requiredField" },
-                {
-                    fieldName: formatMessage({
-                        id: "globals.description",
-                    }),
-                })),
+        description: yup.string(),
             // .default(defaultValues.description),
         fabric: yup.string()
             .required(formatMessage(
@@ -147,10 +140,6 @@ export const useTeddyItemAddFormController = (onSubmit?: () => void) : TeddyItem
 
     const submit = useCallback((data: TeddyItemAddFormModel) => // Create a submit callback to send the form data to the backend.
         add(data).then(() => {
-                // queryClient.invalidateQueries({ });
-                // if (onSubmit) {
-                // }}
-                console.log("aici", data);
                 toast(formatMessage({ id: "notifications.messages.itemAddedSuccess" }));
         }), [add]);
 

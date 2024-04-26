@@ -9,5 +9,7 @@
     "labels.addUserFile": "Add file",
     "labels.download": "Download",
     "labels.edit": "Edit",
-    "labels.addItem": "Add Teddy Item"
+    "labels.addItem": "Add Teddy Item",
+    "labels.delete": "Delete",
+    "labels.view": "View"
 }

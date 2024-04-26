@@ -30,6 +30,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(e => e.PhoneNumber).IsRequired();
         //builder.Property(e => e.MainCartId).IsRequired();
 
+        /* one to many relationship between vendor and users */
         builder.HasOne(e => e.Vendor)
             .WithMany(e => e.Vendors)
             .HasForeignKey(e => e.VendorId)

@@ -23,7 +23,21 @@ public class TeddyItemService : ITeddyItemService {
     }
     private static string GetFileVendorDirectory(Guid userId) => Path.Join(userId.ToString(), IUserFileService.VendorFilesDirectory);
     private static string GetFileDirectory(Guid userId) => Path.Join(userId.ToString(), IUserFileService.UserFilesDirectory);
+    public async Task<ServiceResponse> DeleteBySKU(TeddySkuDTO SKU, UserDTO? requestingUser, CancellationToken cancellationToken = default) {
+        if (requestingUser != null && requestingUser.Role != UserRoleEnum.Admin)
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only admin members can delete items!", ErrorCodes.CannotDeleteItem));
+        }
 
+        var searchItem = await _repository.GetAsync(new TeddyItemSpec(SKU.SKU), cancellationToken);
+        if (searchItem == null)
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.NotFound, "Requested Teddy item not found!", ErrorCodes.ItemNotFound));
+        }
+        var item = await _repository.DeleteAsync<TeddyItem>(searchItem.Id, cancellationToken);
+
+        return ServiceResponse.ForSuccess();
+    }
     public async Task<ServiceResponse> Delete(Guid id, UserDTO requestingUser, CancellationToken cancellationToken = default) {
         if (requestingUser != null && requestingUser.Role != UserRoleEnum.Admin)
         {
@@ -87,14 +101,14 @@ public class TeddyItemService : ITeddyItemService {
         return ServiceResponse<PagedResponse<BriefTeddyItemDTO>>.ForSuccess(result);
     }
 
-    public async Task<ServiceResponse<TeddyItemViewDTO>> AddItem(TeddyItemAddDTO item, UserDTO requestingUser, CancellationToken cancellationToken = default) {
+    public async Task<ServiceResponse<BriefTeddyItemDTO>> AddItem(TeddyItemAddDTO item, UserDTO requestingUser, CancellationToken cancellationToken = default) {
 
         if ((requestingUser != null && requestingUser.Role != UserRoleEnum.Vendor)) {
-            return ServiceResponse<TeddyItemViewDTO>.FromError(new(HttpStatusCode.Forbidden, "Only Enterprise members can publish new items!", ErrorCodes.CannotAddItem));
+            return ServiceResponse<BriefTeddyItemDTO>.FromError(new(HttpStatusCode.Forbidden, "Only Enterprise members can publish new items!", ErrorCodes.CannotAddItem));
         }
 
         if (requestingUser == null) {
-            return ServiceResponse<TeddyItemViewDTO>.FromError(new(HttpStatusCode.InternalServerError, "Request user not found!", ErrorCodes.UserNotFound));
+            return ServiceResponse<BriefTeddyItemDTO>.FromError(new(HttpStatusCode.InternalServerError, "Request user not found!", ErrorCodes.UserNotFound));
         }
 
         var vendorUser = await _repository.GetAsync(new UserSpec(requestingUser.Email));
@@ -102,20 +116,20 @@ public class TeddyItemService : ITeddyItemService {
 
         if (searchVendor!= null && !Helpers.isValidDate(DateTime.Now, searchVendor.ContractStartDate, searchVendor.ContractEndDate))
         {
-            return ServiceResponse<TeddyItemViewDTO>.FromError(new(HttpStatusCode.Forbidden, "Vendor contract expired!", ErrorCodes.ContractExpired));
+            return ServiceResponse<BriefTeddyItemDTO>.FromError(new(HttpStatusCode.Forbidden, "Vendor contract expired!", ErrorCodes.ContractExpired));
         }
 
         var searchItem = await _repository.GetAsync(new TeddyItemSpec(item.compute_sku((Guid) vendorUser.VendorId)));
         if (searchItem != null)
         {
-            return ServiceResponse<TeddyItemViewDTO>.FromError(new(HttpStatusCode.Conflict, "Item already exists!", ErrorCodes.ItemAlreadyExists));
+            return ServiceResponse<BriefTeddyItemDTO>.FromError(new(HttpStatusCode.Conflict, "Item already exists!", ErrorCodes.ItemAlreadyExists));
         }
 
         var fileName = _fileRepository.SaveFile(item.File, GetFileVendorDirectory((Guid)vendorUser.VendorId));
 
         if (fileName.Result == null)
         {
-            return ServiceResponse<TeddyItemViewDTO>.FromError(new(HttpStatusCode.InternalServerError, "Cannot add filename!", ErrorCodes.CannotAddFile));
+            return ServiceResponse<BriefTeddyItemDTO>.FromError(new(HttpStatusCode.InternalServerError, "Cannot add filename!", ErrorCodes.CannotAddFile));
         }
 
         await _repository.AddAsync(new TeddyItem
@@ -138,9 +152,9 @@ public class TeddyItemService : ITeddyItemService {
 
         var added_item = await _repository.GetAsync(new TeddyItemSpec(item.compute_sku((Guid)vendorUser.VendorId)), cancellationToken);
 
-        return ServiceResponse<TeddyItemViewDTO>.ForSuccess(new TeddyItemViewDTO
+        return ServiceResponse<BriefTeddyItemDTO>.ForSuccess(new BriefTeddyItemDTO
         {
-            id = added_item.Id,
+            Id = added_item.Id,
             SKU = added_item.SKU,
             Name = added_item.Name,
             Price = added_item.Price,
@@ -159,6 +173,7 @@ public class TeddyItemService : ITeddyItemService {
         }
         var DTO = new BriefTeddyItemDTO()
         {
+            Id = item.Id,
             SKU = item.SKU,
             Name = item.Name,
             Price = item.Price,
@@ -182,9 +197,9 @@ public class TeddyItemService : ITeddyItemService {
         return ServiceResponse<FileDTO>.ForSuccess(res);
 
     }
-    public async Task<ServiceResponse> Update(TeddyItemUpdateDTO template, UserDTO? requestingUser, CancellationToken cancellationToken = default)
+    public async Task<ServiceResponse> Update(TeddyItemUpdateDTO template, Guid id, UserDTO? requestingUser, CancellationToken cancellationToken = default)
     {
-        var teddy = await _repository.GetAsync<TeddyItem>(new TeddyItemSpec(template.SKU), cancellationToken);
+        var teddy = await _repository.GetAsync<TeddyItem>(new TeddyItemSpec(id), cancellationToken);
         var user = await _repository.GetAsync<User>(requestingUser.Id, cancellationToken);
         
         if(teddy == null)
@@ -192,16 +207,60 @@ public class TeddyItemService : ITeddyItemService {
             return ServiceResponse.FromError(new(HttpStatusCode.NotFound, "Item not found!", ErrorCodes.ItemNotFound));
         }
         
-        if(requestingUser == null || (requestingUser.Role != UserRoleEnum.Admin && requestingUser.Role != UserRoleEnum.Vendor) || !(teddy.VendorId == user.VendorId))
+        if(requestingUser == null || !(requestingUser.Role == UserRoleEnum.Admin || requestingUser.Role == UserRoleEnum.Vendor))
         {
             return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only admins and owner vendors can update item!", ErrorCodes.CannotUpdateItem));
         }
+
+        if (requestingUser.Role == UserRoleEnum.Vendor && !(teddy.VendorId == user.VendorId)) {
+            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only admins and owner vendors can update item!", ErrorCodes.CannotUpdateItem));
+        }
+
         var vendor = await _repository.GetAsync<Vendor>(teddy.VendorId, cancellationToken);
         if(vendor == null)
         {
             return ServiceResponse.FromError(new(HttpStatusCode.InternalServerError, "Vendor not found!", ErrorCodes.VendorNotFound));
         }
         if (!Helpers.isValidDate(DateTime.Now, vendor.ContractStartDate, vendor.ContractEndDate)) {
+            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Vendor not found!", ErrorCodes.VendorNotFound));
+        }
+
+        teddy.Price = template.Price ?? teddy.Price;
+        teddy.Description = template.Description ?? teddy.Description;
+        teddy.Fabric = template.Fabric ?? teddy.Fabric;
+        teddy.Color = template.Color ?? teddy.Color;
+        teddy.Quantity = template.Quantity ?? teddy.Quantity;
+        teddy.Valability = Helpers.computeValability(teddy.Quantity); // recompute valability if quantity has changed
+        await _repository.UpdateAsync(teddy, cancellationToken);
+
+        return ServiceResponse.ForSuccess();
+    }
+    public async Task<ServiceResponse> UpdateWithId(TeddyItemUpdateIdDTO template, UserDTO? requestingUser, CancellationToken cancellationToken = default) {
+        var teddy = await _repository.GetAsync<TeddyItem>(new TeddyItemSpec(template.Id), cancellationToken);
+        var user = await _repository.GetAsync<User>(requestingUser.Id, cancellationToken);
+
+        if (teddy == null)
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.NotFound, "Item not found!", ErrorCodes.ItemNotFound));
+        }
+
+        if (requestingUser == null || !(requestingUser.Role == UserRoleEnum.Admin || requestingUser.Role == UserRoleEnum.Vendor))
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only admins and owner vendors can update item!", ErrorCodes.CannotUpdateItem));
+        }
+
+        if (requestingUser.Role == UserRoleEnum.Vendor && !(teddy.VendorId == user.VendorId))
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only admins and owner vendors can update item!", ErrorCodes.CannotUpdateItem));
+        }
+
+        var vendor = await _repository.GetAsync<Vendor>(teddy.VendorId, cancellationToken);
+        if (vendor == null)
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.InternalServerError, "Vendor not found!", ErrorCodes.VendorNotFound));
+        }
+        if (!Helpers.isValidDate(DateTime.Now, vendor.ContractStartDate, vendor.ContractEndDate))
+        {
             return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Vendor not found!", ErrorCodes.VendorNotFound));
         }
 

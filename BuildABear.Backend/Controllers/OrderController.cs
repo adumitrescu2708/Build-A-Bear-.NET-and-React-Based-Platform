@@ -42,6 +42,7 @@ public class OrderController : AuthorizedController
            this.ErrorMessageResult<OrderViewDTO>(currentUser.Error);
     }
 
+
     [Authorize]
     [HttpPut("{id:guid}")]
     public async Task<ActionResult<RequestResponse>> UpdateOrder([FromRoute] Guid id, [FromBody] OrderStatus status)

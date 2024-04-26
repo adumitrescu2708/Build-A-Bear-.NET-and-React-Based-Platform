@@ -11,6 +11,7 @@ using System.Net;
 using Org.BouncyCastle.Utilities.Net;
 using BuildABear.Core.Helpers;
 using Microsoft.IdentityModel.Tokens;
+using BuildABear.Core.Requests;
 
 namespace BuildABear.Infrastructure.Services.Implementations;
 
@@ -21,9 +22,29 @@ public class OrderService : IOrderService
     {
         _repository = repository;
     }
+    //public async Task<ServiceResponse<PagedResponse<OrderViewDTO>>> GetOrdersUser(Guid id, UserDTO requestingUser, PaginationQueryParams pagination, CancellationToken cancellationToken = default) 
+    //{
+    //    /* First check if the requesting user exists */
+    //    var user = await _repository.GetAsync<User>(requestingUser.Id, cancellationToken);
+    //    if (user == null)
+    //    {
+    //        return ServiceResponse<PagedResponse<OrderViewDTO>>.FromError(new(HttpStatusCode.NotFound, "User doesn't exist!", ErrorCodes.UserNotFound));
+    //    }
+
+    //    var result = await _repository.PageAsync(pagination, new OrderSpec(user.Id, true), cancellationToken);
+
+
+    //}
     public async Task<ServiceResponse> UpdateOrder(Guid id, OrderStatus status, UserDTO requestingUser, CancellationToken cancellationToken = default)
     {
-        if(requestingUser.Role != UserRoleEnum.Operator) {
+        /* First check if the requesting user exists */
+        var user = await _repository.GetAsync<User>(requestingUser.Id, cancellationToken);
+        if (user == null)
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.NotFound, "User doesn't exist!", ErrorCodes.UserNotFound));
+        }
+
+        if (requestingUser.Role != UserRoleEnum.Operator) {
             return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Only operators can update order!", ErrorCodes.CannotUpdateOrder));
         }
         var order = await _repository.GetAsync<Order>(id, cancellationToken);
@@ -36,6 +57,13 @@ public class OrderService : IOrderService
         return ServiceResponse.ForSuccess();
     }
     public async Task<ServiceResponse<OrderViewDTO>> GetOrder(Guid id, UserDTO requestingUser, CancellationToken cancellationToken = default) {
+        /* First check if the requesting user exists */
+        var user = await _repository.GetAsync<User>(requestingUser.Id, cancellationToken);
+        if (user == null)
+        {
+            return ServiceResponse<OrderViewDTO>.FromError(new(HttpStatusCode.NotFound, "User doesn't exist!", ErrorCodes.UserNotFound));
+        }
+
         var order = await _repository.GetAsync<Order>(id, cancellationToken);
         if (order == null)
         {
@@ -49,6 +77,7 @@ public class OrderService : IOrderService
  
         var viewDTO = new OrderViewDTO
         {
+            Id = order.Id,
             Price = order.Price,
             PaymentMethod = order.PaymentMethod,
             Status = order.Status,

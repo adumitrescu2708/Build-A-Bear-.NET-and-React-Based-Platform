@@ -109,7 +109,7 @@ export const TeddyItemAddForm = (props: { onSubmit?: () => void }) => {
                 <Grid container item direction="column" xs={6} md={6}>
                     <FormControl
                         fullWidth
-                        // error={!isUndefined(state.errors.description)}
+                        error={!isUndefined(state.errors.description)}
                     >
                         <FormLabel>
                             <FormattedMessage id="globals.description" />
@@ -127,7 +127,7 @@ export const TeddyItemAddForm = (props: { onSubmit?: () => void }) => {
                             autoComplete="none"
                         />
                         <FormHelperText
-                            // hidden={isUndefined(state.errors.description)}
+                            hidden={isUndefined(state.errors.description)}
                         >
                             {state.errors.description?.message}
                         </FormHelperText>

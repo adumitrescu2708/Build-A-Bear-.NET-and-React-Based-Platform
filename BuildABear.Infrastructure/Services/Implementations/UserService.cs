@@ -117,6 +117,45 @@ public class UserService : IUserService
     public async Task<ServiceResponse<int>> GetUserCount(CancellationToken cancellationToken = default) =>
         ServiceResponse<int>.ForSuccess(await _repository.GetCountAsync<User>(cancellationToken)); // Get the count of all user entities in the database.
 
+
+    public async Task<ServiceResponse> Register(UserAddDTO login, CancellationToken cancellationToken = default) {
+        var result = await _repository.GetAsync(new UserSpec(login.Email), cancellationToken);
+
+        if (result != null)
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.Conflict, "The user already exists!", ErrorCodes.UserAlreadyExists));
+        }
+
+        if (login.Role == UserRoleEnum.Vendor)
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Enterprise vendors should have a vendor id!", ErrorCodes.CannotAdd));
+        }
+
+        var mainCart = new Cart();
+        await _repository.AddAsync(new User
+        {
+            Email = login.Email,
+            Name = login.Name,
+            Role = login.Role,
+            Password = login.Password,
+            Country = login.Country,
+            City = login.City,
+            PhoneNumber = login.PhoneNumber,
+            Cart = mainCart
+        }, cancellationToken);
+
+        var added_user = await _repository.GetAsync(new UserSpec(login.Email));
+
+        if (added_user == null)
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.InternalServerError, "Cannot get user!", ErrorCodes.CannotGet));
+        }
+
+        await _mailService.SendMail(login.Email, "Welcome!", MailTemplates.UserAddTemplate(login.Name), true, "My App", cancellationToken); // You can send a notification on the user email. Change the email if you want.
+
+        return ServiceResponse.ForSuccess();
+    }
+
     /*
          Each user has a corresponding cart
             - check if the given user id is found (i.e if the user exists)

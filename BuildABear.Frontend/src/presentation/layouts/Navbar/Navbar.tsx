@@ -16,6 +16,7 @@ import { NavbarLanguageSelector } from '@presentation/components/ui/NavbarLangua
 import { useOwnUserHasRole } from '@infrastructure/hooks/useOwnUser';
 import { UserRoleEnum } from '@infrastructure/apis/client';
 import styles from "../../assets/styles/styles.module.scss";
+import DashboardIcon from '@mui/icons-material/Dashboard';
 /**
  * This is the navigation menu that will stay at the top of the page.
  */
@@ -25,7 +26,7 @@ export const Navbar = () => {
   const isAdmin = useOwnUserHasRole(UserRoleEnum.Admin);
   const isVendor = useOwnUserHasRole(UserRoleEnum.Vendor);
   const dispatch = useAppDispatch();
-  const { redirectToHome } = useAppRouter();
+  const { redirectToHome,  redirectToFeed} = useAppRouter();
   const logout = useCallback(() => {
     dispatch(resetProfile());
     redirectToHome();
@@ -44,11 +45,20 @@ export const Navbar = () => {
           columnSpacing={2}
         >
           <Grid container item direction="column" xs={1}>
+            { !loggedIn && <Button color="inherit">  {/* If the user is not logged in show a button that redirects to the login page. */}
+              <Link style={{ color: 'white', fontSize:'large' }} to={AppRoute.Register}>
+                {formatMessage({ id: "globals.register" })}
+              </Link>
+            </Button>}
+          </Grid>
+
+          <Grid container item direction="column" xs={1}>
             <Link
               to={AppRoute.Index}> {/* Add a button to redirect to the home page. */}
               <HomeIcon style={{ color: 'white' }} fontSize='large' />
             </Link>
           </Grid>
+
           <Grid container item direction="column" xs={8}>
             {isAdmin && <Grid // If the user is logged in and it is an admin they can have new menu items shown.
               container
@@ -68,8 +78,29 @@ export const Navbar = () => {
               </Grid>
             </Grid>}
           </Grid>
+
+          <Grid container item direction="column" xs={8}>
+            {loggedIn && <Grid // If the user is logged in and it is an admin they can have new menu items shown.
+              container
+              item
+              direction="row"
+              xs={12}
+              alignItems="center"
+              wrap="nowrap"
+              columnSpacing={15}
+            >
+              <Grid container item direction="column" xs={1}>
+                <Button color="inherit">
+                  <Link style={{ color: 'white' }} to={AppRoute.Vendor}>
+                    {formatMessage({ id: "globals.vendor" })}
+                  </Link>
+                </Button>
+              </Grid>
+            </Grid>}
+          </Grid>
+
           <Grid container item direction="column" xs={1}>
-            {isVendor && <Grid // If the user is logged in and it is an admin they can have new menu items shown.
+            {isVendor && <Grid // Button for adding a teddy item
               container
               item
               direction="row"
@@ -86,6 +117,23 @@ export const Navbar = () => {
             </Grid>}
           </Grid>
 
+          <Grid container item direction="column" xs={1}>
+            {loggedIn && <Grid // Button for redirecting to feed page
+              container
+              item
+              direction="row"
+              xs={1}
+              alignItems="center"
+              wrap="nowrap"
+              columnSpacing={15}
+            >
+                <Button color="inherit">
+                  <Link style={{ color: 'white' }} to={AppRoute.Feed}>
+                    {formatMessage({ id: "globals.teddyitems" })}
+                  </Link>
+                </Button>
+            </Grid>}
+          </Grid>
           <Grid container item direction="column" xs={1} color= 'white' fontSize='large'>
             <NavbarLanguageSelector />
           </Grid>

@@ -30,13 +30,22 @@
     "globals.download": "Download",
     "globals.fabric": "Fabric",
     "globals.color": "Color",
+    "globals.country": "Country",
+    "globals.city": "City",
+    "globals.phoneNumber": "Phone Number",
     "globals.quantity": "Quantity",
     "globals.tshirt": "Tshirt",
     "globals.shoes": "Shoes",
+    "globals.operator": "Operator",
+    "globals.vendor": "Vendor",
     "globals.costume": "Costume",
     "globals.dress": "Dress",
     "globals.pants": "Pants",
     "globals.pyjamas": "Pyjamas",
     "globals.hoodie": "Hoodie",
-    "globals.addTeddyItem": "Add Teddy Item"
+    "globals.addTeddyItem": "Add Teddy Item",
+    "globals.editTeddyItem": "Edit Teddy Item",
+    "globals.register": "Register",
+    "globals.address": "Address",
+    "globals.teddyitems": "Teddy Items"
 }
