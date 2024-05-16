@@ -104,7 +104,7 @@ public class UserService : IUserService
             Name = result.Name,
             Role = result.Role,
             Country = result.Country,
-            PhoneNumber = result.PhoneNumber
+            PhoneNumber = result.PhoneNumber,
         };
 
         return ServiceResponse<LoginResponseDTO>.ForSuccess(new()

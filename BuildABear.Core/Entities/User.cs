@@ -18,11 +18,6 @@ public class User : BaseEntity
 
     ///* one-to-one relationship between an user and a cart */
     public Cart Cart { get; set; } = default!;
-
-    //public Guid MainCartId { get; set; } = default!;
-    //public Cart MainCart { get; set; } = default!;
-    //public ICollection<Cart> Carts { get; set; } = default!;
-
     public Guid? VendorId { get; set; } = default;
     public Vendor? Vendor { get; set; } = default;
     public ICollection<UserFile> UserFiles { get; set; } = default!;

@@ -8,6 +8,8 @@ import { RegisterPage } from "@presentation/pages/RegisterPage";
 import { MainPage } from "@presentation/pages/MainPage";
 import { TeddyItemPage } from "@presentation/pages/TeddyItemPage";
 import { EditTeddyItemPage } from "@presentation/pages/EditTeddyItemPage";
+import { RegisterVendorPage } from "@presentation/pages/RegisterVendorPage";
+import { FeedbackPage } from "@presentation/pages/FeedbackPage";
 import { VendorContractPage } from "@presentation/pages/VendorContractPage";
 import { VendorFeedPage } from "@presentation/pages/VendorFeedPage";
 import { Route, Routes } from "react-router-dom";
@@ -26,6 +28,8 @@ export function App() {
         <Route path={AppRoute.TeddyItem} element={<TeddyItemPage />} />
         <Route path={`${AppRoute.UpdateTeddyItem}/:id`} element={<EditTeddyItemPage />} />
         <Route path={AppRoute.Register} element={<RegisterPage />} />
+        <Route path={AppRoute.RegisterVendor} element={<RegisterVendorPage />} />
+        <Route path={AppRoute.Feedback} element={<FeedbackPage />} />
         <Route path={AppRoute.Vendor} element={<VendorFeedPage />} />
         <Route path={`${AppRoute.VendorContract}/:id`} element={<VendorContractPage />} />
         {/* <Route path={AppRoute.UpdateTeddyItem} element={<EditTeddyItemPage />} /> */}

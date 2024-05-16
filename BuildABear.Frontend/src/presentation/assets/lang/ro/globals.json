@@ -47,5 +47,20 @@
     "globals.editTeddyItem": "Modifica produs",
     "globals.register": "Inregistreaza-te",
     "globals.address": "Adresa",
-    "globals.teddyitems": "Articole Ursuleti"
+    "globals.teddyitems": "Articole Ursuleti",
+    "globals.registerVendor": "Inregistreaza Firma Vanzari",
+    "globals.contractStartDate": "Data Incepere Contract",
+    "globals.contractEndDate": "Data Incheiere Contract",
+    "globals.paymentMethod": "Modalitate de Plata",
+    "globals.contractRenewalTerms": "Termeni de reinoire a contractului",
+    "globals.creditCard": "Card de Credit",
+    "globals.bankTransfer": "Transfer Bancar",
+    "globals.paypal": "PayPal",
+    "globals.cheque": "Chec",
+    "globals.cash": "Cash",
+    "globals.annual": "Anual",
+    "globals.biennal": "Bianual",
+    "globals.ondemand": "Reinnoire la cerere",
+    "globals.autoRenew": "Reinnoire automata",
+    "globals.monthly": "Lunar"
 }

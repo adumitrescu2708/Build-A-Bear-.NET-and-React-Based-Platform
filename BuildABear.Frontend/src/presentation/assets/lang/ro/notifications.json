@@ -17,5 +17,7 @@
     "notifications.messages.itemUpdatedSuccess": "Produs modificat cu succes!",
     "notifications.messages.itemUpdatedError": "A aparut o eroare in timpul modificarii!",
     "notifications.messages.registerSuccess": "Te-ai inregistrat cu succes!",
-    "notifications.messages.registerError": "A aparut o eroare la inregistrare!"
+    "notifications.messages.registerError": "A aparut o eroare la inregistrare!",
+    "notifications.messages.vendorAddedSuccess": "Vanzator adaugat cu succes!",
+    "notifications.messages.vendorAddedError": "A aparut o eroare la adaugarea vanzatorului!"
 }

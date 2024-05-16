@@ -5,6 +5,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import HomeIcon from '@mui/icons-material/Home';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
+import StoreIcon from '@mui/icons-material/Store';
+import PetsIcon from '@mui/icons-material/Pets';
 import { Link } from 'react-router-dom';
 import { AppRoute } from 'routes';
 import { useIntl } from 'react-intl';
@@ -16,7 +19,8 @@ import { NavbarLanguageSelector } from '@presentation/components/ui/NavbarLangua
 import { useOwnUserHasRole } from '@infrastructure/hooks/useOwnUser';
 import { UserRoleEnum } from '@infrastructure/apis/client';
 import styles from "../../assets/styles/styles.module.scss";
-import DashboardIcon from '@mui/icons-material/Dashboard';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import FeedbackIcon from '@mui/icons-material/Feedback';
 /**
  * This is the navigation menu that will stay at the top of the page.
  */
@@ -44,6 +48,7 @@ export const Navbar = () => {
           wrap="nowrap"
           columnSpacing={2}
         >
+          {/* REGISTER LINK */}
           <Grid container item direction="column" xs={1}>
             { !loggedIn && <Button color="inherit">  {/* If the user is not logged in show a button that redirects to the login page. */}
               <Link style={{ color: 'white', fontSize:'large' }} to={AppRoute.Register}>
@@ -52,6 +57,7 @@ export const Navbar = () => {
             </Button>}
           </Grid>
 
+          {/* WTF */}
           <Grid container item direction="column" xs={1}>
             <Link
               to={AppRoute.Index}> {/* Add a button to redirect to the home page. */}
@@ -79,20 +85,21 @@ export const Navbar = () => {
             </Grid>}
           </Grid>
 
-          <Grid container item direction="column" xs={8}>
+          {/* VENDOR LINK */}
+          <Grid container item direction="column" xs={1}>
             {loggedIn && <Grid // If the user is logged in and it is an admin they can have new menu items shown.
               container
               item
               direction="row"
-              xs={12}
+              xs={1}
               alignItems="center"
               wrap="nowrap"
               columnSpacing={15}
             >
-              <Grid container item direction="column" xs={1}>
+              <Grid container item direction="column">
                 <Button color="inherit">
                   <Link style={{ color: 'white' }} to={AppRoute.Vendor}>
-                    {formatMessage({ id: "globals.vendor" })}
+                    <StoreIcon  style={{ color: 'white' }} fontSize='large' />
                   </Link>
                 </Button>
               </Grid>
@@ -118,6 +125,26 @@ export const Navbar = () => {
           </Grid>
 
           <Grid container item direction="column" xs={1}>
+            {loggedIn && isAdmin && <Grid // Button for adding a teddy item
+              container
+              item
+              direction="row"
+              xs={1}
+              // alignItems="center"
+              wrap="nowrap"
+              columnSpacing={15}
+            >
+                <Button color="inherit">
+                  <Link style={{ color: 'white' }} to={AppRoute.RegisterVendor}>
+                  <LibraryAddIcon  style={{ color: 'white' }} fontSize='large' />
+                  </Link>
+                </Button>
+            </Grid>}
+          </Grid>
+
+
+          
+          <Grid container item direction="column" xs={1}>
             {loggedIn && <Grid // Button for redirecting to feed page
               container
               item
@@ -128,12 +155,35 @@ export const Navbar = () => {
               columnSpacing={15}
             >
                 <Button color="inherit">
-                  <Link style={{ color: 'white' }} to={AppRoute.Feed}>
-                    {formatMessage({ id: "globals.teddyitems" })}
+                  <Link to={AppRoute.Feed}>
+                    <PetsIcon style={{ color: 'white' }} fontSize='large' />
                   </Link>
                 </Button>
             </Grid>}
           </Grid>
+
+
+          <Grid container item direction="column" xs={1}>
+            {loggedIn && <Grid // Button for redirecting to feed page
+              container
+              item
+              direction="row"
+              xs={1}
+              alignItems="center"
+              wrap="nowrap"
+              columnSpacing={15}
+            >
+                <Button color="inherit">
+                  <Link to={AppRoute.Feedback}>
+                    <FeedbackIcon  style={{ color: 'white' }} fontSize='large' />
+                  </Link>
+                </Button>
+            </Grid>}
+          </Grid>
+
+
+
+
           <Grid container item direction="column" xs={1} color= 'white' fontSize='large'>
             <NavbarLanguageSelector />
           </Grid>

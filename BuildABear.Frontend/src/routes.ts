@@ -10,5 +10,7 @@ export enum AppRoute {
     UpdateTeddyItem = "/teddyItem/edit",
     Register = "/register",
     Vendor = "/vendor",
-    VendorContract = "/vendor/contract"
+    VendorContract = "/vendor/contract",
+    RegisterVendor = "/register/vendor",
+    Feedback = "/feedback"
 }

@@ -47,5 +47,20 @@
     "globals.editTeddyItem": "Edit Teddy Item",
     "globals.register": "Register",
     "globals.address": "Address",
-    "globals.teddyitems": "Teddy Items"
+    "globals.teddyitems": "Teddy Items",
+    "globals.registerVendor": "Register Vendor",
+    "globals.contractStartDate": "Start Contract Date",
+    "globals.contractEndDate": "End Contract Date",
+    "globals.paymentMethod": "Payment Method",
+    "globals.contractRenewalTerms": "Contract Renewal Terms",
+    "globals.creditCard": "Credit Card",
+    "globals.bankTransfer": "Bank Transfer",
+    "globals.paypal": "PayPal",
+    "globals.cheque": "Cheque",
+    "globals.cash": "Cash",
+    "globals.annual": "Annual",
+    "globals.biennal": "Biennal",
+    "globals.ondemand": "On Demand",
+    "globals.autoRenew": "Auto Renew",
+    "globals.monthly": "Monthly"
 }

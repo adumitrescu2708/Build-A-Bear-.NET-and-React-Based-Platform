@@ -17,5 +17,7 @@
     "notifications.messages.itemUpdatedSuccess": "Item updated successfully!",
     "notifications.messages.itemUpdatedError": "Error while updating item!",
     "notifications.messages.registerSuccess": "Register success!",
-    "notifications.messages.registerError": "Register fail!"
+    "notifications.messages.registerError": "Register fail!",
+    "notifications.messages.vendorAddedSuccess": "Vendor added with success!",
+    "notifications.messages.vendorAddedError": "Error while adding vendor!"
 }
