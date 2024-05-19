@@ -19,5 +19,9 @@
     "notifications.messages.registerSuccess": "Register success!",
     "notifications.messages.registerError": "Register fail!",
     "notifications.messages.vendorAddedSuccess": "Vendor added with success!",
-    "notifications.messages.vendorAddedError": "Error while adding vendor!"
+    "notifications.messages.vendorAddedError": "Error while adding vendor!",
+    "notifications.messages.contractUpdatedSuccess": "Contract updated successfully!",
+    "notifications.messages.contractUpdatedError": "Error while updating contract!",
+    "notifications.messages.feedbackSuccess": "Feedbackul sent successfully!",
+    "notifications.messages.feedbackError": "Error while sending feedback!"
 }

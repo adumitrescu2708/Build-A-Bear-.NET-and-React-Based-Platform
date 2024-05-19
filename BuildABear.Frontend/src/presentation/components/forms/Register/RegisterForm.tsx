@@ -236,14 +236,11 @@ export const RegisterForm = () => {
                         </FormControl>
                     </Grid>
 
-                    <Grid container item direction="row" xs={12} className="padding-top-sm">
-                        <Grid container item direction="column" xs={12} md={7}></Grid>
-                        <Grid container item direction="column" xs={5}>
-                            <Button type="submit" disabled={!isEmpty(state.errors) || computed.isSubmitting}> {/* Add a button with type submit to call the submission callback if the button is a descended of the form element. */}
-                                {!computed.isSubmitting && <FormattedMessage id="globals.submit" />}
-                                {computed.isSubmitting && <CircularProgress />}
-                            </Button>
-                        </Grid>
+                    <Grid container item xs={12} justifyContent="center" alignItems="center" className="padding-top-sm">
+                        <Button type="submit" disabled={!isEmpty(state.errors) || computed.isSubmitting}>
+                            {!computed.isSubmitting && <FormattedMessage id="globals.submit" />}
+                            {computed.isSubmitting && <CircularProgress />}
+                        </Button>
                     </Grid>
                 </Grid>
             </ContentCard>

@@ -13,6 +13,7 @@ import { RequestResponse, TeddyItemCategoryEnum } from "@infrastructure/apis/cli
 import { useTeddyItemApi } from "@infrastructure/apis/api-management/teddyItem";
 import { toast } from "react-toastify";
 import { TeddyItemUpdateDTO } from "@infrastructure/apis/client";
+import { useAppRouter } from "@infrastructure/hooks/useAppRouter";
 const getDefaultValues = (initialData?: {}) =>
 {
     const defaultValues = {
@@ -112,7 +113,7 @@ export const useRegisterFormController = () : RegisterFormController => {
     const { formatMessage } = useIntl();
     const { defaultValues, resolver } = useInitRegisterForm();
     const { registerMutation: { mutation: registerMutation, key: registerMutationKey } } = useRegisterApi();
-
+    const { redirectToLogin } = useAppRouter();
     const { mutateAsync: add, status } = useMutation({
         mutationKey: [registerMutationKey], 
         mutationFn: registerMutation
@@ -121,6 +122,7 @@ export const useRegisterFormController = () : RegisterFormController => {
     const submit = useCallback((data: RegisterFormModel) => {// Create a submit callback to send the form data to the backend.
         add(data).then(() => {
             toast(formatMessage({ id: "notifications.messages.registerSuccess" }));
+            redirectToLogin();
         }).catch(error => {
             toast(formatMessage({ id: "notifications.messages.registerError" }));
         });

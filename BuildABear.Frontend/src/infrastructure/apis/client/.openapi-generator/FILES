@@ -1,6 +1,6 @@
-.openapi-generator-ignore
 apis/AuthorizationApi.ts
 apis/CartApi.ts
+apis/FeedbackApi.ts
 apis/OrderApi.ts
 apis/TeddyApi.ts
 apis/TeddyItemApi.ts
@@ -17,6 +17,9 @@ models/BriefUserDTO.ts
 models/BriefUserDTORequestResponse.ts
 models/ErrorCodes.ts
 models/ErrorMessage.ts
+models/FeedbackDTO.ts
+models/FeedbackGrade.ts
+models/FeedbackServiceAction.ts
 models/GuidICollectionRequestResponse.ts
 models/GuidRequestResponse.ts
 models/HttpStatusCode.ts
@@ -62,7 +65,6 @@ models/VendorBriefViewRequestResponse.ts
 models/VendorContractDTO.ts
 models/VendorContractDTORequestResponse.ts
 models/VendorContractRenewalTerms.ts
-models/VendorEmail.ts
 models/VendorUserAddDTO.ts
 models/VendorViewDTO.ts
 models/VendorViewDTORequestResponse.ts

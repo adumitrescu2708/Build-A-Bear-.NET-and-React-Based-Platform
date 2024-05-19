@@ -19,5 +19,10 @@
     "notifications.messages.registerSuccess": "Te-ai inregistrat cu succes!",
     "notifications.messages.registerError": "A aparut o eroare la inregistrare!",
     "notifications.messages.vendorAddedSuccess": "Vanzator adaugat cu succes!",
-    "notifications.messages.vendorAddedError": "A aparut o eroare la adaugarea vanzatorului!"
+    "notifications.messages.vendorAddedError": "A aparut o eroare la adaugarea vanzatorului!",
+    "notifications.messages.contractUpdatedSuccess": "Contract actualizat cu succes!",
+    "notifications.messages.contractUpdatedError": "A aparut o eroare in timpul actualizarii contractului!",
+    "notifications.messages.feedbackSuccess": "Feedbackul a fost trimis cu succes!",
+    "notifications.messages.feedbackError": "A aparut o eroare in timpul trimiterii feedbackului!"
+
 }

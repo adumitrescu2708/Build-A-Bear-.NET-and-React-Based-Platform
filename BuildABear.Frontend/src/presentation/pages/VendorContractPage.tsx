@@ -10,7 +10,7 @@ import {ContentMediaCard} from "../components/ui/ContentMediaCard/ContentMediaCa
 import { Box } from "@mui/system";
 import { VendorTable } from "@presentation/components/ui/Tables/VendorTable";
 import { useParams } from 'react-router-dom';
-
+import { VendorEditForm } from "@presentation/components/forms/VendorContractEdit/VendorEditForm";
 
 export const VendorContractPage = memo(() => {
     let { id } = useParams();
@@ -18,8 +18,9 @@ export const VendorContractPage = memo(() => {
     return <Fragment>
         <Seo title="Build a Bear | Vendor Contract" />
         <WebsiteLayout>
+
         <Box sx={{ padding: "0px 50px 0px 50px", justifyItems: "center" }}>
-                <VendorContractTable id={id}/>
+                <VendorEditForm id={id}/>
             </Box>  
         </WebsiteLayout>
         </Fragment>

@@ -142,10 +142,6 @@ export const useRegisterVendorFormController = (onSubmit?: () => void) : Registe
         })
     , [add]);
 
-
-
-
-
     const {
         register,
         handleSubmit,
@@ -186,5 +182,4 @@ export const useRegisterVendorFormController = (onSubmit?: () => void) : Registe
             errors // Return what errors have occurred when validating the form input.
         }
     }
-
 }

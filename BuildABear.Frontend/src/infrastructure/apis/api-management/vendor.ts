@@ -1,12 +1,14 @@
 import { useAppSelector } from "@application/store";
 import { ApiVendorGetGetRequest, VendorApi } from "../client";
 import { getAuthenticationConfiguration } from "@infrastructure/utils/userUtils";
-import { VendorAddDTO } from "../client";
+import { VendorAddDTO, VendorContractDTO } from "../client";
 /**
  * Use constants to identify mutations and queries.
  */
 const getVendorsQuery = "getVendorsQuery";
 const addVendorMutationKey = "addVendorMutation";
+const updateVendorMutationKey = "updateVendorMutation";
+const deleteVendorMutationKey = "deleteVendorMutation";
 
 export const useVendorApi = () => {
     const { token } = useAppSelector(x => x.profileReducer); // You can use the data form the Redux storage. 
@@ -14,6 +16,8 @@ export const useVendorApi = () => {
 
     const getVendors = (page: ApiVendorGetGetRequest) => new VendorApi(config).apiVendorGetGet(page);
     const addVendor = (page: VendorAddDTO) => new VendorApi(config).apiVendorAddPost({ vendorAddDTO: page });
+    const updateVendor = (id:string, vendorContractDTO:VendorContractDTO) => new VendorApi(config).apiVendorUpdateContractByIdIdPut({id, vendorContractDTO});
+    const deleteVendor = (id:string) => new VendorApi(config).apiVendorDeleteIdDelete({id});
     return {
         getVendors: { // Return the query object.
             key: getVendorsQuery, // Add the key to identify the query.
@@ -22,18 +26,14 @@ export const useVendorApi = () => {
         addVendor: {
             key: addVendorMutationKey,
             mutation: addVendor
+        },
+        updateVendor: {
+            key: updateVendorMutationKey,
+            mutation:updateVendor
+        },
+        deleteVendor: {
+            key: deleteVendorMutationKey,
+            mutation: deleteVendor
         }
-        // updateTeddyItem: {
-        //     key: updateTeddyItemMutationKey,
-        //     mutation: updateTeddyItem
-        // },
-        // addTeddyItem: {
-        //     key: addTeddyItemMutationKey,
-        //     mutation: addTeddyItem
-        // },
-        // deleteTeddyItem: {
-        //     key: deleteTeddyItemMutationKey,
-        //     mutation: deleteTeddyItem
-        // },
     }
 }

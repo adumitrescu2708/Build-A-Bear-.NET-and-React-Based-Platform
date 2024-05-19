@@ -21,7 +21,6 @@ import type {
   VendorBriefViewRequestResponse,
   VendorContractDTO,
   VendorContractDTORequestResponse,
-  VendorEmail,
   VendorViewDTORequestResponse,
 } from '../models';
 import {
@@ -37,8 +36,6 @@ import {
     VendorContractDTOToJSON,
     VendorContractDTORequestResponseFromJSON,
     VendorContractDTORequestResponseToJSON,
-    VendorEmailFromJSON,
-    VendorEmailToJSON,
     VendorViewDTORequestResponseFromJSON,
     VendorViewDTORequestResponseToJSON,
 } from '../models';
@@ -49,10 +46,6 @@ export interface ApiVendorAddPostRequest {
 
 export interface ApiVendorDeleteIdDeleteRequest {
     id: string;
-}
-
-export interface ApiVendorGetByEmailGetRequest {
-    vendorEmail?: VendorEmail;
 }
 
 export interface ApiVendorGetByIdIdGetRequest {
@@ -139,37 +132,6 @@ export class VendorApi extends runtime.BaseAPI {
      */
     async apiVendorDeleteIdDelete(requestParameters: ApiVendorDeleteIdDeleteRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<RequestResponse> {
         const response = await this.apiVendorDeleteIdDeleteRaw(requestParameters, initOverrides);
-        return await response.value();
-    }
-
-    /**
-     */
-    async apiVendorGetByEmailGetRaw(requestParameters: ApiVendorGetByEmailGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<VendorBriefViewRequestResponse>> {
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        headerParameters['Content-Type'] = 'application/json';
-
-        if (this.configuration && this.configuration.apiKey) {
-            headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Bearer authentication
-        }
-
-        const response = await this.request({
-            path: `/api/Vendor/GetByEmail`,
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-            body: VendorEmailToJSON(requestParameters.vendorEmail),
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => VendorBriefViewRequestResponseFromJSON(jsonValue));
-    }
-
-    /**
-     */
-    async apiVendorGetByEmailGet(requestParameters: ApiVendorGetByEmailGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<VendorBriefViewRequestResponse> {
-        const response = await this.apiVendorGetByEmailGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

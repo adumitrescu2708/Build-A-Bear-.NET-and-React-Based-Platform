@@ -182,7 +182,8 @@ public static class WebApplicationBuilderExtensions
             .AddTransient<ITeddyTemplateService, TeddyTemplateService>()
             .AddTransient<ITeddyService, TeddyService>()
             .AddTransient<ICartService, CartService>()
-            .AddTransient<IOrderService, OrderService>();
+            .AddTransient<IOrderService, OrderService>()
+            .AddTransient<IFeedbackService, FeedbackService>();
         builder.Services.AddControllers().AddJsonOptions(options =>
         {
             options.JsonSerializerOptions.Converters.Add(new TeddyItemCategoryEnumConverter());

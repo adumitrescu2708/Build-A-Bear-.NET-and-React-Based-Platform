@@ -2,6 +2,7 @@
 /* eslint-disable */
 export * from './AuthorizationApi';
 export * from './CartApi';
+export * from './FeedbackApi';
 export * from './OrderApi';
 export * from './TeddyApi';
 export * from './TeddyItemApi';

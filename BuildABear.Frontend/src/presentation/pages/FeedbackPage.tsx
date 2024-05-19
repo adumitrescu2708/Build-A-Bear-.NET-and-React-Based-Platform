@@ -7,6 +7,8 @@ import { Seo } from "@presentation/components/ui/Seo";
 import { ContentCard } from "@presentation/components/ui/ContentCard";
 import styles from "../assets/styles/styles.module.scss";
 import {ContentMediaCard} from "../components/ui/ContentMediaCard/ContentMediaCard"
+import { Box } from "@mui/material";
+import { FeedbackForm } from "@presentation/components/forms/Feedback/FeedbackForm";
 
 export const FeedbackPage = memo(() => {
   const { formatMessage } = useIntl();
@@ -14,10 +16,9 @@ export const FeedbackPage = memo(() => {
   return <Fragment>
       <Seo title="Build a Bear | Feedback" />
       <WebsiteLayout>
-        <Container sx={{ padding: "0px 50px 00px 50px", justifyItems: "center"}}>
-          <ContentMediaCard title={formatMessage({ id: "globals.welcome" })} imageSrc="src/presentation/assets/img/logo.png" height={200}>
-          </ContentMediaCard>
-        </Container>
+          <Box sx={{ padding: "0px 50px 0px 50px", justifyItems: "center" }}>
+                <FeedbackForm />
+          </Box>
       </WebsiteLayout>
     </Fragment>
 });

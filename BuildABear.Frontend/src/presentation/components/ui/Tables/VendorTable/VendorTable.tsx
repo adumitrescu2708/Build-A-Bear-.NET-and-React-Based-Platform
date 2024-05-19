@@ -59,12 +59,12 @@ const format = (value : any) =>
  * Creates the user table.
  */
 export const VendorTable = () => {
-    const { redirectToVendorContractView } = useAppRouter();
+    const { redirectToVendorContractEdit } = useAppRouter();
     const { userId: ownUserId } = useAppSelector(x => x.profileReducer);
     const { formatMessage } = useIntl();
     const header = useHeader();
     const orderMap = header.reduce((acc, e, i) => { return { ...acc, [e.key]: i } }, {}) as { [key: string]: number };
-    const { handleChangePage, handleChangePageSize, pagedData, isError, isLoading, tryReload, labelDisplay} = useVendorController(); // Use the controller hook.
+    const { handleChangePage, handleChangePageSize, pagedData, isError, isLoading, tryReload, labelDisplay, remove} = useVendorController(); // Use the controller hook.
     const rowValues = getRowValues(pagedData?.data, orderMap); // Get the row values.
     const isAdmin = useOwnUserHasRole(UserRoleEnum.Admin);
     const isVendor = useOwnUserHasRole(UserRoleEnum.Vendor);
@@ -92,8 +92,12 @@ export const VendorTable = () => {
                         }  
                         {
                             (isAdmin) && 
-                            <TableCell>{formatMessage({ id: "labels.view" })}</TableCell>
-                        }      
+                            <TableCell>{formatMessage({ id: "labels.edit" })}</TableCell>
+                        }
+                        {
+                            (isAdmin) && 
+                            <TableCell>{formatMessage({ id: "labels.delete" })}</TableCell>
+                        }  
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -103,12 +107,23 @@ export const VendorTable = () => {
                         <TableRow key={`row_${rowIndex + 1}`}>
                             {data.map((keyValue, index) => <TableCell key={`cell_${rowIndex + 1}_${index + 1}`}>{format(keyValue)}</TableCell>)} 
                             {
+                                (isAdmin)  && 
                                <TableCell>
-                                    <IconButton color="primary" onClick={() => redirectToEditTeddyItem(entry.id)}>
+                                    <IconButton color="primary" onClick={() => redirectToVendorContractEdit(entry.id)}>
                                         <EditAttributesOutlined color="primary" fontSize='small' />
                                     </IconButton>
                                </TableCell> 
                             } 
+                                {
+                                (isAdmin)  && 
+                                <TableCell>
+                                {
+                                    <IconButton color="error" onClick={() => remove(entry.id || '')}>
+                                        <DeleteIcon color="error" fontSize='small' />
+                                    </IconButton>
+                                }
+                                </TableCell>
+                            }
                         </TableRow>)
 
                     }

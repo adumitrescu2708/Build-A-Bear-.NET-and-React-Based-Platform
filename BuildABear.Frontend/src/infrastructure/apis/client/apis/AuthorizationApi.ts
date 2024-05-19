@@ -87,7 +87,7 @@ export class AuthorizationApi extends runtime.BaseAPI {
         if (this.configuration && this.configuration.apiKey) {
             headerParameters["Authorization"] = this.configuration.apiKey("Authorization"); // Bearer authentication
         }
-        
+
         const response = await this.request({
             path: `/api/Authorization/Register`,
             method: 'POST',

@@ -62,5 +62,18 @@
     "globals.biennal": "Biennal",
     "globals.ondemand": "On Demand",
     "globals.autoRenew": "Auto Renew",
-    "globals.monthly": "Monthly"
+    "globals.monthly": "Monthly",
+    "globals.feedbackGrade": "Grade",
+    "globals.feedbackServiceAction": "Service Action",
+    "globals.contact": "I want to be contacted",
+    "globals.comments": "Leave us your feedback",
+    "globals.buyTeddy": "Problem while buying",
+    "globals.returnTeddy": "Problem while returning",
+    "globals.shippingTeddy": "Problem while shipping",
+    "globals.cashback": "Problem with cashback",
+    "globals.poor": "Poor",
+    "globals.average": "Average",
+    "globals.good": "Good",
+    "globals.excellent": "Excellent",
+    "globals.veryPoor": "Very Poor"
 }

@@ -322,6 +322,54 @@
         }
       }
     },
+    "/api/Feedback/Add": {
+      "post": {
+        "tags": [
+          "Feedback"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackDTO"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackDTO"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestResponse"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestResponse"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Order/PlaceOrder": {
       "post": {
         "tags": [
@@ -1913,54 +1961,6 @@
         }
       }
     },
-    "/api/Vendor/GetByEmail": {
-      "get": {
-        "tags": [
-          "Vendor"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VendorEmail"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/VendorEmail"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/VendorEmail"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/VendorBriefViewRequestResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VendorBriefViewRequestResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VendorBriefViewRequestResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/Vendor/Get": {
       "get": {
         "tags": [
@@ -2299,6 +2299,44 @@
           }
         },
         "additionalProperties": false
+      },
+      "FeedbackDTO": {
+        "type": "object",
+        "properties": {
+          "comments": {
+            "type": "string",
+            "nullable": true
+          },
+          "feedbackGrade": {
+            "$ref": "#/components/schemas/FeedbackGrade"
+          },
+          "feedbackServiceAction": {
+            "$ref": "#/components/schemas/FeedbackServiceAction"
+          },
+          "contact": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "FeedbackGrade": {
+        "enum": [
+          "Poor",
+          "Average",
+          "Good",
+          "Excellent",
+          "VeryPoor"
+        ],
+        "type": "string"
+      },
+      "FeedbackServiceAction": {
+        "enum": [
+          "BuyTeddy",
+          "ReturnTeddy",
+          "ShippingTeddy",
+          "Cashback"
+        ],
+        "type": "string"
       },
       "GuidICollectionRequestResponse": {
         "type": "object",
@@ -3183,16 +3221,6 @@
           "Monthly"
         ],
         "type": "string"
-      },
-      "VendorEmail": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
       },
       "VendorUserAddDTO": {
         "type": "object",

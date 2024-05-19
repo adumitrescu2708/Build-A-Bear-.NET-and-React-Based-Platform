@@ -13,6 +13,11 @@ export const useAppRouter = () => {
     [navigate]
   );
 
+  const redirectToVendor = useCallback(
+    () => navigate(AppRoute.Vendor),
+    [navigate]
+  );
+
   const redirectToUsers = useCallback(
     () =>
       navigate({
@@ -29,7 +34,13 @@ export const useAppRouter = () => {
     [navigate]
   );
 
-
+  const redirectToLogin = useCallback(
+    () =>
+      navigate({
+        pathname: AppRoute.Login
+      }),
+    [navigate]
+  );
   const redirectToUsersFiles = useCallback(
     () =>
       navigate({
@@ -48,7 +59,7 @@ export const useAppRouter = () => {
     [navigate]
   );
 
-  const redirectToVendorContractView = useCallback(
+  const redirectToVendorContractEdit = useCallback(
     (id) => navigate(`${AppRoute.VendorContract}/${id}`),
     [navigate]
   );
@@ -60,6 +71,9 @@ export const useAppRouter = () => {
     redirectToFeed,
     redirectToAddTeddyItem,
     redirectToEditTeddyItem,
+    redirectToVendorContractEdit,
+    redirectToLogin,
+    redirectToVendor,
     navigate
   };
 };

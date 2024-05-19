@@ -71,7 +71,6 @@ export const TeddyItemTable = () => {
     const isAdmin = useOwnUserHasRole(UserRoleEnum.Admin);
     const isVendor = useOwnUserHasRole(UserRoleEnum.Vendor);
     
-    console.log("sf ", getRowValues(pagedData?.data, orderMap))
     return <DataLoadingContainer isError={isError} isLoading={isLoading} tryReload={tryReload}> {/* Wrap the table into the loading container because data will be fetched from the backend and is not immediately available.*/}
         {!isUndefined(pagedData) && !isUndefined(pagedData?.totalCount) && !isUndefined(pagedData?.page) && !isUndefined(pagedData?.pageSize) &&
             <TablePagination // Use the table pagination to add the navigation between the table pages.

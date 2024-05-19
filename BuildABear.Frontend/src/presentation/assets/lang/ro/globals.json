@@ -62,5 +62,18 @@
     "globals.biennal": "Bianual",
     "globals.ondemand": "Reinnoire la cerere",
     "globals.autoRenew": "Reinnoire automata",
-    "globals.monthly": "Lunar"
+    "globals.monthly": "Lunar",
+    "globals.feedbackGrade": "Nota Generala",
+    "globals.feedbackServiceAction": "Serviciul cu eroare",
+    "globals.contact": "Doresc sa fiu contactat",
+    "globals.comments": "Lasa-ne aici un feedback",
+    "globals.buyTeddy": "Problema in timpul cumpararii",
+    "globals.returnTeddy": "Problema cu returul",
+    "globals.shippingTeddy": "Problema cu livrarea",
+    "globals.cashback": "Problema cu cashback",
+    "globals.poor": "Slab",
+    "globals.average": "Mediu",
+    "globals.good": "Bine",
+    "globals.excellent": "Excelent",
+    "globals.veryPoor": "Foarte slab"
 }
