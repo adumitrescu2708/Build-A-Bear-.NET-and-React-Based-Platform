@@ -26,6 +26,7 @@ public interface IUserService
     public Task<ServiceResponse<LoginResponseDTO>> Login(LoginDTO login, CancellationToken cancellationToken = default);
 
     public Task<ServiceResponse> Register(UserAddDTO login, CancellationToken cancellationToken = default);
+    public Task<ServiceResponse> RegisterVendor(VendorUserRegisterDTO login, CancellationToken cancellationToken = default);
     /// <summary>
     /// GetUserCount returns the number of users in the database.
     /// </summary>

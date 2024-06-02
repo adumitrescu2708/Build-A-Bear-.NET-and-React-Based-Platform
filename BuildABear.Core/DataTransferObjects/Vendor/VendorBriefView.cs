@@ -10,4 +10,6 @@ public class VendorBriefView
     [EmailAddress(ErrorMessage = "Invalid mail address format")]
     public string Email { get; set; } = default!;
     public string Address { get; set; } = default!;
+
+    public DateTime ContractStartDate { get; set; } = default!;
 }

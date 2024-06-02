@@ -5,6 +5,7 @@ import { useIntl } from "react-intl";
 import * as yup from "yup";
 import { isUndefined } from "lodash";
 import {PaymentMethod, VendorContractRenewalTerms} from "@infrastructure/apis/client/models"
+import { useAppRouter } from "@infrastructure/hooks/useAppRouter"
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { useForm } from "react-hook-form";
@@ -127,6 +128,7 @@ export const useRegisterVendorFormController = (onSubmit?: () => void) : Registe
     const { formatMessage } = useIntl();
     const { defaultValues, resolver } = useInitRegisterForm();
     const { addVendor: { mutation: addVendor, key: addVendorMutationKey } } = useVendorApi();
+    const { redirectToVendor } = useAppRouter();
     const { mutateAsync: add, status } = useMutation({
         mutationKey: [addVendorMutationKey], 
         mutationFn: addVendor
@@ -135,7 +137,9 @@ export const useRegisterVendorFormController = (onSubmit?: () => void) : Registe
         add(data).then(() => {
             if (onSubmit) {
                 onSubmit();
+                redirectToVendor();
                 toast(formatMessage({ id: "notifications.messages.vendorAddedSuccess" }));
+                
             }
         }).catch(error => {
             toast(formatMessage({ id: "notifications.messages.vendorAddedError" }));

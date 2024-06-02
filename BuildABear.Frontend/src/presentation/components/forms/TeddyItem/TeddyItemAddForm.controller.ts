@@ -12,6 +12,7 @@ import { SelectChangeEvent } from "@mui/material";
 import { TeddyItemCategoryEnum } from "@infrastructure/apis/client/models";
 import { useTeddyItemApi } from "@infrastructure/apis/api-management/teddyItem";
 import { toast } from "react-toastify";
+import { useAppRouter } from "@infrastructure/hooks/useAppRouter";
 const getDefaultValues = (initialData?: {}) =>
 {
     const defaultValues = {
@@ -132,6 +133,7 @@ export const useTeddyItemAddFormController = (onSubmit?: () => void) : TeddyItem
     const { formatMessage } = useIntl();
     const { defaultValues, resolver } = useInitTeddyItemAddForm();
     const { addTeddyItem: { mutation: addTeddyItem, key: addTeddyItemQuery } } = useTeddyItemApi();
+    const { redirectToFeed } = useAppRouter();
     const { mutateAsync: add, status } = useMutation({
         mutationKey: [addTeddyItemQuery], 
         mutationFn: addTeddyItem
@@ -141,6 +143,7 @@ export const useTeddyItemAddFormController = (onSubmit?: () => void) : TeddyItem
     const submit = useCallback((data: TeddyItemAddFormModel) => // Create a submit callback to send the form data to the backend.
         add(data).then(() => {
                 toast(formatMessage({ id: "notifications.messages.itemAddedSuccess" }));
+                redirectToFeed();
         }), [add]);
 
     // const submit = useCallback((body: TeddyItemAddFormModel) => // Create a submit callback to send the form data to the backend.

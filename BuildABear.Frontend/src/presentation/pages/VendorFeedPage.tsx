@@ -16,9 +16,9 @@ export const VendorFeedPage = memo(() => {
       <Seo title="Build a Bear | Vendor Feed" />
       <WebsiteLayout>
       <Box sx={{ padding: "0px 2px 00px 2px", justifyItems: "center" }}>
-        <ContentCard>
+        {/* <ContentCard>
           Enterprise Vendors
-        </ContentCard>
+        </ContentCard> */}
       </Box>   
       <Box sx={{ padding: "0px 50px 00px 50px", justifyItems: "center" }}>
         <ContentCard>

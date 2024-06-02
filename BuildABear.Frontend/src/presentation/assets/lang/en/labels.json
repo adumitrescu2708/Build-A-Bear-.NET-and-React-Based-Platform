@@ -11,5 +11,6 @@
     "labels.edit": "Edit",
     "labels.addItem": "Add Teddy Item",
     "labels.delete": "Delete",
-    "labels.view": "View"
+    "labels.view": "View",
+    "labels.search": "Search"
 }

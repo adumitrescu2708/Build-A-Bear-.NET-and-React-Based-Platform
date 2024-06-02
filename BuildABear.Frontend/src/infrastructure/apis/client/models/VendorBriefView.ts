@@ -43,6 +43,12 @@ export interface VendorBriefView {
      * @memberof VendorBriefView
      */
     address?: string | null;
+    /**
+     * 
+     * @type {Date}
+     * @memberof VendorBriefView
+     */
+    contractStartDate?: Date;
 }
 
 /**
@@ -68,6 +74,7 @@ export function VendorBriefViewFromJSONTyped(json: any, ignoreDiscriminator: boo
         'name': !exists(json, 'name') ? undefined : json['name'],
         'email': !exists(json, 'email') ? undefined : json['email'],
         'address': !exists(json, 'address') ? undefined : json['address'],
+        'contractStartDate': !exists(json, 'contractStartDate') ? undefined : (new Date(json['contractStartDate'])),
     };
 }
 
@@ -84,6 +91,7 @@ export function VendorBriefViewToJSON(value?: VendorBriefView | null): any {
         'name': value.name,
         'email': value.email,
         'address': value.address,
+        'contractStartDate': value.contractStartDate === undefined ? undefined : (value.contractStartDate.toISOString()),
     };
 }
 

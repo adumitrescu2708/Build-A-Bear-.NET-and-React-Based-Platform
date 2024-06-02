@@ -66,6 +66,7 @@ models/VendorContractDTO.ts
 models/VendorContractDTORequestResponse.ts
 models/VendorContractRenewalTerms.ts
 models/VendorUserAddDTO.ts
+models/VendorUserRegisterDTO.ts
 models/VendorViewDTO.ts
 models/VendorViewDTORequestResponse.ts
 models/index.ts

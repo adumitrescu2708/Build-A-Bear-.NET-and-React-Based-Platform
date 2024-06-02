@@ -5,6 +5,7 @@ import { ToastNotifier } from "@presentation/components/ui/ToastNotifier";
 import { HomePage } from "@presentation/pages/HomePage";
 import { LoginPage } from "@presentation/pages/LoginPage";
 import { RegisterPage } from "@presentation/pages/RegisterPage";
+import { RegisterVendorUserPage } from "@presentation/pages/RegisterVendorUserPage";
 import { MainPage } from "@presentation/pages/MainPage";
 import { TeddyItemPage } from "@presentation/pages/TeddyItemPage";
 import { EditTeddyItemPage } from "@presentation/pages/EditTeddyItemPage";
@@ -28,10 +29,12 @@ export function App() {
         <Route path={AppRoute.TeddyItem} element={<TeddyItemPage />} />
         <Route path={`${AppRoute.UpdateTeddyItem}/:id`} element={<EditTeddyItemPage />} />
         <Route path={AppRoute.Register} element={<RegisterPage />} />
+        <Route path={AppRoute.RegisterVendorUser} element={<RegisterVendorUserPage />} />
         <Route path={AppRoute.RegisterVendor} element={<RegisterVendorPage />} />
         <Route path={AppRoute.Feedback} element={<FeedbackPage />} />
         <Route path={AppRoute.Vendor} element={<VendorFeedPage />} />
         <Route path={`${AppRoute.VendorContract}/:id`} element={<VendorContractPage />} />
+        
         {/* <Route path={AppRoute.UpdateTeddyItem} element={<EditTeddyItemPage />} /> */}
         {/* {isAdmin && <Route path={AppRoute.Users} element={<UsersPage />} />} If the user doesn't have the right role this route shouldn't be used. */}
       </Routes>

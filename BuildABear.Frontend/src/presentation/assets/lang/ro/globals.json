@@ -49,6 +49,7 @@
     "globals.address": "Adresa",
     "globals.teddyitems": "Articole Ursuleti",
     "globals.registerVendor": "Inregistreaza Firma Vanzari",
+    "globals.registerVendorUser": "Alatura-te echipei!",
     "globals.contractStartDate": "Data Incepere Contract",
     "globals.contractEndDate": "Data Incheiere Contract",
     "globals.paymentMethod": "Modalitate de Plata",
@@ -75,5 +76,18 @@
     "globals.average": "Mediu",
     "globals.good": "Bine",
     "globals.excellent": "Excelent",
-    "globals.veryPoor": "Foarte slab"
+    "globals.veryPoor": "Foarte slab",
+    "globals.confirmEditVendor": "Sunteti sigur ca doriti sa modificati contractul angajatului?",
+    "globals.cancel": "Anuleaza",
+    "globals.confirm": "Confirm",
+    "globals.confirmation": "Confirmare necesara",
+    "globals.confirmDelete": "Sunteti sigur ca doriti sa stergeti angajat?",
+    "globals.confirmDeleteTeddy": "Sunteti sigur ca doriti sa stergeti obiect?",
+    "globals.addVendor": "Adauga angajat",
+    "globals.vendorList": "Lista de angajati",
+    "globals.vendorEmail": "Adresa de email a angajatorului",
+    "globals.teddyItemList": "Lista de obiecte pentru Ursuleti",
+    "globals.confirmAddTeddy": "Sunteti sigur ca doriti sa adaugati acest obiect pentru Ursuleti?",
+    "globals.confirmEdit": "Sunteti sigur ca doriti sa modificati acest obiect pentru Ursuleti?",
+    "globals.confirmVendorAdd": "Sunteti sigur ca doriti sa adaugati vanzator?"
 }

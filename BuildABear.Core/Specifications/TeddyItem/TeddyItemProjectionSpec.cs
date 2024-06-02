@@ -29,8 +29,8 @@ public sealed class TeddyItemProjectionSpec : BaseSpec<TeddyItemProjectionSpec, 
         {
             return;
         }
-
-        Query.Where(e => EF.Functions.ILike(e.SKU, search));
+        var searchExpr = $"%{search.Replace(" ", "%")}%";
+        Query.Where(e => EF.Functions.ILike(e.Name, searchExpr));
     }
 
     public TeddyItemProjectionSpec(TeddyItemCategoryEnum category)

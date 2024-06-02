@@ -11,7 +11,7 @@ import {
     Select
 } from "@mui/material";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useRegisterFormController } from "./RegisterForm.controller";
+import { useRegisterVendorUserFormController } from "./RegisterVendorUserForm.controller";
 import { ContentCard } from "@presentation/components/ui/ContentCard";
 import { isEmpty, isUndefined } from "lodash";
 import {UserRoleEnum} from "@infrastructure/apis/client"
@@ -19,9 +19,9 @@ import {UserRoleEnum} from "@infrastructure/apis/client"
 /**
  * Here we declare the login form component.
  */
-export const RegisterForm = () => {
+export const RegisterVendorUserForm = () => {
     const { formatMessage } = useIntl();
-    const { state, actions, computed } = useRegisterFormController(); // Use the controller.
+    const { state, actions, computed } = useRegisterVendorUserFormController(); // Use the controller.
 
     return <form onSubmit={actions.handleSubmit(actions.submit)}> {/* Wrap your form into a form tag and use the handle submit callback to validate the form and call the data submission. */}
         <Stack spacing={4} style={{ width: "100%" }}>
@@ -85,6 +85,34 @@ export const RegisterForm = () => {
                     <Grid container item direction="column" xs={12} md={12}>
                         <FormControl
                             fullWidth
+                            error={!isUndefined(state.errors.vendorEmail)}
+                        >
+                            <FormLabel required>
+                                <FormattedMessage id="globals.vendorEmail" />
+                            </FormLabel>
+                            <OutlinedInput
+                                type="email"
+                                {...actions.register("vendorEmail")}
+                                placeholder={formatMessage(
+                                    { id: "globals.placeholders.textInput" },
+                                    {
+                                        fieldName: formatMessage({
+                                            id: "globals.vendorEmail",
+                                        }),
+                                    })}
+                                autoComplete="current-email"
+                            />
+                            <FormHelperText
+                                hidden={isUndefined(state.errors.vendorEmail)}
+                            >
+                                {state.errors.vendorEmail?.message}
+                            </FormHelperText>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid container item direction="column" xs={12} md={12}>
+                        <FormControl
+                            fullWidth
                             error={!isUndefined(state.errors.password)}
                         >
                             <FormLabel required>
@@ -110,49 +138,6 @@ export const RegisterForm = () => {
                         </FormControl>
                     </Grid>
 
-                    <Grid container item direction="column" xs={6} md={6}>
-                        <FormControl
-                            fullWidth
-                            error={!isUndefined(state.errors.role)}
-                        >
-                            <FormLabel required>
-                                <FormattedMessage id="globals.role" />
-                            </FormLabel>
-                            <Select
-                                {...actions.register("role")}
-                                value={actions.watch("role")}
-                                onChange={actions.selectRole} // Selects may need a listener to for the variable change.
-                                displayEmpty
-                            >
-                                <MenuItem value="" disabled> {/* Add the select options, the first here is used as a placeholder. */}
-                                    <span className="text-gray">
-                                        {formatMessage({ id: "globals.placeholders.selectInput" }, {
-                                            fieldName: formatMessage({
-                                                id: "globals.role",
-                                            }),
-                                        })}
-                                    </span>
-                                </MenuItem>
-                                <MenuItem value={UserRoleEnum.Admin}>
-                                    <FormattedMessage id="globals.admin" />
-                                </MenuItem>
-                                <MenuItem value={UserRoleEnum.Operator}>
-                                    <FormattedMessage id="globals.operator" />
-                                </MenuItem>
-                                {/* <MenuItem value={UserRoleEnum.Vendor}>
-                                    <FormattedMessage id="globals.vendor" />
-                                </MenuItem> */}
-                                <MenuItem value={UserRoleEnum.Client}>
-                                    <FormattedMessage id="globals.client" />
-                                </MenuItem>
-                            </Select>
-                            <FormHelperText
-                                hidden={isUndefined(state.errors.role)}
-                            >
-                                {state.errors.role?.message}
-                            </FormHelperText>
-                        </FormControl>
-                    </Grid>
 
                     <Grid container item direction="column" xs={12} md={12}>
                         <FormControl

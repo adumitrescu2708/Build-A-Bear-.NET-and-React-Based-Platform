@@ -13,6 +13,7 @@ import { RequestResponse, TeddyItemCategoryEnum } from "@infrastructure/apis/cli
 import { useTeddyItemApi } from "@infrastructure/apis/api-management/teddyItem";
 import { toast } from "react-toastify";
 import { TeddyItemUpdateDTO } from "@infrastructure/apis/client";
+import { useAppRouter } from "@infrastructure/hooks/useAppRouter";
 const getDefaultValues = (initialData?: {}) =>
 {
     const defaultValues = {
@@ -52,6 +53,7 @@ export const useTeddyItemEditFormController = (id: string) : TeddyItemEditFormCo
     const { formatMessage } = useIntl();
     const { defaultValues, resolver } = useInitTeddyItemEditForm();
     const { updateTeddyItem: { mutation:updateTeddyItem, key: updateTeddyItemQuery } } = useTeddyItemApi();
+    const { redirectToFeed } = useAppRouter();
     // const { mutateAsync: add, status } = useMutation<{ id: string, teddyItemUpdateDTO: TeddyItemUpdateDTO }>({
     //     mutationKey: [updateTeddyItemQuery], 
     //     mutationFn: ({ id, teddyItemUpdateDTO }) => updateTeddyItem(id, teddyItemUpdateDTO),
@@ -80,6 +82,7 @@ export const useTeddyItemEditFormController = (id: string) : TeddyItemEditFormCo
         add(requestData).then(() => {
             
             toast(formatMessage({ id: "notifications.messages.itemUpdatedSuccess" }));
+            redirectToFeed();
         }).catch(error => {
             console.log("aici", id);
             toast(formatMessage({ id: "notifications.messages.itemUpdatedError" }));

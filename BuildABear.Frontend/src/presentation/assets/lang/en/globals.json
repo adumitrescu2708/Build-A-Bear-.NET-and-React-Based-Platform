@@ -49,6 +49,7 @@
     "globals.address": "Address",
     "globals.teddyitems": "Teddy Items",
     "globals.registerVendor": "Register Vendor",
+    "globals.registerVendorUser": "Join the team!",
     "globals.contractStartDate": "Start Contract Date",
     "globals.contractEndDate": "End Contract Date",
     "globals.paymentMethod": "Payment Method",
@@ -75,5 +76,18 @@
     "globals.average": "Average",
     "globals.good": "Good",
     "globals.excellent": "Excellent",
-    "globals.veryPoor": "Very Poor"
+    "globals.veryPoor": "Very Poor",
+    "globals.confirmEditVendor": "Are you sure you want to edit vendor's contract?",
+    "globals.cancel": "Cancel",
+    "globals.confirm": "Confirm",
+    "globals.confirmation": "Confirmation required",
+    "globals.confirmDelete": "Are you sure you want to delete vendor?",
+    "globals.confirmDeleteTeddy": "Are you sure you want to delete teddy item?",
+    "globals.addVendor": "Add vendor",
+    "globals.vendorList": "List of vendors",
+    "globals.vendorEmail": "Vendor's email address",
+    "globals.teddyItemList": "Teddy Item list",
+    "globals.confirmAddTeddy": "Are you sure you want to add this teddy item?",
+    "globals.confirmEdit": "Are you sure you want to edit this teddy item?",
+    "globals.confirmVendorAdd": "Are you sure you want to add vendor?"
 }

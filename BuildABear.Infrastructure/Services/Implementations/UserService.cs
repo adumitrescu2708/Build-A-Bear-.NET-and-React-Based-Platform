@@ -156,6 +156,50 @@ public class UserService : IUserService
         return ServiceResponse.ForSuccess();
     }
 
+
+    public async Task<ServiceResponse> RegisterVendor(VendorUserRegisterDTO login, CancellationToken cancellationToken = default)
+    {
+        var result = await _repository.GetAsync(new UserSpec(login.Email), cancellationToken);
+
+        var searchVendor = await _repository.GetAsync(new VendorSpec(login.VendorEmail), cancellationToken);
+
+        if (searchVendor == null)
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.NotFound, "Vendor not existing!", ErrorCodes.VendorNotFound));
+        }
+
+
+        if (!Helpers.isValidDate(DateTime.Now, searchVendor.ContractStartDate, searchVendor.ContractEndDate))
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.Forbidden, "Vendor contract expired!", ErrorCodes.ContractExpired));
+        }
+
+        var mainCart = new Cart();
+        await _repository.AddAsync(new User
+        {
+            Email = login.Email,
+            Name = login.Name,
+            Role = UserRoleEnum.Vendor,
+            Password = login.Password,
+            Country = login.Country,
+            City = login.City,
+            PhoneNumber = login.PhoneNumber,
+            Cart = mainCart,
+            VendorId = searchVendor.Id,
+        }, cancellationToken);
+
+        var added_user = await _repository.GetAsync(new UserSpec(login.Email));
+
+        if (added_user == null)
+        {
+            return ServiceResponse.FromError(new(HttpStatusCode.InternalServerError, "Cannot get user!", ErrorCodes.CannotGet));
+        }
+
+        await _mailService.SendMail(login.Email, "Welcome!", MailTemplates.UserAddTemplate(login.Name), true, "My App", cancellationToken); // You can send a notification on the user email. Change the email if you want.
+
+        return ServiceResponse.ForSuccess();
+    }
+
     /*
          Each user has a corresponding cart
             - check if the given user id is found (i.e if the user exists)

@@ -58,6 +58,15 @@ export const Navbar = () => {
           </Grid>
 
 
+          {/* REGISTER LINK */}
+          <Grid container item direction="column" xs={1}>
+            { !loggedIn && <Button color="inherit">  {/* If the user is not logged in show a button that redirects to the login page. */}
+              <Link style={{ color: 'white', fontSize:'large' }} to={AppRoute.RegisterVendorUser}>
+                {formatMessage({ id: "globals.registerVendorUser" })}
+              </Link>
+            </Button>}
+          </Grid>
+
           {/* WTF */}
           <Grid container item direction="column" xs={1}>
             <Link
@@ -76,13 +85,7 @@ export const Navbar = () => {
               wrap="nowrap"
               columnSpacing={15}
             >
-              <Grid container item direction="column" xs={1}>
-                <Button color="inherit">
-                  <Link style={{ color: 'white' }} to={AppRoute.Users}>
-                    {formatMessage({ id: "globals.users" })}
-                  </Link>
-                </Button>
-              </Grid>
+
             </Grid>}
           </Grid>
 
@@ -107,15 +110,15 @@ export const Navbar = () => {
             </Grid>}
           </Grid>
 
-          <Grid container item direction="column" xs={1}>
+          <Grid container item direction="column" xs={2}>
             {isVendor && <Grid // Button for adding a teddy item
               container
               item
               direction="row"
-              xs={1}
+              xs={2}
               // alignItems="center"
               wrap="nowrap"
-              columnSpacing={15}
+              columnSpacing={20}
             >
                 <Button color="inherit">
                   <Link style={{ color: 'white' }} to={AppRoute.TeddyItem}>

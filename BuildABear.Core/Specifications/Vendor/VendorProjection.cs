@@ -13,7 +13,8 @@ public sealed class VendorProjection : BaseSpec<VendorProjection, Vendor, Vendor
         id = e.Id,
         Email = e.Email,
         Address = e.Address,
-        Name = e.Name
+        Name = e.Name,
+        ContractStartDate = e.ContractStartDate
     };
 
     public VendorProjection(Guid id) : base(id)

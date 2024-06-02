@@ -107,6 +107,7 @@ public class VendorService : IVendorService
                 Name = result.Name,
                 Email = result.Email,
                 Address = result.Address,
+                ContractStartDate = result.ContractStartDate
             }) :
             ServiceResponse<VendorBriefView>.FromError(new(HttpStatusCode.NotFound, "Vendor not found!", ErrorCodes.VendorNotFound));
     }

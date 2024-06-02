@@ -11,5 +11,6 @@
     "labels.edit": "Editeaza",
     "labels.addItem": "Adauga articol",
     "labels.delete": "Sterge",
-    "labels.view": "Vizualizati"
+    "labels.view": "Vizualizati",
+    "labels.search": "Cauta"
 }

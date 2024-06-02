@@ -12,5 +12,6 @@ export enum AppRoute {
     Vendor = "/vendor",
     VendorContract = "/vendor/contract",
     RegisterVendor = "/register/vendor",
-    Feedback = "/feedback"
+    Feedback = "/feedback",
+    RegisterVendorUser = "/register/vendorUser"
 }

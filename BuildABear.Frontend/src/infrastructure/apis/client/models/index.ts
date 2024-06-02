@@ -57,5 +57,6 @@ export * from './VendorContractDTO';
 export * from './VendorContractDTORequestResponse';
 export * from './VendorContractRenewalTerms';
 export * from './VendorUserAddDTO';
+export * from './VendorUserRegisterDTO';
 export * from './VendorViewDTO';
 export * from './VendorViewDTORequestResponse';
